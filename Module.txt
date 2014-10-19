@@ -1,0 +1,12 @@
+﻿Name: Hosting - Azure Application Insights
+AntiForgery: enabled
+Author: Lombiq
+Website: http://lombiq.com
+Version: 1.0
+OrchardVersion: 1.8.1
+Description: Integrates Azure Application Insights telemetry into Orchard.
+Features:
+    Lombiq.Hosting.Azure.ApplicationInsights:
+        Name: Hosting - Azure Application Insights
+        Description: Integrates Azure Application Insights telemetry into Orchard.
+        Category: Hosting
