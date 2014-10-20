@@ -113,14 +113,17 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Drivers\AzureApplicationInsightsTelemetryConfigurationPartDriver.cs" />
+    <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetryConfigurationPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetryConfigurationPart.cs" />
+    <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.AzureApplicationInsightsTelemetryConfiguration.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
