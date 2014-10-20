@@ -1,0 +1,13 @@
+﻿@model Lombiq.Hosting.Azure.ApplicationInsights.Models.AzureApplicationInsightsTelemetryConfigurationPart
+
+<fieldset>
+    <legend>@T("Azure Application Insights Configuration")</legend>
+    <ol>
+        <li>
+            @Html.LabelFor(m => m.InstrumentationKey, T("Instrumentation key"))
+            @Html.TextBoxFor(m => m.InstrumentationKey, new { @class = "text large" })
+            @Html.ValidationMessageFor(m => m.InstrumentationKey)
+            <span class="hint">@T("The textual instrumentation key used to connect to the Azure Application Insights telemetry services. You can get this key from the Azure Portal.")</span>
+        </li>
+    </ol>
+</fieldset>
