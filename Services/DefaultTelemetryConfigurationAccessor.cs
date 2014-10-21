@@ -9,6 +9,7 @@ using Orchard.Settings;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment;
+using Piedone.HelpfulLibraries.Contents;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -42,7 +43,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
 
             OnLoaded<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
-                part.ContentItem.Weld(new AzureApplicationInsightsPreviousInstrumentationKeyPart { PreviousInstrumentationKey = part.InstrumentationKey }));
+                ctx.ContentItem.Weld<AzureApplicationInsightsPreviousInstrumentationKeyPart>(p => p.PreviousInstrumentationKey = part.InstrumentationKey));
 
             OnUpdated<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
                 {
