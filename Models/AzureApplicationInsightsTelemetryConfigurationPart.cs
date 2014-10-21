@@ -15,5 +15,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
             get { return this.Retrieve(x => x.InstrumentationKey); }
             set { this.Store(x => x.InstrumentationKey, value); }
         }
+
+        public bool EnableLogCollection
+        {
+            get { return this.Retrieve(x => x.EnableLogCollection); }
+            set { this.Store(x => x.EnableLogCollection, value); }
+        }
     }
 }

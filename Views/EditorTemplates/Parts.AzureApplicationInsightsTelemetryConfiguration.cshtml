@@ -9,5 +9,17 @@
             @Html.ValidationMessageFor(m => m.InstrumentationKey)
             <span class="hint">@T("The textual instrumentation key used to connect to the Azure Application Insights telemetry services. You can get this key from the Azure Portal.")</span>
         </li>
+        @if (WorkContext.Resolve<Orchard.Environment.Configuration.ShellSettings>().Name == Orchard.Environment.Configuration.ShellSettings.DefaultName)
+        {
+            <li>
+                @Html.EditorFor(m => m.EnableLogCollection)
+                <label for="@Html.FieldIdFor(m => m.EnableLogCollection)" class="forcheckbox">@T("Enable the collection of log entries in AI")</label>
+                @Html.ValidationMessageFor(m => m.EnableLogCollection)
+                <span class="hint">
+                    @T("If enabled, log entries will be also sent to and collected by Application Insights, thus you'll be able to browse log entries on the Azure Portal. <br>Note that since this is an application-wide configuration it's only available on the Default tenant.")
+                </span>
+            </li>
+        }
     </ol>
+
 </fieldset>
