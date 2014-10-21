@@ -43,12 +43,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
 
             OnLoaded<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
-                ctx.ContentItem.Weld<AzureApplicationInsightsPreviousInstrumentationKeyPart>(p => p.PreviousInstrumentationKey = part.InstrumentationKey));
+                ctx.ContentItem.SetContext("PreviousInstrumentationKey", part.InstrumentationKey));
 
             OnUpdated<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
                 {
-                    var previousKeyPart = part.As<AzureApplicationInsightsPreviousInstrumentationKeyPart>();
-                    if (previousKeyPart != null && previousKeyPart.PreviousInstrumentationKey != part.InstrumentationKey)
+                    var previousInstrumentationKey = ctx.ContentItem.GetContext<string>("PreviousInstrumentationKey");
+                    if (!string.IsNullOrEmpty(previousInstrumentationKey) && previousInstrumentationKey != part.InstrumentationKey)
                     {
                         Clear();
                     }
@@ -88,15 +88,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 _defaultConfiguration.Dispose();
                 _defaultConfiguration = null;
             }
-        }
-
-
-        /// <summary>
-        /// Used to shortly store the instrumentation key when site settings are updated, so it can be detected if the key was changed.
-        /// </summary>
-        private class AzureApplicationInsightsPreviousInstrumentationKeyPart : ContentPart
-        {
-            public string PreviousInstrumentationKey { get; set; }
         }
     }
 }
