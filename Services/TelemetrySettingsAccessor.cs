@@ -37,7 +37,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             var settings = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
             if (!string.IsNullOrEmpty(defaultInstrumentationKey) && string.IsNullOrEmpty(settings.InstrumentationKey))
             {
-                return new TelemetrySettings { InstrumentationKey = defaultInstrumentationKey };
+                return new TelemetrySettings(settings) { InstrumentationKey = defaultInstrumentationKey };
             }
 
             return settings;
@@ -48,6 +48,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         {
             public string InstrumentationKey { get; set; }
             public bool ApplicationWideLogCollectionIsEnabled { get; set; }
+
+
+            public TelemetrySettings(ITelemetrySettings previousSettings)
+            {
+                InstrumentationKey = previousSettings.InstrumentationKey;
+                ApplicationWideLogCollectionIsEnabled = previousSettings.ApplicationWideLogCollectionIsEnabled;
+            }
         }
     }
 }
