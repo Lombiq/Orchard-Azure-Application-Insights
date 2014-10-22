@@ -127,10 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Drivers\AzureApplicationInsightsTelemetryConfigurationPartDriver.cs" />
+    <Compile Include="Drivers\AzureApplicationInsightsTelemetrySettingsPartDriver.cs" />
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
-    <Compile Include="Handlers\AzureApplicationInsightsTelemetryConfigurationPartHandler.cs" />
-    <Compile Include="Models\AzureApplicationInsightsTelemetryConfigurationPart.cs" />
+    <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
+    <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
+    <Compile Include="Models\ITelemetrySettings.cs" />
+    <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
     <Compile Include="Services\LoggerSetupShellEventHandler.cs" />
@@ -138,7 +140,7 @@
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.AzureApplicationInsightsTelemetryConfiguration.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts.AzureApplicationInsightsTelemetrySettings.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

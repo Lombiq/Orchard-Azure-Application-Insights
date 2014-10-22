@@ -40,11 +40,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // the reason for the custom work context.
             using (var wc = _wca.CreateWorkContextScope())
             {
-                var aiConfiguration = wc.Resolve<ISiteService>().GetSiteSettings().As<AzureApplicationInsightsTelemetryConfigurationPart>();
+                var settings = wc.Resolve<ITelemetrySettingsAccessor>().GetDefaultSettings();
 
-                if (!aiConfiguration.EnableLogCollection || string.IsNullOrEmpty(aiConfiguration.InstrumentationKey)) return;
+                if (!settings.ApplicationWideLogCollectionIsEnabled || string.IsNullOrEmpty(settings.InstrumentationKey)) return;
 
-                wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultAiLogAppenderName, aiConfiguration.InstrumentationKey);
+                wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultLogAppenderName, settings.InstrumentationKey);
             }
         }
 

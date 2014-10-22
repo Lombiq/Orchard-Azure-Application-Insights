@@ -1,0 +1,25 @@
+﻿@model Lombiq.Hosting.Azure.ApplicationInsights.Models.AzureApplicationInsightsTelemetrySettingsPart
+
+<fieldset>
+    <legend>@T("Azure Application Insights Telemetry Settings")</legend>
+    <ol>
+        <li>
+            @Html.LabelFor(m => m.InstrumentationKey, T("Instrumentation key"))
+            @Html.TextBoxFor(m => m.InstrumentationKey, new { @class = "text large" })
+            @Html.ValidationMessageFor(m => m.InstrumentationKey)
+            <span class="hint">@T("The textual instrumentation key used to connect to the Azure Application Insights telemetry services. You can get this key from the Azure Portal. <br>If you don't specify a key it will be attempted to be loaded from application settings.")</span>
+        </li>
+        @if (WorkContext.Resolve<Orchard.Environment.Configuration.ShellSettings>().Name == Orchard.Environment.Configuration.ShellSettings.DefaultName)
+        {
+            <li>
+                @Html.EditorFor(m => m.ApplicationWideLogCollectionIsEnabled)
+                <label for="@Html.FieldIdFor(m => m.ApplicationWideLogCollectionIsEnabled)" class="forcheckbox">@T("Enable the application-wide collection of log entries in AI")</label>
+                @Html.ValidationMessageFor(m => m.ApplicationWideLogCollectionIsEnabled)
+                <span class="hint">
+                    @T("If enabled, all log entries from the application will be sent to and collected by Application Insights too (in addition to other log appenders), thus you'll be able to browse log entries on the Azure Portal. <br>Note that since this is an application-wide configuration it's only available on the Default tenant.")
+                </span>
+            </li>
+        }
+    </ol>
+
+</fieldset>

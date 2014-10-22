@@ -9,16 +9,16 @@ using Orchard.Localization;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Handlers
 {
-    public class AzureApplicationInsightsTelemetryConfigurationPartHandler : ContentHandler
+    public class AzureApplicationInsightsTelemetrySettingsPartHandler : ContentHandler
     {
         public Localizer T { get; set; }
 
 
-        public AzureApplicationInsightsTelemetryConfigurationPartHandler()
+        public AzureApplicationInsightsTelemetrySettingsPartHandler()
         {
             T = NullLocalizer.Instance;
 
-            Filters.Add(new ActivatingFilter<AzureApplicationInsightsTelemetryConfigurationPart>("Site"));
+            Filters.Add(new ActivatingFilter<AzureApplicationInsightsTelemetrySettingsPart>("Site"));
         }
 
 

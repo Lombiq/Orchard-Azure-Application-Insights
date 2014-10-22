@@ -10,48 +10,48 @@ using Orchard.Environment;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
 {
-    public class AzureApplicationInsightsTelemetryConfigurationPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetryConfigurationPart>
+    public class AzureApplicationInsightsTelemetrySettingsPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetrySettingsPart>
     {
         private readonly Work<ILoggerSetup> _loggerSetupWork;
 
 
-        public AzureApplicationInsightsTelemetryConfigurationPartDriver(Work<ILoggerSetup> loggerSetupWork)
+        public AzureApplicationInsightsTelemetrySettingsPartDriver(Work<ILoggerSetup> loggerSetupWork)
         {
             _loggerSetupWork = loggerSetupWork;
         }
         
         
-        protected override DriverResult Editor(AzureApplicationInsightsTelemetryConfigurationPart part, dynamic shapeHelper)
+        protected override DriverResult Editor(AzureApplicationInsightsTelemetrySettingsPart part, dynamic shapeHelper)
         {
             return Editor(part, null, shapeHelper);
         }
 
-        protected override DriverResult Editor(AzureApplicationInsightsTelemetryConfigurationPart part, IUpdateModel updater, dynamic shapeHelper)
+        protected override DriverResult Editor(AzureApplicationInsightsTelemetrySettingsPart part, IUpdateModel updater, dynamic shapeHelper)
         {
-            return ContentShape("Parts_AzureApplicationInsightsTelemetryConfiguration_Edit",
+            return ContentShape("Parts_AzureApplicationInsightsTelemetrySettings_Edit",
                 () =>
                 {
                     if (updater != null)
                     {
                         var previousInstrumentationKey = part.InstrumentationKey;
-                        var previousEnableLogCollection = part.EnableLogCollection;
+                        var previousEnableLogCollection = part.ApplicationWideLogCollectionIsEnabled;
 
                         updater.TryUpdateModel(part, Prefix, null, null);
 
-                        if (part.EnableLogCollection &&
-                            (previousEnableLogCollection != part.EnableLogCollection && !string.IsNullOrEmpty(part.InstrumentationKey)) ||
+                        if (part.ApplicationWideLogCollectionIsEnabled &&
+                            (previousEnableLogCollection != part.ApplicationWideLogCollectionIsEnabled && !string.IsNullOrEmpty(part.InstrumentationKey)) ||
                             previousInstrumentationKey != part.InstrumentationKey)
                         {
-                            _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultAiLogAppenderName, part.InstrumentationKey);
+                            _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, part.InstrumentationKey);
                         }
-                        else if (!part.EnableLogCollection)
+                        else if (!part.ApplicationWideLogCollectionIsEnabled)
                         {
-                            _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultAiLogAppenderName);
+                            _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultLogAppenderName);
                         }
                     }
 
                     return shapeHelper.EditorTemplate(
-                        TemplateName: "Parts.AzureApplicationInsightsTelemetryConfiguration",
+                        TemplateName: "Parts.AzureApplicationInsightsTelemetrySettings",
                         Model: part,
                         Prefix: Prefix);
                 })

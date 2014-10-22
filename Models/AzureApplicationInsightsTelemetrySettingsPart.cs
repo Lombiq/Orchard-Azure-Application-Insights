@@ -7,19 +7,18 @@ using Orchard.ContentManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
 {
-    public class AzureApplicationInsightsTelemetryConfigurationPart : ContentPart
+    public class AzureApplicationInsightsTelemetrySettingsPart : ContentPart, ITelemetrySettings
     {
-        [Required]
         public string InstrumentationKey
         {
             get { return this.Retrieve(x => x.InstrumentationKey); }
             set { this.Store(x => x.InstrumentationKey, value); }
         }
 
-        public bool EnableLogCollection
+        public bool ApplicationWideLogCollectionIsEnabled
         {
-            get { return this.Retrieve(x => x.EnableLogCollection); }
-            set { this.Store(x => x.EnableLogCollection, value); }
+            get { return this.Retrieve(x => x.ApplicationWideLogCollectionIsEnabled); }
+            set { this.Store(x => x.ApplicationWideLogCollectionIsEnabled, value); }
         }
     }
 }

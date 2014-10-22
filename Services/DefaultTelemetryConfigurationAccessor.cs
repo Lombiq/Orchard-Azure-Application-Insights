@@ -29,23 +29,23 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     {
         private object _lock = new object();
 
-        private readonly Work<ISiteService> _siteServiceWork;
+        private readonly Work<ITelemetrySettingsAccessor> _telemetrySettingsAccessorWork;
         private readonly Work<ITelemetryConfigurationFactory> _telemetryConfigurationFactoryWork;
         private TelemetryConfiguration _defaultConfiguration;
 
 
         public DefaultTelemetryConfigurationAccessor(
-            Work<ISiteService> siteServiceWork,
+            Work<ITelemetrySettingsAccessor> telemetrySettingsAccessorWork,
             Work<ITelemetryConfigurationFactory> telemetryConfigurationFactoryWork)
         {
-            _siteServiceWork = siteServiceWork;
+            _telemetrySettingsAccessorWork = telemetrySettingsAccessorWork;
             _telemetryConfigurationFactoryWork = telemetryConfigurationFactoryWork;
 
 
-            OnLoaded<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
+            OnLoaded<AzureApplicationInsightsTelemetrySettingsPart>((ctx, part) =>
                 ctx.ContentItem.SetContext("PreviousInstrumentationKey", part.InstrumentationKey));
 
-            OnUpdated<AzureApplicationInsightsTelemetryConfigurationPart>((ctx, part) =>
+            OnUpdated<AzureApplicationInsightsTelemetrySettingsPart>((ctx, part) =>
                 {
                     var previousInstrumentationKey = ctx.ContentItem.GetContext<string>("PreviousInstrumentationKey");
                     if (!string.IsNullOrEmpty(previousInstrumentationKey) && previousInstrumentationKey != part.InstrumentationKey)
@@ -62,7 +62,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             {
                 if (_defaultConfiguration == null)
                 {
-                    var instrumentationKey = _siteServiceWork.Value.GetSiteSettings().As<AzureApplicationInsightsTelemetryConfigurationPart>().InstrumentationKey;
+                    var instrumentationKey = _telemetrySettingsAccessorWork.Value.GetDefaultSettings().InstrumentationKey;
                     if (string.IsNullOrEmpty(instrumentationKey))
                     {
                         throw new InvalidOperationException("The Application Insights instrumentation key is not configured. Without the instrumentation key no telemetry data can be sent.");
