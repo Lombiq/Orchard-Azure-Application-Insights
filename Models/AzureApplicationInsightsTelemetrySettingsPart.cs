@@ -17,7 +17,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
 
         public bool ApplicationWideLogCollectionIsEnabled
         {
-            get { return this.Retrieve(x => x.ApplicationWideLogCollectionIsEnabled); }
+            get { return this.Retrieve(x => x.ApplicationWideLogCollectionIsEnabled, true); }
             set { this.Store(x => x.ApplicationWideLogCollectionIsEnabled, value); }
         }
     }
