@@ -51,7 +51,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 // This shouldn't happen from more threads at the same time but let's be sure.
                 lock (_reLogLock)
                 {
-                    // We won't re-log if the tenant was just restarted.
+                    // We won't re-log if the tenant was just restarted. This can happens even when toggling features so we have to check.
                     _wasReLogged = true;
 
                     var hierarchyRoot = LoggerSetup.GetHierarchyRoot();
