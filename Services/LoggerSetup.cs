@@ -70,7 +70,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        private Logger GetHierarchyRoot()
+        public static Logger GetHierarchyRoot()
         {
             return ((Hierarchy)LogManager.GetRepository()).Root;
         }

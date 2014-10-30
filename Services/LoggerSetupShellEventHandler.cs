@@ -45,6 +45,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 if (!settings.ApplicationWideLogCollectionIsEnabled || string.IsNullOrEmpty(settings.InstrumentationKey)) return;
 
                 wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultLogAppenderName, settings.InstrumentationKey);
+                wc.Resolve<IStartupLogEntriesCollector>().ReLogStartupLogEntriesIfNew();
             }
         }
 

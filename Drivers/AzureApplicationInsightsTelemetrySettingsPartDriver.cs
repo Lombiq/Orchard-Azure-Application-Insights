@@ -13,11 +13,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
     public class AzureApplicationInsightsTelemetrySettingsPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetrySettingsPart>
     {
         private readonly Work<ILoggerSetup> _loggerSetupWork;
+        private readonly Work<IStartupLogEntriesCollector> _startupLogEntriesCollectorWork;
 
 
-        public AzureApplicationInsightsTelemetrySettingsPartDriver(Work<ILoggerSetup> loggerSetupWork)
+        public AzureApplicationInsightsTelemetrySettingsPartDriver(
+            Work<ILoggerSetup> loggerSetupWork,
+            Work<IStartupLogEntriesCollector> startupLogEntriesCollectorWork)
         {
             _loggerSetupWork = loggerSetupWork;
+            _startupLogEntriesCollectorWork = startupLogEntriesCollectorWork;
         }
         
         
@@ -43,6 +47,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                             previousInstrumentationKey != part.InstrumentationKey)
                         {
                             _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, part.InstrumentationKey);
+                            _startupLogEntriesCollectorWork.Value.ReLogStartupLogEntriesIfNew();
                         }
                         else if (!part.ApplicationWideLogCollectionIsEnabled)
                         {

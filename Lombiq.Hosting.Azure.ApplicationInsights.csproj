@@ -132,6 +132,7 @@
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
     <Compile Include="Models\ITelemetrySettings.cs" />
+    <Compile Include="Services\StartupLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
