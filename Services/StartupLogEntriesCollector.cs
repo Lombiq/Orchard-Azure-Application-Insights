@@ -46,6 +46,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // The AI appender, being database-configured, is registered after the app (and shell) startup. Because of this here
             // we try to access the standard Orchard log file, read the entries that were logged since the app start and send them
             // to AI.
+            // Note that this will only work if the log entries were already flushed (written to the file) which can be only ensured with
+            // immediate flushing.
             if (_shellSettings.Name == ShellSettings.DefaultName && !_wasReLogged)
             {
                 // This shouldn't happen from more threads at the same time but let's be sure.
