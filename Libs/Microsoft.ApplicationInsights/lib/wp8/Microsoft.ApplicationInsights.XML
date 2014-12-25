@@ -307,6 +307,16 @@
             <param name="fileName">The file to read from storage.</param>
             <returns>The fallback context we will be using.</returns>
         </member>
+        <member name="M:Microsoft.ApplicationInsights.Utils.PopulateRequiredStringWithNullValue(System.String,System.String,System.String)">
+            <summary>
+            Validates the string and if null or empty populates it with 'Null' value.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Utils.ValidateDuration(System.String)">
+            <summary>
+            Returns default Timespan value if not a valid Timespan.
+            </summary>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Platform.PlatformImplementation">
             <summary>
             The Windows Phone 8.0 (Silverlight Runtime) implementation of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform"/> interface.
@@ -320,11 +330,6 @@
             This type is public to enable mocking on Windows Phone.
             </remarks>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetApplicationFolder(System.String)">
-            <summary>
-            Returns a per-user/per-application folder.
-            </summary>
-        </member>
         <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetApplicationSettings">
             <summary>
             Returns a dictionary that can be used to access per-user/per-application settings shared by all application instances.
@@ -335,9 +340,14 @@
             Returns contents of the ApplicationInsights.config file in the application directory.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetTelemetryChannel(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetInProcessTelemetryChannel(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
             <summary>
-            Returns the <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetryChannel"/> for each platform.
+            Returns the in-process <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetryChannel"/> for each platform.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetOutOfProcessTelemetryChannel(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+            <summary>
+            Returns the out-of-process <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetryChannel"/> for each platform.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetExceptionDetails(System.Exception,Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.ExceptionDetails)">
@@ -348,6 +358,16 @@
         <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IPlatform.GetDebugOutput">
             <summary>
             Returns the platform specific Debugger writer to the VS output console.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.Platform.PlatformImplementation.GetInProcessTelemetryChannel(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+            <summary>
+            Returns the in-process <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetryChannel"/> for each platform.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.Platform.PlatformImplementation.GetOutOfProcessTelemetryChannel(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+            <summary>
+            Returns the out-of-process <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetryChannel"/> for each platform.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing.EventAttribute">
@@ -415,6 +435,11 @@
             Writes JSON representation of the object to the specified <paramref name="writer"/>.
             </summary>
         </member>
+        <member name="M:Microsoft.ApplicationInsights.Channel.ITelemetry.Sanitize">
+            <summary>
+            Sanitizes the properties of the telemetry item based on DP constraints.
+            </summary>
+        </member>
         <member name="P:Microsoft.ApplicationInsights.Channel.ITelemetry.Timestamp">
             <summary>
             Gets or sets date and time when telemetry was recorded.
@@ -438,6 +463,11 @@
         <member name="M:Microsoft.ApplicationInsights.Channel.ITelemetryChannel.Send(Microsoft.ApplicationInsights.Channel.ITelemetry)">
             <summary>
             Sends an instance of ITelemetry through the channel.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Channel.ITelemetryChannel.DeveloperMode">
+            <summary>
+            Gets or sets a value indicating whether this channel is in developer mode.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Channel.ITransmitter">
@@ -469,6 +499,11 @@
         <member name="M:Microsoft.ApplicationInsights.DataContracts.EventTelemetry.Microsoft#ApplicationInsights#DataContracts#IJsonSerializable#Serialize(Microsoft.ApplicationInsights.DataContracts.IJsonWriter)">
             <summary>
             Serializes this object in JSON format.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.EventTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.EventTelemetry.Timestamp">
@@ -532,6 +567,11 @@
             </summary>
             <param name="exception">Exception instance.</param>
             <exception cref="T:System.ArgumentException">The <paramref name="exception"/> is null or empty string.</exception>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
+            </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry.Timestamp">
             <summary>
@@ -649,6 +689,28 @@
             Writes <see cref="T:System.Object"/> as raw value directly.
             </summary>
         </member>
+        <member name="T:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException">
+            <summary>
+            This exception is used to notify the user that the set of inner exceptions has been trimmed because it exceeded our allowed send limit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException"/> class with a specified error message.
+            </summary>
+            <param name="message">The message that describes the error. </param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.DataContracts.InnerExceptionCountExceededException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception. </param><param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified. </param>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry">
             <summary>
             Telemetry type used to track metrics.
@@ -670,6 +732,11 @@
         <member name="M:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry.Microsoft#ApplicationInsights#DataContracts#IJsonSerializable#Serialize(Microsoft.ApplicationInsights.DataContracts.IJsonWriter)">
             <summary>
             Serializes this object in JSON format.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry.Timestamp">
@@ -744,6 +811,11 @@
             Serializes this object in JSON format.
             </summary>
         </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.PageViewTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
+            </summary>
+        </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.PageViewTelemetry.Timestamp">
             <summary>
             Gets or sets date and time when event was recorded.
@@ -787,6 +859,11 @@
         <member name="M:Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry.Microsoft#ApplicationInsights#DataContracts#IJsonSerializable#Serialize(Microsoft.ApplicationInsights.DataContracts.IJsonWriter)">
             <summary>
             Serializes this object in JSON format.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry.Timestamp">
@@ -854,15 +931,20 @@
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry"/> class.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry.#ctor(System.String,System.TimeSpan,System.Boolean)">
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry.#ctor(System.String,System.DateTimeOffset,System.TimeSpan,System.String,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry"/> class with the given <paramref name="name"/>, 
-            <paramref name="duration"/> and <paramref name="success"/> property values.
+            <paramref name="timestamp"/>, <paramref name="duration"/>, <paramref name="responseCode"/> and <paramref name="success"/> property values.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry.Microsoft#ApplicationInsights#DataContracts#IJsonSerializable#Serialize(Microsoft.ApplicationInsights.DataContracts.IJsonWriter)">
             <summary>
             Serializes this object in JSON format.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.RequestTelemetry.Timestamp">
@@ -1005,6 +1087,11 @@
         <member name="M:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry.Microsoft#ApplicationInsights#DataContracts#IJsonSerializable#Serialize(Microsoft.ApplicationInsights.DataContracts.IJsonWriter)">
             <summary>
             Serializes this object in JSON format.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry.Microsoft#ApplicationInsights#Channel#ITelemetry#Sanitize">
+            <summary>
+            Sanitizes the properties based on constraints.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry.Timestamp">
@@ -1323,9 +1410,24 @@
             Converts a System.Exception to a Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.ExceptionDetails.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.ExceptionConverter.ConvertToStackFrame(System.Diagnostics.StackFrame,System.Int32)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.ExceptionConverter.SanitizeStackFrame``2(System.Collections.Generic.IList{``0},System.Func{``0,System.Int32,``1},System.Func{``1,System.Int32})">
+            <summary>
+            Sanitizing stack to 32k while selecting the initial and end stack trace.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.ExceptionConverter.GetStackFrame(System.Diagnostics.StackFrame,System.Int32)">
             <summary>
             Converts a System.Diagnostics.StackFrame to a Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.StackFrame.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.ExceptionConverter.GetStackFrameLength(Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.StackFrame)">
+            <summary>
+            Gets the stack frame length for only the strings in the stack frame.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.INetwork">
+            <summary>
+            Encapsulates platform-specific behavior of network information APIs.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.InternalContext">
@@ -1336,6 +1438,17 @@
         <member name="P:Microsoft.ApplicationInsights.Extensibility.Implementation.InternalContext.SdkVersion">
             <summary>
             Gets or sets application insights SDK version.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.IRandomNumberBatchGenerator">
+            <summary>
+            Interface for random number generator capable of producing 
+            a batch of unsigned 64 bit random numbers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.IApplicationFolderProvider.GetApplicationFolder(System.String)">
+            <summary>
+            Returns a per-user/per-application folder.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.JsonWriter.WritePropertyName(System.String)">
@@ -1371,6 +1484,16 @@
             <summary>
             Gets or sets the application-defined operation NAME.
             </summary>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Platform.Network">
+            <summary>
+            Encapsulates platform-specific behavior of network information APIs.
+            </summary>
+            <remarks>
+            The <see cref="T:System.Net.NetworkInformation.NetworkChange"/> and <see cref="T:System.Net.NetworkInformation.NetworkInterface"/> work reliably on .NET and
+            Silverlight, but not on Windows Runtime. As a temporary workaround, this class is currently implemented
+            only on .NET.
+            </remarks>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Platform.PlatformSingleton">
             <summary>
@@ -1433,6 +1556,9 @@
             <summary>
             *****************************************************************************                                Metric type*****************************************************************************
             </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.DataPoint.kind">
             <summary>
@@ -1443,15 +1569,26 @@
             <summary>
             Instance of the Metric item is a list of measurements (single    data points) and/or aggregations
             </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.RddSourceType">
             <summary>
             *****************************************************************************                                Remote Dependency type***************************************************************************** Instance of Remote Dependecy represents a metric that was collected     specifically for an interaction of the monitored component with a remote     component/service like SQL
             </summary>
         </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.RemoteDependencyData">
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.RequestData">
             <summary>
             *****************************************************************************                                Request type***************************************************************************** Instance of Request represents completion of an external request to the    application to do work, and contains a summary of that request execution    and the results.
+            </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.RequestData.startTime">
@@ -1504,19 +1641,33 @@
             List of stack frames.
             </summary> 
         </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.ExceptionData">
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.MessageData">
             <summary>
             *****************************************************************************                                Message type***************************************************************************** Instances of Message represent printf-like trace statements that are    text-searched.     Log4Net, NLog and other text-based log file entries are be translated into    intances of this type.    The message does not have measurements, and there is an ongoing debate if    messages can have custom propertis
+            </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.EventData">
             <summary>
             *****************************************************************************                                Event type***************************************************************************** Instances of Event represent structured event records that can be grouped    and searched by their properties.    More complex events, like ETW, will most likely be represented by Part C     extensions of Event.
             </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.PageViewData">
             <summary>
             *****************************************************************************                                 PageView type ***************************************************************************** Instance of PageEvent represents a generic action on a page like a button     click.     It is also the base type for PageView and AJAXCall.
+            </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.PageViewData.duration">
@@ -1527,6 +1678,9 @@
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.PageViewPerfData">
             <summary>
             *****************************************************************************                                 PageViewPerf type ***************************************************************************** Instance of PageView represents    - page view with no performance data    - page view with performance data    - just the performance data of an earlier page request
+            </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.PageViewPerfData.perfTotal">
@@ -1558,6 +1712,9 @@
             <summary>
             *****************************************************************************                                AjaxCall type ***************************************************************************** Instances of AjaxCall represent a remote call from JavaScript on the client     to the server
             </summary>
+            <summary>
+            Partial class to add the EventData attribute and any additional customizations to the generated type.
+            </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing.CoreEventSource.Keywords">
             <summary>
@@ -1577,6 +1734,11 @@
         <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing.CoreEventSource.Keywords.VerboseFailure">
             <summary>
             Keyword for errors that trace at Verbose level.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing.CoreEventSource.Keywords.ErrorFailure">
+            <summary>
+            Keyword for errors that trace at Error level.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing.DiagnosticsListener">
@@ -1783,6 +1945,109 @@
             Acquisition date is automatically supplied in default Application Insights configuration.
             </remarks>
         </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.random">
+            <summary>
+            Generator singleton.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.index">
+            <summary>
+            Index of the last used random number within pre-generated array.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.segmentCount">
+            <summary>
+            Count of segments of random numbers.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.segmentSize">
+            <summary>
+            Number of random numbers per segment.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.bitsToStoreRandomIndexWithinSegment">
+            <summary>
+            Number of bits used to store index of the random number within segment.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.segmentIndexMask">
+            <summary>
+            Bit mask to get segment index bits.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.randomIndexWithinSegmentMask">
+            <summary>
+            Bit mask to get index of the random number within segment.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.randomArrayIndexMask">
+            <summary>
+            Bit mask to get index of the random number in the pre-generated array.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.randomGemerators">
+            <summary>
+            Array of random number batch generators (one per each segment).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.randomNumbers">
+            <summary>
+            Array of pre-generated random numbers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.Initialize">
+            <summary>
+            Initializes generator with a set of random numbers.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.Initialize(System.Func{System.UInt64,Microsoft.ApplicationInsights.Extensibility.Implementation.IRandomNumberBatchGenerator},System.Int32,System.Int32)">
+            <summary>
+            Initializes generator with a set of random numbers.
+            </summary>
+            <param name="randomGeneratorFactory">Factory used to create random number batch generators.</param>
+            <param name="segmentIndexBits">Number of significant bits in segment index, i.e. value of 3 means 8 segments of random numbers - 0..7.</param>
+            <param name="segmentBits">Number of significant bits in random number index within segment, i.e. value of 10 means 1024 random numbers per segment.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.Next">
+            <summary>
+            Weakly thread safe next (random) operation id generator
+            where 'weakly' indicates that it is unlikely we'll get into 
+            collision state.
+            </summary>
+            <returns>Next operation id.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.WeakConcurrentRandom.RegenerateSegment(System.Int32)">
+            <summary>
+            Generates random number batch for segment which just exhausted
+            according to value of the new index.
+            </summary>
+            <param name="newIndex">Index in random number array of the random number we're about to return.</param>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.Implementation.XorshiftRandomBatchGenerator">
+            <summary>
+            Generates batches of random number using Xorshift algorithm
+            Note: the base code is from http://www.codeproject.com/Articles/9187/A-fast-equivalent-for-System-Random.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.XorshiftRandomBatchGenerator.#ctor(System.UInt64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.Implementation.XorshiftRandomBatchGenerator"/> class.
+            </summary>
+            <param name="seed">Random generator seed value.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.Implementation.XorshiftRandomBatchGenerator.NextBatch(System.UInt64[],System.Int32,System.Int32)">
+            <summary>
+            Generates a batch of random numbers.
+            </summary>
+            <param name="buffer">Buffer to put numbers in.</param>
+            <param name="index">Start index in the buffer.</param>
+            <param name="count">Count of random numbers to generate.</param>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer">
             <summary>
             Represents an object that initializes <see cref="T:Microsoft.ApplicationInsights.Channel.ITelemetry"/> objects.
@@ -1857,6 +2122,11 @@
             telemetry configuration provided by this class.
             </remarks>
         </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration"/> class.
+            </summary>
+        </member>
         <member name="M:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Dispose">
             <summary>
             Releases resources used by the current instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration"/> class.
@@ -1882,6 +2152,15 @@
             This instrumentation key value is used by default by all <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> instances
             created in the application. This value can be overwritten by setting the <see cref="P:Microsoft.ApplicationInsights.DataContracts.TelemetryContext.InstrumentationKey"/>
             property of the <see cref="P:Microsoft.ApplicationInsights.TelemetryClient.Context"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.DisableTelemetry">
+            <summary>
+            Gets or sets a value indicating whether sending of telemetry to Application Insights is disabled.
+            </summary>
+            <remarks>
+            This disable tracking setting value is used by default by all <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> instances
+            created in the application. 
             </remarks>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.ContextInitializers">
@@ -1926,6 +2205,11 @@
             Gets or sets the telemetry channel.
             </summary>
         </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.AlwaysUseInProcessChannel">
+            <summary>
+            Gets or sets a value indicating whether to always use the InProcessChannel.
+            </summary>
+        </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.TimestampPropertyInitializer">
             <summary>
             An <see cref="T:Microsoft.ApplicationInsights.Extensibility.ITelemetryInitializer"/> that sets <see cref="P:Microsoft.ApplicationInsights.Channel.ITelemetry.Timestamp"/> to <see cref="P:System.DateTimeOffset.Now"/>.
@@ -1939,13 +2223,7 @@
         <member name="P:Microsoft.ApplicationInsights.Channel.ApplicationLifecycleTransmissionPolicy.StartupTransmissionDuration">
             <summary>
             Gets or sets the value that determines how long buffering and sending of transmissions
-            will continue after <see cref="E:Microsoft.ApplicationInsights.Extensibility.IApplicationLifecycle.Started"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.ErrorHandlingTransmissionPolicy.MaxAttemptsPerTransmission">
-            <summary>
-            Gets or sets a value that determines how many attempts will be made to send a 
-            <see cref="T:Microsoft.ApplicationInsights.Channel.Transmission"/> after an error.
+            will continue after the <see cref="E:Microsoft.ApplicationInsights.Extensibility.IApplicationLifecycle.Started"/> event.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Channel.ErrorHandlingTransmissionPolicy.PauseDuration">
@@ -1954,78 +2232,78 @@
             be paused before attempting to resume transmission after a network error is detected.
             </summary>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel">
+        <member name="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel">
             <summary>
             Represents a communication channel for sending telemetry to application insights.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Channel.TelemetryChannel.#ctor">
+        <member name="M:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> class.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> class.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Channel.TelemetryChannel.Dispose">
+        <member name="M:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.Dispose">
             <summary>
             Releases unmanaged and - optionally - managed resources.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Channel.TelemetryChannel.Send(Microsoft.ApplicationInsights.Channel.ITelemetry)">
+        <member name="M:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.Send(Microsoft.ApplicationInsights.Channel.ITelemetry)">
             <summary>
             Sends an instance of ITelemetry through the channel.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Channel.TelemetryChannel.Initialize(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+        <member name="M:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.Initialize(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
             <summary>
             Initialize method is called after all configuration properties have been loaded from the configuration.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.DeveloperMode">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.DeveloperMode">
             <summary>
             Gets or sets a value indicating whether developer mode of telemetry transmission is enabled.
-            When developer mode is True, <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> sends telemetry to Application Insights immediately 
-            during the entire lifetime of the application. When developer mode is False, <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/>
+            When developer mode is True, <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> sends telemetry to Application Insights immediately 
+            during the entire lifetime of the application. When developer mode is False, <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/>
             respects production sending policies defined by other properties.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.EndpointAddress">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.EndpointAddress">
             <summary>
             Gets or sets the HTTP address where the telemetry is sent.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.DataUploadIntervalInSeconds">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.DataUploadIntervalInSeconds">
             <summary>
-            Gets or sets the maximum telemetry batching interval. Once the interval expires, <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> 
+            Gets or sets the maximum telemetry batching interval. Once the interval expires, <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> 
             serializes the accumulated telemetry items for transmission.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.MaxTelemetryBufferCapacity">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.MaxTelemetryBufferCapacity">
             <summary>
             Gets or sets the maximum number of telemetry items will accumulate in a memory before 
-            the <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> serializing them for transmission to Application Insights.
+            the <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> serializing them for transmission to Application Insights.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.MaxTransmissionBufferCapacity">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.MaxTransmissionBufferCapacity">
             <summary>
-            Gets or sets the maximum amount of memory, in bytes, that <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> will use 
+            Gets or sets the maximum amount of memory, in bytes, that <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> will use 
             to buffer transmissions before sending them to Application Insights.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.MaxTransmissionSenderCapacity">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.MaxTransmissionSenderCapacity">
             <summary>
-            Gets or sets the maximum number of telemetry transmissions that <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> will 
+            Gets or sets the maximum number of telemetry transmissions that <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> will 
             send to Application Insights at the same time.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.MaxTransmissionStorageCapacity">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.MaxTransmissionStorageCapacity">
             <summary>
-            Gets or sets the maximum amount of disk space, in bytes, that <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> will 
+            Gets or sets the maximum amount of disk space, in bytes, that <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> will 
             use to store unsent telemetry transmissions.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.TelemetryChannel.StopUploadAfterIntervalInSeconds">
+        <member name="P:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel.StopUploadAfterIntervalInSeconds">
             <summary>
             Gets or sets the amount of time, in seconds, after application is started when the 
-            <see cref="T:Microsoft.ApplicationInsights.Channel.TelemetryChannel"/> will send telemetry to ApplicationInsights. Once the specified 
+            <see cref="T:Microsoft.ApplicationInsights.Channel.InProcessTelemetryChannel"/> will send telemetry to ApplicationInsights. Once the specified 
             amount of time runs out, telemetry will be stored on disk until the application is started again.
             </summary>
         </member>
@@ -2091,11 +2369,6 @@
             </summary>
             <returns>The task to await.</returns>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Channel.Transmission.Attempt">
-            <summary>
-            Gets a value that indicates the number of times <see cref="M:Microsoft.ApplicationInsights.Channel.Transmission.SendAsync"/> was called.
-            </summary>
-        </member>
         <member name="P:Microsoft.ApplicationInsights.Channel.Transmission.EndpointAddress">
             <summary>
             Gets the address of the endpoint to which transmission will be sent.
@@ -2158,78 +2431,101 @@
         </member>
         <member name="T:Microsoft.ApplicationInsights.TelemetryClient">
             <summary>
-            A helper class used in sending basic telemetry to the Application Insights service.
+            Send events, metrics and other telemetry to the Application Insights service.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> class with the <see cref="P:Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active"/> configuration.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> class. Send telemetry with the active configuration, usually loaded from ApplicationInsights.config.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.#ctor(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> class with the specified <paramref name="configuration"/>.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.TelemetryClient"/> class. Send telemetry with the specified <paramref name="configuration"/>.
             </summary>
             <exception cref="T:System.ArgumentNullException">The <paramref name="configuration"/> is null.</exception>
         </member>
+        <member name="M:Microsoft.ApplicationInsights.TelemetryClient.IsEnabled">
+            <summary>
+            Check to determine if the tracking is enabled.
+            </summary>
+        </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackEvent(System.String)">
             <summary>
-            Logs an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> with the specified <paramref name="eventName"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> for display in Diagnostic Search and aggregation in Metrics Explorer.
             </summary>
+            <param name="eventName">A name for the event.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackEvent(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IDictionary{System.String,System.Double})">
             <summary>
-            Logs an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> with the specified <paramref name="eventName"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> for display in Diagnostic Search and aggregation in Metrics Explorer.
             </summary>
+            <param name="eventName">A name for the event.</param>
+            <param name="properties">Named string values you can use to search and classify events.</param>
+            <param name="metrics">Measurements associated with this event.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackEvent(Microsoft.ApplicationInsights.DataContracts.EventTelemetry)">
             <summary>
-            Logs an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> for display in Diagnostic Search and aggregation in Metrics Explorer.
             </summary>
+            <param name="telemetry">An event log item.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackTrace(System.String)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry"/> with the specified <paramref name="message"/> for transmission to Application Insights.
+            Send a trace message for display in Diagnostic Search.
             </summary>
+            <param name="message">Message to display.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackTrace(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry"/> with the specified <paramref name="message"/> for transmission to Application Insights.
+            Send a trace message for display in Diagnostic Search.
             </summary>
+            <param name="message">Message to display.</param>
+            <param name="properties">Named string values you can use to search and classify trace messages.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackTrace(Microsoft.ApplicationInsights.DataContracts.TraceTelemetry)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.TraceTelemetry"/> for transmission to Application Insights.
+            Send a trace message for display in Diagnostic Search.
             </summary>
+            <param name="telemetry">Message with optional properties.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackMetric(System.String,System.Double)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> with the specified <paramref name="name"/> and <paramref name="value"/> for transmission to Application Insights.
+            Send a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> for aggregation in Metric Explorer.
             </summary>
+            <param name="name">Metric name.</param>
+            <param name="value">Metric value.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackMetric(System.String,System.Double,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> with the specified <paramref name="name"/> and <paramref name="value"/> for transmission to Application Insights.
+            Send a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> for aggregation in Metric Explorer.
             </summary>
+            <param name="name">Metric name.</param>
+            <param name="value">Metric value.</param>
+            <param name="properties">Named string values you can use to classify and filter metrics.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackMetric(Microsoft.ApplicationInsights.DataContracts.MetricTelemetry)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> for transmission to Application Insights.
+            Send a <see cref="T:Microsoft.ApplicationInsights.DataContracts.MetricTelemetry"/> for aggregation in Metric Explorer.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackException(System.Exception)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for display in Diagnostic Search.
             </summary>
+            <param name="exception">The exception to log.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackException(System.Exception,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IDictionary{System.String,System.Double})">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for display in Diagnostic Search.
             </summary>
+            <param name="exception">The exception to log.</param>
+            <param name="properties">Named string values you can use to classify and search for this exception.</param>
+            <param name="metrics">Additional values associated with this exception.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackException(Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for transmission to Application Insights.
+            Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry"/> for display in Diagnostic Search.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.Track(Microsoft.ApplicationInsights.Channel.ITelemetry)">
@@ -2239,36 +2535,38 @@
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackPageView(System.String)">
             <summary>
-            Sends information about the page viewed in the application to Application Insights.
+            Send information about the page viewed in the application.
             </summary>
             <param name="name">Name of the page.</param>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackPageView(Microsoft.ApplicationInsights.DataContracts.PageViewTelemetry)">
             <summary>
-            Sends information about the page viewed in the application to Application Insights.
+            Send information about the page viewed in the application.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackRequest(System.String,System.DateTimeOffset,System.TimeSpan,System.String,System.Boolean)">
+            <summary>
+            Send information about a request handled by the application.
+            </summary>
+            <param name="name">The request name.</param>
+            <param name="timestamp">The time when the page was requested.</param>
+            <param name="duration">The time taken by the application to handle the request.</param>
+            <param name="responseCode">The response status code.</param>
+            <param name="success">True if the request was handled successfully by the application.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackRequest(Microsoft.ApplicationInsights.DataContracts.RequestTelemetry)">
+            <summary>
+            Send information about a request handled by the application.
             </summary>
         </member>
         <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackRemoteDependency(Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry)">
             <summary>
-            Logs a <see cref="T:Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry"/> for transmission to Application Insights.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackRequest(System.String,System.TimeSpan,System.Boolean)">
-            <summary>
-            Sends information about a request handled by the application to Application Insights.
-            </summary>
-            <param name="name">Name of the page requested.</param>
-            <param name="duration">The amount of time it took the application to handle the request.</param>
-            <param name="success">Indicates whether the request was handled successfully by the application.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.TelemetryClient.TrackRequest(Microsoft.ApplicationInsights.DataContracts.RequestTelemetry)">
-            <summary>
-            Sends information about a request handled by the application to Application Insights.
+            Send a <see cref="T:Microsoft.ApplicationInsights.DataContracts.RemoteDependencyTelemetry"/> for transmission.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.TelemetryClient.Context">
             <summary>
-            Gets the current context that will be used to enhance sent telemetry.
+            Gets the current context that will be used to augment telemetry you send.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.TelemetryClient.Channel">

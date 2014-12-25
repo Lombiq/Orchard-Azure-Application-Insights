@@ -46,15 +46,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
             var telemetryModules = configuration.TelemetryModules;
             telemetryModules.Add(new RemoteDependencyModule());
-            telemetryModules.Add(new ApmcModule());
 
             var contextInitializers = configuration.ContextInitializers;
             contextInitializers.Add(new ComponentContextInitializer());
             contextInitializers.Add(new DeviceContextInitializer());
-
-            configuration.TelemetryChannel = new TelemetryChannel();
-            ((ISupportConfiguration)configuration.TelemetryChannel).Initialize(configuration);
-            configuration.TelemetryInitializers.Add(new TimestampPropertyInitializer());
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
 
