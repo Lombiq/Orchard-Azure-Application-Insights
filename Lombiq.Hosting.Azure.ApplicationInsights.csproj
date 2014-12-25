@@ -68,6 +68,10 @@
     <Reference Include="Microsoft.Diagnostics.Tracing.EventSource">
       <HintPath>Libs\Microsoft.Diagnostics.Tracing.EventSource.Redist\lib\net40\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\owin\Microsoft.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>Libs\Microsoft.Bcl.Async\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
@@ -76,6 +80,10 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
       <HintPath>Libs\Microsoft.Bcl.Async\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\owin\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -128,11 +136,13 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Drivers\AzureApplicationInsightsTelemetrySettingsPartDriver.cs" />
+    <Compile Include="Events\IRequestTrackingEventHandler.cs" />
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
     <Compile Include="Models\ITelemetrySettings.cs" />
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
+    <Compile Include="Services\RequestTrackingMiddleware.cs" />
     <Compile Include="Services\StartupLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
