@@ -16,6 +16,9 @@ using Orchard;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
+    /// <summary>
+    /// Sets up AI logging on shell start.
+    /// </summary>
     public class LoggerSetupShellEventHandler : IOrchardShellEvents
     {
         private readonly ShellSettings _shellSettings;
