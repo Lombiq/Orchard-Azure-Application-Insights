@@ -65,7 +65,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                 requestTelemetry.Duration = clock.UtcNow - requestStart;
                                 requestTelemetry.ResponseCode = httpResponse.StatusCode.ToString();
                                 requestTelemetry.Success = httpResponse.StatusCode < 400;
-                                requestTelemetry.Name = workContext.Layout.Title; 
+                                requestTelemetry.Name = (string)workContext.Layout.Title ?? httpRequest.Url.ToString();
 
                                 requestTrackingEvents.OnEndRequest(requestTelemetry);
 
