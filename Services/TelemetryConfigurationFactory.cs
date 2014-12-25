@@ -11,7 +11,9 @@ using Orchard;
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     /// <summary>
-    /// Builds <see cref="TelemetryConfiguration"/> objects.
+    /// Builds <see cref="TelemetryConfiguration"/> objects. If you want to cut down on objects, try to limit the number of
+    /// <see cref="TelemetryConfiguration"/> objects rather than e.g. <see cref="Microsoft.ApplicationInsights.TelemetryClient"/>
+    /// objects.
     /// </summary>
     public interface ITelemetryConfigurationFactory : IDependency
     {
