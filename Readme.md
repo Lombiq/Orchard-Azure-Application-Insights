@@ -20,4 +20,7 @@ Application Insights NuGet packages are included in the Lib folder. If you want 
 
 When assembly binding redirects are changed make sure to also edit `AssemblyRedirectSetupShellEventHandler` that mimicks such redirects instead of relying on the Web.config.
 
-Note that since there is a 260 characters limit on paths on Windows, the unused library folder "Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81" should be removed.
+Note that since there is a 260 characters limit on paths on Windows, some unused library folder and files should be removed:
+
+- Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81
+- Microsoft.Diagnostics.Instrumentation.Extensions.Intercept/Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.0.12.0-build02810.nupkg
