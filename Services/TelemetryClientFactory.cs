@@ -45,7 +45,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryClient CreateTelemetryClientFromDefaultConfiguration()
         {
-            return CreateTelemetryClient(_defaultTelemetryConfigurationAccessor.GetDefaultConfiguration());
+            var defaultConfiguration = _defaultTelemetryConfigurationAccessor.GetDefaultConfiguration();
+            if (defaultConfiguration == null) return null;
+            return CreateTelemetryClient(defaultConfiguration);
         }
     }
 }

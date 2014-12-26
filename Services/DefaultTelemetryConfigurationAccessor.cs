@@ -63,10 +63,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 if (_defaultConfiguration == null)
                 {
                     var instrumentationKey = _telemetrySettingsAccessorWork.Value.GetDefaultSettings().InstrumentationKey;
-                    if (string.IsNullOrEmpty(instrumentationKey))
-                    {
-                        throw new InvalidOperationException("The Application Insights instrumentation key is not configured. Without the instrumentation key no telemetry data can be sent.");
-                    }
+                    if (string.IsNullOrEmpty(instrumentationKey)) return null;
                     _defaultConfiguration = _telemetryConfigurationFactoryWork.Value.CreateConfiguration(instrumentationKey);
                 }
 

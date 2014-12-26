@@ -73,7 +73,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                                     requestTrackingEvents.OnEndRequest(requestTelemetry);
 
-                                    workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration().TrackRequest(requestTelemetry); 
+                                    var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
+                                    if (telemetryClient != null)
+                                    {
+                                        telemetryClient.TrackRequest(requestTelemetry);  
+                                    }
                                 }
                                 else
                                 {
