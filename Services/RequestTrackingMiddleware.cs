@@ -4,7 +4,6 @@ using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Microsoft.ApplicationInsights.DataContracts;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.Mvc;
 using Orchard.Owin;
 using Orchard.Services;
 using Owin;
@@ -43,28 +42,27 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                                     var requestStart = clock.UtcNow;
 
-                                    var httpContext = workContext.Resolve<IHttpContextAccessor>().Current();
-                                    var httpRequest = httpContext.Request;
-                                    var httpResponse = httpContext.Response;
+                                    var request = context.Request;
+                                    var response = context.Response;
                                     var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
 
 
                                     var requestTelemetry = new RequestTelemetry
                                     {
                                         Timestamp = requestStart,
-                                        Url = httpRequest.Url,
-                                        HttpMethod = httpRequest.HttpMethod
+                                        Url = request.Uri,
+                                        HttpMethod = request.Method
                                     };
-                                    requestTelemetry.Context.Location.Ip = httpRequest.UserHostAddress;
+                                    requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
 
                                     requestTrackingEvents.OnBeginRequest(requestTelemetry);
 
                                     await next.Invoke();
 
                                     requestTelemetry.Duration = clock.UtcNow - requestStart;
-                                    requestTelemetry.ResponseCode = httpResponse.StatusCode.ToString();
-                                    requestTelemetry.Success = httpResponse.StatusCode < 400;
-                                    requestTelemetry.Name = (string)workContext.Layout.Title ?? httpRequest.Url.ToString();
+                                    requestTelemetry.ResponseCode = response.StatusCode.ToString();
+                                    requestTelemetry.Success = response.StatusCode < 400;
+                                    requestTelemetry.Name = (string)workContext.Layout.Title ?? request.Uri.ToString();
 
                                     requestTrackingEvents.OnEndRequest(requestTelemetry);
 
