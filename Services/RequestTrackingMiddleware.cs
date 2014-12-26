@@ -12,6 +12,7 @@ using Orchard.Mvc;
 using Orchard.Services;
 using Microsoft.ApplicationInsights.DataContracts;
 using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+using Orchard.ContentManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -40,36 +41,44 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                             app.Use(async (context, next) =>
                             {
                                 var workContext = _wca.GetContext();
-                                var clock = workContext.Resolve<IClock>();
 
-                                var requestStart = clock.UtcNow;
-
-                                var httpContext = workContext.Resolve<IHttpContextAccessor>().Current();
-                                var httpRequest = httpContext.Request;
-                                var httpResponse = httpContext.Response;
-                                var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
-
-
-                                var requestTelemetry = new RequestTelemetry
+                                if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
                                 {
-                                    Timestamp = requestStart,
-                                    Url = httpRequest.Url,
-                                    HttpMethod = httpRequest.HttpMethod
-                                };
-                                requestTelemetry.Context.Location.Ip = httpRequest.UserHostAddress;
+                                    var clock = workContext.Resolve<IClock>();
 
-                                requestTrackingEvents.OnBeginRequest(requestTelemetry);
+                                    var requestStart = clock.UtcNow;
 
-                                await next.Invoke();
+                                    var httpContext = workContext.Resolve<IHttpContextAccessor>().Current();
+                                    var httpRequest = httpContext.Request;
+                                    var httpResponse = httpContext.Response;
+                                    var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
 
-                                requestTelemetry.Duration = clock.UtcNow - requestStart;
-                                requestTelemetry.ResponseCode = httpResponse.StatusCode.ToString();
-                                requestTelemetry.Success = httpResponse.StatusCode < 400;
-                                requestTelemetry.Name = (string)workContext.Layout.Title ?? httpRequest.Url.ToString();
 
-                                requestTrackingEvents.OnEndRequest(requestTelemetry);
+                                    var requestTelemetry = new RequestTelemetry
+                                    {
+                                        Timestamp = requestStart,
+                                        Url = httpRequest.Url,
+                                        HttpMethod = httpRequest.HttpMethod
+                                    };
+                                    requestTelemetry.Context.Location.Ip = httpRequest.UserHostAddress;
 
-                                workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration().TrackRequest(requestTelemetry);
+                                    requestTrackingEvents.OnBeginRequest(requestTelemetry);
+
+                                    await next.Invoke();
+
+                                    requestTelemetry.Duration = clock.UtcNow - requestStart;
+                                    requestTelemetry.ResponseCode = httpResponse.StatusCode.ToString();
+                                    requestTelemetry.Success = httpResponse.StatusCode < 400;
+                                    requestTelemetry.Name = (string)workContext.Layout.Title ?? httpRequest.Url.ToString();
+
+                                    requestTrackingEvents.OnEndRequest(requestTelemetry);
+
+                                    workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration().TrackRequest(requestTelemetry); 
+                                }
+                                else
+                                {
+                                    await next.Invoke();
+                                }
                             });
                         }
                 }

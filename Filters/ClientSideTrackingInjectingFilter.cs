@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Orchard;
 using Orchard.DisplayManagement;
 using Orchard.Mvc.Filters;
+using Orchard.ContentManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Filters
 {
@@ -34,11 +36,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Filters
             if (!(filterContext.Result is ViewResult))
                 return;
 
+            var workContext = _workContextAccessor.GetContext();
+
+            if (!workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().ClientSideTrackingIsEnabled) return;
+
             var instrumentationKey = _telemetrySettingsAccessor.GetDefaultSettings().InstrumentationKey;
 
             if (string.IsNullOrEmpty(instrumentationKey)) return;
 
-            _workContextAccessor.GetContext().Layout.Head
+            workContext.Layout.Head
                 .Add(_shapeFactory.Azure_ApplicationInsights_TrackingScript(InstrumentationKey: instrumentationKey));
         }
 
