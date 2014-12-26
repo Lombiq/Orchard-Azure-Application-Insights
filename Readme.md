@@ -4,7 +4,10 @@
 
 This Orchard module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry.
 
-Note that when you add new files to a project in the Orchard solution and then refresh a page without doing a manual rebuild you can get the following error:
+
+## Note on assembly binding errors when using dynamic compilation
+
+Note that when you modify this one or a dependent project in the Orchard solution and then refresh a page without doing a manual rebuild (i.e. letting Orchard's dynamic compilation do the job) you can get the following error:
 
 > Could not load file or assembly 'Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.11.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference.
 
