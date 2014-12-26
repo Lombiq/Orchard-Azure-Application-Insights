@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Lombiq.Hosting.Azure.ApplicationInsights.Models;
+﻿using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;

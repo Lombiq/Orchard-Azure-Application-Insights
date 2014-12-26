@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+﻿using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;

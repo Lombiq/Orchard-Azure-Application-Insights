@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Orchard;
 using Orchard.Environment;
 using Orchard.Environment.Configuration;
-using Orchard.Settings;
-using Orchard.ContentManagement;
-using Lombiq.Hosting.Azure.ApplicationInsights.Models;
-using log4net;
-using log4net.Repository.Hierarchy;
-using log4net.Layout;
-using Microsoft.ApplicationInsights.Log4NetAppender;
-using log4net.Appender;
-using Orchard;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Orchard.Logging;
-using Orchard.Owin;
-using Owin;
-using Microsoft.Owin.Extensions;
-using Lombiq.Hosting.Azure.ApplicationInsights.Models;
-using Orchard;
-using Orchard.Mvc;
-using Orchard.Services;
-using Microsoft.ApplicationInsights.DataContracts;
+﻿using System.Collections.Generic;
 using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
+using Microsoft.ApplicationInsights.DataContracts;
+using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Mvc;
+using Orchard.Owin;
+using Orchard.Services;
+using Owin;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {

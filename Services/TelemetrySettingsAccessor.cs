@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Lombiq.Hosting.Azure.ApplicationInsights.Models;
+﻿using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Settings;
 using Piedone.HelpfulLibraries.Utilities;
-using Orchard.ContentManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {

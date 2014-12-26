@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Web;
 using log4net.Appender;
 using Orchard;
 using Orchard.Environment.Configuration;
