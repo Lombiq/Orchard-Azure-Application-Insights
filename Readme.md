@@ -24,3 +24,4 @@ Note that since there is a 260 characters limit on paths on Windows, some unused
 
 - Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81
 - Microsoft.Diagnostics.Instrumentation.Extensions.Intercept/Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.0.12.0-build02810.nupkg
+- Microsoft.Diagnostics.Instrumentation.Extensions.Intercept/build/Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.props
