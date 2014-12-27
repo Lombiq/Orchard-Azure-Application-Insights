@@ -46,7 +46,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                     var response = context.Response;
                                     var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
 
-
+                                    // Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
+                                    // Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
+                                    // they can be used instead of re-implementing them here.
                                     var requestTelemetry = new RequestTelemetry
                                     {
                                         Timestamp = requestStart,
