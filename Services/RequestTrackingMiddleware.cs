@@ -54,6 +54,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         HttpMethod = request.Method
                                     };
                                     requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
+                                    if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
 
                                     requestTrackingEvents.OnBeginRequest(requestTelemetry);
 
