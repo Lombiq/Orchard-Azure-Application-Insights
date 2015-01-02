@@ -77,7 +77,25 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         requestTelemetry.Duration = clock.UtcNow - requestStart;
                                         requestTelemetry.ResponseCode = response.StatusCode.ToString();
                                         requestTelemetry.Success = response.StatusCode < 400;
-                                        requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString();
+                                        if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
+                                        {
+                                            var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
+                                            if (httpContext != null)
+                                            {
+                                                var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
+                                                if (routeDataValues.ContainsKey("action"))
+                                                {
+                                                    requestTelemetry.Name = request.Method + " " +
+                                                        routeDataValues["area"].ToString() + "/" +
+                                                        routeDataValues["controller"].ToString() + "/" +
+                                                        routeDataValues["action"].ToString();
+                                                }
+                                            }
+                                        }
+                                        if (string.IsNullOrEmpty(requestTelemetry.Name))
+                                        {
+                                            requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString(); 
+                                        }
 
                                         requestTrackingEvents.OnEndRequest(requestTelemetry);
 
