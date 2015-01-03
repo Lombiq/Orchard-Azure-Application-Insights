@@ -83,12 +83,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                             if (httpContext != null)
                                             {
                                                 var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
-                                                if (routeDataValues.ContainsKey("action"))
+                                                if (routeDataValues.ContainsKey("controller"))
                                                 {
                                                     requestTelemetry.Name = request.Method + " " +
-                                                        routeDataValues["area"].ToString() + "/" +
-                                                        routeDataValues["controller"].ToString() + "/" +
-                                                        routeDataValues["action"].ToString();
+                                                        (routeDataValues["action"] == null ? "api/" : string.Empty) +
+                                                        routeDataValues["area"] + "/" +
+                                                        routeDataValues["controller"] + "/" +
+                                                        routeDataValues["action"];
                                                 }
                                             }
                                         }
