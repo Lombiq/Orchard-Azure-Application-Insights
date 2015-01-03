@@ -148,7 +148,7 @@
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
-    <Compile Include="Services\LoggerSetupShellEventHandler.cs" />
+    <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
   </ItemGroup>

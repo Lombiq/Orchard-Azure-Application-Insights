@@ -19,6 +19,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         /// </summary>
         /// <param name="instrumentationKey">The instrumentation key to access telemetry services on Azure.</param>
         TelemetryConfiguration CreateConfiguration(string instrumentationKey);
+
+        /// <summary>
+        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and context initializers.
+        /// </summary>
+        /// <param name="configuration">The existing configuration object.</param>
+        void PopulateWithCommonConfiguration(TelemetryConfiguration configuration);
     }
 
 
@@ -35,11 +41,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryConfiguration CreateConfiguration(string instrumentationKey)
         {
-            var configuration = new TelemetryConfiguration
-            {
-                InstrumentationKey = instrumentationKey
-            };
+            var configuration = new TelemetryConfiguration { InstrumentationKey = instrumentationKey };
 
+            PopulateWithCommonConfiguration(configuration);
+
+            return configuration;
+        }
+
+        public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
+        {
             // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
             var telemetryModules = configuration.TelemetryModules;
             telemetryModules.Add(new RemoteDependencyModule());
@@ -53,8 +63,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             configuration.TelemetryInitializers.Add(new TimestampPropertyInitializer());
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
-
-            return configuration;
         }
     }
 }
