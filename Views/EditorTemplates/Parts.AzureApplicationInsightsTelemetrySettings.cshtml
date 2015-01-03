@@ -24,7 +24,7 @@
             @Html.EditorFor(m => m.RequestTrackingIsEnabled)
             <label for="@Html.FieldIdFor(m => m.RequestTrackingIsEnabled)" class="forcheckbox">@T("Enable request tracking")</label>
             @Html.ValidationMessageFor(m => m.RequestTrackingIsEnabled)
-            <span class="hint">@T("If enabled, server-side request telemetry will be sent to AI, measuring e.g. server-side execution time and indicating failed requests.")</span>
+            <span class="hint">@T("If enabled, server-side request telemetry will be sent to AI, measuring e.g. server-side execution time and indicating failed requests. Request tracking is also necessary to correlate traces (i.e. log entries) with requests.")</span>
         </li>
         <li>
             @Html.EditorFor(m => m.ClientSideTrackingIsEnabled)
