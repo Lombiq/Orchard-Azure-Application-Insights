@@ -151,6 +151,7 @@
     <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
+    <Compile Include="TelemetryInitializers\WebOperationIdTelemetryInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.AzureApplicationInsightsTelemetrySettings.cshtml" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <Content Include="Views\Azure.ApplicationInsights.TrackingScript.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

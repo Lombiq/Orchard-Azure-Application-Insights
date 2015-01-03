@@ -68,15 +68,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         };
                                         requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
                                         if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
+                                        requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
 
-                                        requestTrackingEvents.OnBeginRequest(requestTelemetry);
-
-                                        nextDelegateWasRun = true;
-                                        await next.Invoke();
-
-                                        requestTelemetry.Duration = clock.UtcNow - requestStart;
-                                        requestTelemetry.ResponseCode = response.StatusCode.ToString();
-                                        requestTelemetry.Success = response.StatusCode < 400;
                                         if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
                                         {
                                             var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
@@ -91,8 +84,22 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                                         routeDataValues["controller"] + "/" +
                                                         routeDataValues["action"];
                                                 }
+
+                                                httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
                                             }
                                         }
+
+                                        requestTrackingEvents.OnBeginRequest(requestTelemetry);
+
+
+                                        nextDelegateWasRun = true;
+                                        await next.Invoke();
+
+
+                                        requestTelemetry.Duration = clock.UtcNow - requestStart;
+                                        requestTelemetry.ResponseCode = response.StatusCode.ToString();
+                                        requestTelemetry.Success = response.StatusCode < 400;
+
                                         if (string.IsNullOrEmpty(requestTelemetry.Name))
                                         {
                                             requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString(); 

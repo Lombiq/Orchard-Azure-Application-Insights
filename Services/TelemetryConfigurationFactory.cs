@@ -1,4 +1,5 @@
 ﻿using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
@@ -60,7 +61,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             configuration.TelemetryChannel = new InProcessTelemetryChannel();
             ((ISupportConfiguration)configuration.TelemetryChannel).Initialize(configuration);
-            configuration.TelemetryInitializers.Add(new TimestampPropertyInitializer());
+
+            var telemetryInitializers = configuration.TelemetryInitializers;
+            telemetryInitializers.Add(new TimestampPropertyInitializer());
+            telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
         }
