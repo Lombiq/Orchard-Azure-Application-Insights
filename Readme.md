@@ -4,6 +4,8 @@
 
 This Orchard module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry.
 
+Note that the module depends on the [Helpful Libraries module](http://helpfullibraries.codeplex.com/) so you should have that installed as well.
+
 
 ## Note on assembly binding errors when using dynamic compilation
 
@@ -20,7 +22,7 @@ Application Insights NuGet packages are included in the Lib folder. If you want 
 
 When assembly binding redirects are changed make sure to also edit `AssemblyRedirectSetupShellEventHandler` that mimicks such redirects instead of relying on the Web.config.
 
-Note that since there is a 260 characters limit on paths on Windows, some unused library folder and files should be removed or renamed:
+Note that since there is a 260 characters limit on paths on Windows, some unused library folders and files should be removed or renamed:
 
 - Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81
 - Microsoft.Diagnostics.Instrumentation.Extensions.Intercept files are in the folder Libs/Intercept
