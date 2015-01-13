@@ -138,6 +138,7 @@
     <Compile Include="Drivers\AzureApplicationInsightsTelemetrySettingsPartDriver.cs" />
     <Compile Include="Events\IRequestTrackingEventHandler.cs" />
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
+    <Compile Include="Exceptions\RequestException.cs" />
     <Compile Include="Filters\ClientSideTrackingInjectingFilter.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />

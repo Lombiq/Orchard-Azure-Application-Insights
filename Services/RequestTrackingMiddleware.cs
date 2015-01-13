@@ -10,6 +10,7 @@ using Orchard.Services;
 using Owin;
 using Orchard.Exceptions;
 using Orchard.Logging;
+using Lombiq.Hosting.Azure.ApplicationInsights.Exceptions;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -93,7 +94,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
 
                                         nextDelegateWasRun = true;
-                                        await next.Invoke();
+                                        try
+                                        {
+                                            await next.Invoke();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (ex.IsFatal()) throw;
+                                            throw new RequestException(ex);
+                                        }
 
 
                                         requestTelemetry.Duration = clock.UtcNow - requestStart;
@@ -118,6 +127,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         nextDelegateWasRun = true;
                                         await next.Invoke();
                                     }
+                                }
+                                catch(RequestException)
+                                {
+                                    // Let such exceptions bubble up, as these originate from the request pipeline downwards.
+                                    throw;
                                 }
                                 catch (Exception ex)
                                 {
