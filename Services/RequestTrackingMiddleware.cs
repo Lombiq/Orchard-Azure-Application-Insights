@@ -32,120 +32,118 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public IEnumerable<OwinMiddleware> GetOwinMiddlewares()
+        public IEnumerable<OwinMiddlewareRegistration> GetOwinMiddlewares()
         {
             return new[]
             {
-                new OwinMiddleware
+                new OwinMiddlewareRegistration
                 {
                     Configure = app =>
+                        app.Use(async (context, next) =>
                         {
-                            app.Use(async (context, next) =>
+                            var nextDelegateWasRun = false;
+
+                            try
                             {
-                                var nextDelegateWasRun = false;
+                                var workContext = _wca.GetContext();
 
-                                try
+                                if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
                                 {
-                                    var workContext = _wca.GetContext();
+                                    var clock = workContext.Resolve<IClock>();
 
-                                    if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
+                                    var requestStart = clock.UtcNow;
+
+                                    var request = context.Request;
+                                    var response = context.Response;
+                                    var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
+
+                                    // Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
+                                    // Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
+                                    // they can be used instead of re-implementing them here.
+                                    var requestTelemetry = new RequestTelemetry
                                     {
-                                        var clock = workContext.Resolve<IClock>();
+                                        Timestamp = requestStart,
+                                        Url = request.Uri,
+                                        HttpMethod = request.Method
+                                    };
+                                    requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
+                                    if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
+                                    requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
 
-                                        var requestStart = clock.UtcNow;
-
-                                        var request = context.Request;
-                                        var response = context.Response;
-                                        var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
-
-                                        // Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
-                                        // Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
-                                        // they can be used instead of re-implementing them here.
-                                        var requestTelemetry = new RequestTelemetry
+                                    if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
+                                    {
+                                        var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
+                                        if (httpContext != null)
                                         {
-                                            Timestamp = requestStart,
-                                            Url = request.Uri,
-                                            HttpMethod = request.Method
-                                        };
-                                        requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
-                                        if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
-                                        requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
-
-                                        if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
-                                        {
-                                            var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
-                                            if (httpContext != null)
+                                            var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
+                                            if (routeDataValues.ContainsKey("controller"))
                                             {
-                                                var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
-                                                if (routeDataValues.ContainsKey("controller"))
-                                                {
-                                                    requestTelemetry.Name = request.Method + " " +
-                                                        (routeDataValues["action"] == null ? "api/" : string.Empty) +
-                                                        routeDataValues["area"] + "/" +
-                                                        routeDataValues["controller"] + "/" +
-                                                        routeDataValues["action"];
-                                                }
-
-                                                httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
+                                                requestTelemetry.Name = request.Method + " " +
+                                                    (routeDataValues["action"] == null ? "api/" : string.Empty) +
+                                                    routeDataValues["area"] + "/" +
+                                                    routeDataValues["controller"] + "/" +
+                                                    routeDataValues["action"];
                                             }
-                                        }
 
-                                        requestTrackingEvents.OnBeginRequest(requestTelemetry);
-
-
-                                        nextDelegateWasRun = true;
-                                        try
-                                        {
-                                            await next.Invoke();
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            if (ex.IsFatal()) throw;
-                                            throw new RequestException(ex);
-                                        }
-
-
-                                        requestTelemetry.Duration = clock.UtcNow - requestStart;
-                                        requestTelemetry.ResponseCode = response.StatusCode.ToString();
-                                        requestTelemetry.Success = response.StatusCode < 400;
-
-                                        if (string.IsNullOrEmpty(requestTelemetry.Name))
-                                        {
-                                            requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString(); 
-                                        }
-
-                                        requestTrackingEvents.OnEndRequest(requestTelemetry);
-
-                                        var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
-                                        if (telemetryClient != null)
-                                        {
-                                            telemetryClient.TrackRequest(requestTelemetry);
+                                            httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
                                         }
                                     }
-                                    else
+
+                                    requestTrackingEvents.OnBeginRequest(requestTelemetry);
+
+
+                                    nextDelegateWasRun = true;
+                                    try
                                     {
-                                        nextDelegateWasRun = true;
                                         await next.Invoke();
                                     }
-                                }
-                                catch(RequestException)
-                                {
-                                    // Let such exceptions bubble up, as these originate from the request pipeline downwards.
-                                    throw;
-                                }
-                                catch (Exception ex)
-                                {
-                                    if (ex.IsFatal()) throw;
-                                    Logger.Error(ex, "An error happened during Application Insights request tracking. The problem most possibly completely prevents request tracking.");
-                                }
+                                    catch (Exception ex)
+                                    {
+                                        if (ex.IsFatal()) throw;
+                                        throw new RequestException(ex);
+                                    }
 
-                                // This should be rather in the catch, but there can't be an awaited call.
-                                if (!nextDelegateWasRun)
+
+                                    requestTelemetry.Duration = clock.UtcNow - requestStart;
+                                    requestTelemetry.ResponseCode = response.StatusCode.ToString();
+                                    requestTelemetry.Success = response.StatusCode < 400;
+
+                                    if (string.IsNullOrEmpty(requestTelemetry.Name))
+                                    {
+                                        requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString(); 
+                                    }
+
+                                    requestTrackingEvents.OnEndRequest(requestTelemetry);
+
+                                    var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
+                                    if (telemetryClient != null)
+                                    {
+                                        telemetryClient.TrackRequest(requestTelemetry);
+                                    }
+                                }
+                                else
                                 {
+                                    nextDelegateWasRun = true;
                                     await next.Invoke();
                                 }
-                            });
-                        }
+                            }
+                            catch(RequestException)
+                            {
+                                // Let such exceptions bubble up, as these originate from the request pipeline downwards.
+                                throw;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.IsFatal()) throw;
+                                Logger.Error(ex, "An error happened during Application Insights request tracking. The problem most possibly completely prevents request tracking.");
+                            }
+
+                            // This should be rather in the catch, but there can't be an awaited call.
+                            if (!nextDelegateWasRun)
+                            {
+                                await next.Invoke();
+                            }
+                        })
                 }
             };
         }
