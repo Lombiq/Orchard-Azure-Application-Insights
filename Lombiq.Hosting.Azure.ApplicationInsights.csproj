@@ -144,7 +144,7 @@
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
     <Compile Include="Models\ITelemetrySettings.cs" />
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
-    <Compile Include="Services\RequestTrackingMiddleware.cs" />
+    <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
     <Compile Include="Services\StartupLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />

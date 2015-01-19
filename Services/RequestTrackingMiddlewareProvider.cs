@@ -17,14 +17,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     /// <summary>
     /// Owin middleware for tracking request metrics through Application Insights.
     /// </summary>
-    public class RequestTrackingMiddleware : IOwinMiddlewareProvider
+    public class RequestTrackingMiddlewareProvider : IOwinMiddlewareProvider
     {
         private readonly IWorkContextAccessor _wca;
 
         public ILogger Logger { get; set; }
 
 
-        public RequestTrackingMiddleware(IWorkContextAccessor wca)
+        public RequestTrackingMiddlewareProvider(IWorkContextAccessor wca)
         {
             _wca = wca;
 
