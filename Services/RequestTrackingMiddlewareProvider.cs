@@ -45,9 +45,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                             try
                             {
-                                //var workContext = _wca.GetContext();
+                                var workContext = _wca.GetContext();
 
-                                if (true)
+                                if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
                                 {
                                     //var clock = workContext.Resolve<IClock>();
 
