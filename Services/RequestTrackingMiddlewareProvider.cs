@@ -49,47 +49,47 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                                 if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
                                 {
-                                    //var clock = workContext.Resolve<IClock>();
+                                    var clock = workContext.Resolve<IClock>();
 
-                                    //var requestStart = clock.UtcNow;
+                                    var requestStart = clock.UtcNow;
 
-                                    //var request = context.Request;
-                                    //var response = context.Response;
-                                    //var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
+                                    var request = context.Request;
+                                    var response = context.Response;
+                                    var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
 
-                                    //// Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
-                                    //// Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
-                                    //// they can be used instead of re-implementing them here.
-                                    //var requestTelemetry = new RequestTelemetry
-                                    //{
-                                    //    Timestamp = requestStart,
-                                    //    Url = request.Uri,
-                                    //    HttpMethod = request.Method
-                                    //};
-                                    //requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
-                                    //if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
-                                    //requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
+                                    // Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
+                                    // Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
+                                    // they can be used instead of re-implementing them here.
+                                    var requestTelemetry = new RequestTelemetry
+                                    {
+                                        Timestamp = requestStart,
+                                        Url = request.Uri,
+                                        HttpMethod = request.Method
+                                    };
+                                    requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
+                                    if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
+                                    requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
 
-                                    //if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
-                                    //{
-                                    //    var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
-                                    //    if (httpContext != null)
-                                    //    {
-                                    //        var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
-                                    //        if (routeDataValues.ContainsKey("controller"))
-                                    //        {
-                                    //            requestTelemetry.Name = request.Method + " " +
-                                    //                (routeDataValues["action"] == null ? "api/" : string.Empty) +
-                                    //                routeDataValues["area"] + "/" +
-                                    //                routeDataValues["controller"] + "/" +
-                                    //                routeDataValues["action"];
-                                    //        }
+                                    if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
+                                    {
+                                        var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
+                                        if (httpContext != null)
+                                        {
+                                            var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
+                                            if (routeDataValues.ContainsKey("controller"))
+                                            {
+                                                requestTelemetry.Name = request.Method + " " +
+                                                    (routeDataValues["action"] == null ? "api/" : string.Empty) +
+                                                    routeDataValues["area"] + "/" +
+                                                    routeDataValues["controller"] + "/" +
+                                                    routeDataValues["action"];
+                                            }
 
-                                    //        httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
-                                    //    }
-                                    //}
+                                            httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
+                                        }
+                                    }
 
-                                    //requestTrackingEvents.OnBeginRequest(requestTelemetry);
+                                    requestTrackingEvents.OnBeginRequest(requestTelemetry);
 
 
                                     nextDelegateWasRun = true;
