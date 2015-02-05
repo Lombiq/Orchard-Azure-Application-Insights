@@ -104,14 +104,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                     }
 
 
-                                    //requestTelemetry.Duration = clock.UtcNow - requestStart;
-                                    //requestTelemetry.ResponseCode = response.StatusCode.ToString();
-                                    //requestTelemetry.Success = response.StatusCode < 400;
+                                    requestTelemetry.Duration = clock.UtcNow - requestStart;
+                                    requestTelemetry.ResponseCode = response.StatusCode.ToString();
+                                    requestTelemetry.Success = response.StatusCode < 400;
 
-                                    //if (string.IsNullOrEmpty(requestTelemetry.Name))
-                                    //{
-                                    //    requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString(); 
-                                    //}
+                                    if (string.IsNullOrEmpty(requestTelemetry.Name))
+                                    {
+                                        requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString();
+                                    }
 
                                     //requestTrackingEvents.OnEndRequest(requestTelemetry);
 
