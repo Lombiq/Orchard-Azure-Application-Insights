@@ -47,9 +47,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                     return typeof(Microsoft.Diagnostics.Tracing.EventAttribute).Assembly;
                 case "Microsoft.ApplicationInsights":
                     return typeof(Microsoft.ApplicationInsights.TelemetryClient).Assembly;
-                // For some reason this crashed IIS Express...
-                //case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":
-                //    return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
+                case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":
+                    return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
                 default:
                     return null;
             }
