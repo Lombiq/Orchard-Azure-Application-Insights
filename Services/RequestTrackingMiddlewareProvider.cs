@@ -89,7 +89,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         }
                                     }
 
-                                    requestTrackingEvents.OnBeginRequest(requestTelemetry);
+                                    requestTrackingEvents.BeginRequest(requestTelemetry);
 
 
                                     nextDelegateWasRun = true;
@@ -113,7 +113,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString();
                                     }
 
-                                    requestTrackingEvents.OnEndRequest(requestTelemetry);
+                                    requestTrackingEvents.EndRequest(requestTelemetry);
 
                                     var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
                                     if (telemetryClient != null)

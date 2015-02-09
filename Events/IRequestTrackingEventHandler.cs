@@ -12,12 +12,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Events
         /// Fires when the HTTP request begins.
         /// </summary>
         /// <param name="requestTelemetry">The telemetry object for the request, containing pre-filled data.</param>
-        void OnBeginRequest(RequestTelemetry requestTelemetry);
+        void BeginRequest(RequestTelemetry requestTelemetry);
 
         /// <summary>
         /// Fires when the HTTP request ends.
         /// </summary>
         /// <param name="requestTelemetry">The telemetry object for the request, containing pre-filled data.</param>
-        void OnEndRequest(RequestTelemetry requestTelemetry);
+        void EndRequest(RequestTelemetry requestTelemetry);
     }
 }
