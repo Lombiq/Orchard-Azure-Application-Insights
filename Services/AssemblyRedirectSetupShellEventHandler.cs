@@ -31,7 +31,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 </dependentAssembly>
                 <dependentAssembly>
                   <assemblyIdentity name="Microsoft.ApplicationInsights" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                  <bindingRedirect oldVersion="0.0.0.0-0.12.0.17386" newVersion="0.12.0.17386" />
+                  <bindingRedirect oldVersion="0.0.0.0-0.13.0.22715" newVersion="0.13.0.22715" />
+                </dependentAssembly>
+                <dependentAssembly>
+                    <assemblyIdentity name="Microsoft.Diagnostics.Instrumentation.Extensions.Intercept" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                    <bindingRedirect oldVersion="0.0.0.0-0.13.0.22715" newVersion="0.13.0.22715" />
                 </dependentAssembly>
              */
 
@@ -43,6 +47,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                     return typeof(Microsoft.Diagnostics.Tracing.EventAttribute).Assembly;
                 case "Microsoft.ApplicationInsights":
                     return typeof(Microsoft.ApplicationInsights.TelemetryClient).Assembly;
+                // For some reason this crashed IIS Express...
+                //case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":
+                //    return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
                 default:
                     return null;
             }

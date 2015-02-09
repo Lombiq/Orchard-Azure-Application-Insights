@@ -4,123 +4,123 @@
         <name>Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry</name>
     </assembly>
     <members>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1">
             <summary>
             The implementation of cache provider for Windows Phone and Windows Store as MemoryCache is not available there.
             </summary>
             <typeparam name="TValue">Type of items to store in the cache.</typeparam>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.ICacheProvider`1">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.ICacheProvider`1">
             <summary>
             Represents an object cache and provides the base methods and properties for accessing the object cache.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.ICacheProvider`1.Contains(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.ICacheProvider`1.Contains(System.Int64)">
             <summary>
             Checks whether the cache entry already exists in the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <returns>true if the cache contains a cache entry with the same key value as key; otherwise, false.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.ICacheProvider`1.Get(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.ICacheProvider`1.Get(System.Int64)">
             <summary>
             Gets the specified cache entry from the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <returns>A reference to the cache entry identified by key if the entry exists; otherwise, null.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.ICacheProvider`1.Set(System.Int64,`0)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.ICacheProvider`1.Set(System.Int64,`0)">
             <summary>
             Inserts a cache entry into the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <param name="value">The object to insert.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.ICacheProvider`1.Remove(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.ICacheProvider`1.Remove(System.Int64)">
             <summary>
             Removes the cache entry from the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <returns>True if the element is successfully found and removed; otherwise, false. This method returns false if key is not found.</returns>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.readerWriterLock">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.readerWriterLock">
             <summary>
             Reader-Writer Lock for thread safety.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.dictionary">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.dictionary">
             <summary>
             Dictionary of cache items for fast Get and Contains operations.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.sortedList">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.sortedList">
             <summary>
             Cache items sorted by the time of adding to cache. Required for to clear fast cache items when items are expired.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.maxSize">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.maxSize">
             <summary>
             The maximum number of elements in the cache to avoid out of memory crashes.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.timer">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.timer">
             <summary>
             Timer for clearing expired cache items on recurring bases.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.expirationMilliseconds">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.expirationMilliseconds">
             <summary>
             The duration in milliseconds after which item in the cache is expired.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.#ctor(System.Int32,System.Int32,System.Boolean)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.#ctor(System.Int32,System.Int32,System.Boolean)">
             <summary>
-             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1"/> class.
+             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1"/> class.
             </summary>
             <param name="expirationMilliseconds">Expiration timeout in milliseconds for an object to live in the cache.</param>
             <param name="maxSize">Maximum number of entries to cache (adjustable at runtime with MaxSize property).</param>
             <param name="synchronized">True to use a reader-writer lock to protect the data in the MemoryCacheList; false if the caller will handle synchronization.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Contains(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Contains(System.Int64)">
             <summary>
             Checks whether the cache entry already exists in the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <returns>true if the cache contains a cache entry with the same key value as key; otherwise, false.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Get(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Get(System.Int64)">
             <summary>
             Gets the specified cache entry from the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <returns>A reference to the cache entry identified by key if the entry exists; otherwise, null.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Set(System.Int64,`0)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Set(System.Int64,`0)">
             <summary>
             Inserts a cache entry into the cache.
             </summary>
             <param name="key">A unique identifier for the cache entry.</param>
             <param name="value">The object to insert.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Remove(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Remove(System.Int64)">
             <summary>
             Removes a specific key from the cache.
             </summary>
             <param name="key">Key to remove.</param>
             <returns>An object that represents the value of the removed cache entry that was specified by the key, or null if the specified entry was not found.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Dispose">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.ClearExpiredCacheItems(System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.ClearExpiredCacheItems(System.Object)">
             <summary>
             The timer callback that clears expired items in the cache.
             </summary>
             <param name="state">An object containing information to be used by the callback method, or null.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.Add(System.Int64,`0,System.Boolean)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.Add(System.Int64,`0,System.Boolean)">
             <summary>
             Adds the specified key and value to the dictionary.
             </summary>
@@ -128,39 +128,39 @@
             <param name="value">Value to associate with key.</param>
             <param name="overwrite">If true, will overwrite an existing key.</param>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry">
             <summary>
             An entry in the MemoryCacheList.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry.#ctor(System.Int64,`0)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry.#ctor(System.Int64,`0)">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry"/> class.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry"/> class.
             </summary>
             <param name="key">The key of the element.</param>
             <param name="value">The value of the element.</param>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry.Key">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry.Key">
             <summary>
             Gets the key of the element.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry.Value">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry.Value">
             <summary>
             Gets or sets the value of the element.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemoryCacheEntry.CreatedTicks">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemoryCacheEntry.CreatedTicks">
             <summary>
             Gets number of ticks elapsed on the clock since the element was created.
             </summary>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemmoryCacheEntryTimeComparer">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemmoryCacheEntryTimeComparer">
             <summary>
             Exposes a method that compares two MemoryCacheEntry objects.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider`1.MemmoryCacheEntryTimeComparer.Compare(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider{`0}.MemoryCacheEntry,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.CacheProvider{`0}.MemoryCacheEntry)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider`1.MemmoryCacheEntryTimeComparer.Compare(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider{`0}.MemoryCacheEntry,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.CacheProvider{`0}.MemoryCacheEntry)">
             <summary>
             Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
             </summary>
@@ -168,27 +168,49 @@
             <param name="y">The second object to compare.</param>
             <returns>A signed integer that indicates the relative values of x and y, as shown in the following table.</returns>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.ErrorCodeForSuccess">
+            <summary>
+             The error code for success.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.endpointLeftPart">
+            <summary>
+            The left part of the endpoint.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils"/> class.        
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.IsApplicationInsightsUrl(System.String)">
+            <summary>
+            Determines whether an URL is application insights URL.
+            </summary>
+            <param name="url">HTTP URL.</param>
+            <returns>True if URL is application insights url, otherwise false.</returns>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch">
             <summary>
             Single high precision clock used by operations.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.Watch">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.Watch">
             <summary>
             High precision stopwatch.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.NanosecondsPerTick">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.NanosecondsPerTick">
             <summary>
             Number of nanoseconds per high-precision clock tick.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.StartTime">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.StartTime">
             <summary>
             The time clock started.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.DurationNanoseconds(System.Int64,System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.DurationNanoseconds(System.Int64,System.Int64)">
             <summary>
             Calculates time between two clock readings in nanoseconds.
             </summary>
@@ -196,7 +218,7 @@
             <param name="toTicks">End time in ticks.</param>
             <returns>Time between two clock readings in nanoseconds.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.Duration(System.Int64,System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.Duration(System.Int64,System.Int64)">
             <summary>
             Calculates time between two clock readings.
             </summary>
@@ -204,71 +226,71 @@
             <param name="toTicks">End time in ticks.</param>
             <returns>Time between two clock readings.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.Timestamp(System.Int64)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.Timestamp(System.Int64)">
             <summary>
             Converts time on the operation clock (in ticks) to date and time structure.
             </summary>
             <param name="elapsedTicks">Ticks elapsed according to operation watch.</param>
             <returns>Date time structure representing the date and time that corresponds to the operation clock reading.</returns>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.OperationWatch.ElapsedTicks">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.OperationWatch.ElapsedTicks">
             <summary>
             Gets number of ticks elapsed on the clock since the start.
             </summary>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1">
             <summary>
             Represents a collection of sorted elements that are accessible by index.
             </summary>
             <typeparam name="T">The type of element.</typeparam>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.list">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.list">
             <summary>
             Represents a collection of objects that can be individually accessed by index.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.comparer">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.comparer">
             <summary>
             Exposes a method that compares two objects.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.#ctor(System.Collections.Generic.IComparer{`0})">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.#ctor(System.Collections.Generic.IComparer{`0})">
             <summary>
             Initializes a new instance of the SortedList class that is empty.
             </summary>
             <param name="comparer">The IComparer implementation to use when comparing elements.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.GetEnumerator">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.GetEnumerator">
             <summary>
             Returns an enumerator that iterates through a collection.
             </summary>
             <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.System#Collections#IEnumerable#GetEnumerator">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.System#Collections#IEnumerable#GetEnumerator">
             <summary>
             Returns an enumerator that iterates through a collection.
             </summary>
             <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.Add(`0)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.Add(`0)">
             <summary>
             Adds an element with the specified value to a SortedList object.
             </summary>
             <param name="item">Item to add.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.RemoveAt(System.Int32)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.RemoveAt(System.Int32)">
             <summary>
             Removes the element at the specified index of a SortedList object.
             </summary>
             <param name="index">The zero-based index of the element to remove.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.Remove(`0)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.Remove(`0)">
             <summary>
             Removes the element with the specified value from a SortedList object.
             </summary>
             <param name="item">Item to remove.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.TryIndexOf(`0,System.Boolean@)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.TryIndexOf(`0,System.Boolean@)">
             <summary>
             Determines the index of a specific item in the IList.
             </summary>
@@ -276,196 +298,378 @@
             <param name="found">True if value is found in the list, otherwise false.</param>
             <returns>The index of value if found in the list; otherwise, the index of value where it needs to be inserted.</returns>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.Count">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.Count">
             <summary>
             Gets the number of elements contained in a SortedList object.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Correlation.SortedList`1.Item(System.Int32)">
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.SortedList`1.Item(System.Int32)">
             <summary>
             Gets the element at a specified index in a sequence.
             </summary>
             <param name="index">The zero-based index of the element to get.</param>
             <returns>The element at the specified position in the source sequence.</returns>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy">
             <summary>
-            The manager for processing asynchronous telemetry events.
+            This interfaces for implementing sampling policies.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.requestCache">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy.ShouldSample">
+            <summary>
+            Check if operation should be sampled or not.
+            </summary>
+            <returns>True if should sample, otherwise false.</returns>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.SampleRateCount">
+            <summary>
+            This value indicates the minimum allowed interval between two samples.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.instanceLock">
+            <summary>
+            This value is used to synchronize the calls.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.count">
+            <summary>
+            This value indicates the number of samples that are skipped.
+            This also represents the number of samples that we are sampling for.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy"/> class.
+            </summary>
+            <param name="sampleRateCount">The sample rate count.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.CountBasedSamplingPolicy.ShouldSample">
+            <summary>
+            Check if operation should be sampled or not.
+            </summary>
+            <returns>True if should sample, otherwise false.</returns>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.PolicyConfiguration">
+            <summary>
+            This class is a place holder for policy configuration.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.PolicyConfiguration.DefaultSampleRateCount">
+            <summary>
+            This value indicates the default sample rate count. Default to sample every call.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.PolicyConfiguration.ConvertRatioToRateCount(System.String)">
+            <summary>
+            Convert sample ratio to sample rate count.
+            </summary>
+            <param name="ratio">The ratio to be converted.</param>
+            <returns>The sample rate count.</returns>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing">
+            <summary>
+            Abstract base class to encapsulate processing of http/SQL call backs from Profiler or Framework EventSource.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.SamplingPolicy">
+            <summary>
+            The sampling policy.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.telemetryClient">
+            <summary>
+            The telemetryClient to use while sending RDD.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.count">
+            <summary>
+            This value indicates the count between two samples.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.GetDependencyKind">
+            <summary>
+            Abstract method to determine the dependency Kind.
+            </summary>        
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.GetRddSourceType">
+            <summary>
+            Abstract method to determine source of RDD information. Profiler based (APMC) or Framework Event source based.
+            </summary>  
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.Begin(System.String,System.Nullable{System.Boolean},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencySourceType})">
+            <summary>
+            Common method to mark the beginning of a Dependency Call operation.
+            </summary>  
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.TryBegin(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation@,System.String,System.Nullable{System.Boolean},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencySourceType})">
+            <summary>
+            Common method to mark the beginning of a Dependency Call operation.
+            </summary>  
+            <returns>True if should begin, otherwise false.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.End(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation,System.Boolean)">
+            <summary>
+            Common method to mark the end of a Dependency Call operation.
+            <param name="operation">operation which is to be marked as completed</param>
+            <param name="success">boolean flag indicating the call was success or not</param>
+            <returns>DependencyCallOperation from which telemetry can be created</returns>
+            </summary>  
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.TryEnd(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation@,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation,System.Boolean)">
+            <summary>
+            Common method to mark the end of a Dependency Call operation.
+            </summary>
+            <returns>True if should begin, otherwise false.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.Send(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation)">
+            <summary>
+            Common method to serialize and send the DependencyCallOperation to DataCollection endpoint.
+            Once TelemetryClient adds a new method TrackDependencyCallOperation(), this logic should be removed form here.
+            <param name="dependencyCallOperation">DependencyCallOperation from which telemetry object need to be constructed and sent</param>
+            </summary>  
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing">
+            <summary>
+            Abstract class to encapsulate any common processing to be done Framework EventSource processing.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.RddCallCache">
             <summary>
             Setting expiration timeout to 100 seconds as it is the default timeout on HttpWebRequest object.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.coreProcessor">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
-            The core processor.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing"/> class.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.endpointLeftPart">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.Dispose">
             <summary>
-            The left part of the endpoint.
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ICoreProcessor)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.GetRddSourceType">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor"/> class. 
-            Prevents a default instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor"/> class from being created.
+            Gets RDD Source.
+            </summary>        
+            <returns>The RDD source.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.IsAsync">
+            <summary>
+            Returns if the dependency calls is made async.
+            </summary>
+            <returns>true if async, else false.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.Begin(System.String,System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind})">
+            <summary>
+            Common method to mark the beginning of a Dependency Call operation in FrameworkEventSource.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.Dispose">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseFrameworkProcessing.TryCreateTelemetryAndSend(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation,System.Boolean)">
             <summary>
-            Releases resources used by this <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor"/> instance.
+            Ends the dependency operation and sends telemetry.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnBeginCallback(System.Int64,System.String)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
-            Processes asynchronous begin operation.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework"/> class.
             </summary>
-            <param name="id">The id.</param>
-            <param name="uri">The uri.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnEndCallback(System.Int64,System.Nullable{System.Int32})">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.OnBeginExecuteCallback(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.BeginExecuteItem)">
             <summary>
-            Processes asynchronous end operation.
+            On begin callback from FX.
             </summary>
-            <param name="id">The id.</param>
-            <param name="errorCode">The errorCode to indicate if the dependency call completed successfully (0) or not (error code>0).</param>
+            <param name="beginItem">Object encapsulating parameters passed from Framework callbacks for begin.</param>        
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnExecuteCallback(System.String,System.Int64,System.Int32,System.Nullable{System.Boolean})">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.OnEndExecuteCallback(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.EndExecuteItem)">
             <summary>
-            Process synchronous HTTP execute command.
-            </summary>
-            <param name="uri">The uri.</param>
-            <param name="duration">The duration.</param>
-            <param name="errorCode">The errorCode to indicate if the call completed successfully or not. 0 indicates success, else failure.</param>
-            <param name="isAsync">The async flag to indicate if the dependency call was asynchronous or not.</param>
+            On end callback from FX.
+            </summary>        
+            <param name="endItem">Object encapsulating parameters passed from Framework callback for end.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnBeginCallback(System.Net.WebRequest)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.GetDependencyKind">
             <summary>
-            Processes asynchronous begin operation.
-            </summary>
-            <param name="webRequest">Represents web request.</param>        
+            Gets Dependency Kind for Resource.
+            </summary>        
+            <returns>The Dependency Kind.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnEndCallback(System.Net.WebRequest,System.Int32)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.GetResourceName(System.String,System.String,System.String)">
             <summary>
-            Processes asynchronous end operation.
+            Gets SQL command resource name.
             </summary>
-            <param name="webRequest">Represents web request.</param>
-            <param name="errorCode">The errorCode to indicate if the call completed successfully or not. 0 indicates success, else failure.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.OnExecuteCallback(System.Net.WebRequest,System.Int64,System.Int32,System.Nullable{System.Boolean})">
-            <summary>
-            Process synchronous HTTP execute command.
-            </summary>
-            <param name="webRequest">Represents web request.</param>
-            <param name="duration">The duration.</param>
-            <param name="errorCode">The errorCode to indicate if the call completed successfully or not. 0 indicates success, else failure.</param>
-            <param name="isAsync">The async flag to indicate if the dependency call was asynchronous or not.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.IsApplicationInsightsUrl(System.String)">
-            <summary>
-            Determines whether an URL is application insights URL.
-            </summary>
-            <param name="url">HTTP URL.</param>
-            <returns>True if URL is application insights url, otherwise false.</returns>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.GetResourceName(System.Net.WebRequest)">
-            <summary>
-            Gets HTTP request resource name.
-            </summary>
-            <param name="webRequest">Represents web request.</param>
+            <param name="dataSource">DataSource name.</param>
+            <param name="database">Database name.</param>
+            <param name="commandText">CommandText name.</param>        
             <returns>The resource name if possible otherwise empty string.</returns>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.HttpWeakTable">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.OnBegin(System.Int64,System.String)">
             <summary>
-            Gets a conditional weak table for correlating begin / end operations on HTTP web request.
+            Common helper for all Begin Callbacks.
+            </summary>
+            <param name="id">This object.</param>
+            <param name="resourceName">URI of the web request.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.OnEnd(System.Int64,System.Boolean,System.Boolean)">
+            <summary>
+            Common helper for all End Callbacks.
+            </summary>
+            <param name="id">The id.</param>
+            <param name="success">The success flag to indicate if the dependency call completed successfully or not.</param>
+            <param name="synchronous">The synchronous flag to indicate if the dependency call was made synchronously or not.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework"/> class.
             </summary>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.HttpContext">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.OnBeginHttpCallback(System.Int64,System.String)">
             <summary>
-            HTTP context for handling between the begin and end callbacks.
+            On begin callback from FX.
+            </summary>
+            <param name="id">This object.</param>
+            <param name="uri">URI of the web request.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.OnEndHttpCallback(System.Int64,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>
+            On end callback from FX.
+            </summary>
+            <param name="id">The id.</param>
+            <param name="success">The success to indicate if the dependency call completed successfully or not.</param>
+            <param name="synchronous">The synchronous flag to indicate if the dependency call was synchronous or not.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.GetDependencyKind">
+            <summary>
+            Gets Dependency Kind for Resource.
+            </summary>        
+            <returns>The Dependency Kind.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.OnBegin(System.Int64,System.String)">
+            <summary>
+            Common helper for all Begin Callbacks.
+            </summary>
+            <param name="id">This object.</param>
+            <param name="resourceName">URI of the web request.</param>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.OnEnd(System.Int64,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>
+            Common helper for all End Callbacks.
+            </summary>
+            <param name="id">The id.</param>
+            <param name="success">The success to indicate if the dependency call completed successfully or not.</param>
+            <param name="synchronous">The synchronous flag to indicate if the dependency call was synchronous or not.</param>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing">
+            <summary>
+            Abstract class to encapsulate common logic of processing http/SQL call backs from Profiler.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.HttpContext.Timer">
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.weakTableForCorrelation">
             <summary>
-            Gets the total elapsed time from the start of HTTP request.
+            Conditional weak table for correlating begin / end operations.
             </summary>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.HttpProcessor.HttpContext.Url">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
-            Gets URI that identifies the Internet resource.
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing"/> class.
             </summary>
         </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.GetResourceName(System.Object)">
             <summary>
-            The Runtime instrumentation callbacks.
+            Abstract method to extract the resource name from the this object received from profiler call back.
+            </summary>
+            <param name="thisObj">Represents the this object passed by the profiler call back.</param>
+            <returns>The resource name.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.GetRddSourceType">
+            <summary>
+            Returns the RDD Source for all Profiler based instrumentation.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.httpProcessor">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.Begin(System.String,System.Boolean,System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind})">
             <summary>
-            The Http processor.
+            Common method to mark the beginning of a Dependency Call operation in Profiler based instrumentation.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.sqlProcessor">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.TryBegin(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation@,System.String,System.Boolean,System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind})">
             <summary>
-            The SQL processor.
+            Common method to mark the beginning of a Dependency Call operation in Profiler based instrumentation.
+            </summary>
+            <returns>True if should begin, otherwise false.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.CreateTelemetryAndSend(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation,System.Object)">
+            <summary>
+            Common method that ends the dependency operation and sends telemetry.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ICoreProcessor)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.BaseProfilerProcessing.TryCreateTelemetryAndSend(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation,System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks"/> class.
-            </summary>
-            <param name="coreProcessor">The core processor.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.Dispose">
-            <summary>
-            Releases resources used by this <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks"/> instance.
+            Common method that ends the dependency operation and sends telemetry.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginTimer(System.Object)">
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler">
             <summary>
-            On begin timer callback.
+            Concrete class with all processing logic to generate RDD data from the calls backs
+            received from Profiler instrumentation for HTTP.   
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnBeginForGetResponse(System.Object)">
+            <summary>
+            On begin callback for GetResponse.
             </summary>
             <param name="thisObj">This object.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnEndForGetResponse(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnEndForGetResponse(System.Object,System.Object,System.Object)">
             <summary>
-            On end for GetResponse callback.
+            On end callback for GetResponse.
             </summary>
             <param name="context">The context.</param>
             <param name="returnValue">The return value.</param>
             <param name="thisObj">This object.</param>
             <returns>The resulting return value.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForGetResponse(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnExceptionForGetResponse(System.Object,System.Object,System.Object)">
             <summary>
-            On exception for GetResponse callback.
+            On exception callback for GetResponse callback.
             </summary>
             <param name="context">The context.</param>
-            <param name="exception">The exception.</param>
-            <param name="thisObj">This object.</param>
+            <param name="exception">The exception object.</param>
+            <param name="thisObj">This object.</param>        
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForGetRequestStream(System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnBeginForGetRequestStream(System.Object,System.Object)">
             <summary>
-            On begin for GetRequestStream callback.
+            On begin callback for GetRequestStream callback.
             </summary>
             <param name="thisObj">This object.</param>
             <param name="transportContext">The transport context parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForGetRequestStream(System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnExceptionForGetRequestStream(System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On exception for GetRequestStream callback.
+            Note: There is no call back required for GetRequestStream except on exception cases.
             </summary>
             <param name="context">The context.</param>
             <param name="exception">The exception.</param>
             <param name="thisObj">This object.</param>
             <param name="transportContext">The transport context parameter.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForBeginGetResponse(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnBeginForBeginGetResponse(System.Object,System.Object,System.Object)">
             <summary>
             On begin for BeginGetResponse callback.
             </summary>
@@ -474,7 +678,7 @@
             <param name="state">The state parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnEndForEndGetResponse(System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnEndForEndGetResponse(System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On end for EndGetResponse callbacks.
             </summary>
@@ -482,9 +686,9 @@
             <param name="returnValue">The return value.</param>
             <param name="thisObj">This object.</param>
             <param name="asyncResult">The asyncResult parameter.</param>
-            <returns>The context for end callback.</returns>
+            <returns>The return value passed.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForEndGetResponse(System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnExceptionForEndGetResponse(System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On exception for EndGetResponse callbacks.
             </summary>
@@ -493,7 +697,7 @@
             <param name="thisObj">This object.</param>
             <param name="asyncResult">The asyncResult parameter.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForBeginGetRequestStream(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnBeginForBeginGetRequestStream(System.Object,System.Object,System.Object)">
             <summary>
             On begin for BeginGetRequestStream callback.
             </summary>
@@ -502,9 +706,10 @@
             <param name="state">The state parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForEndGetRequestStream(System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnExceptionForEndGetRequestStream(System.Object,System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On exception for EndGetRequestStream callback.
+            Note: There is no call back required for EndGetRequestStream except on exception cases.
             </summary>
             <param name="context">The context.</param>
             <param name="exception">The exception.</param>
@@ -512,35 +717,64 @@
             <param name="asyncResult">The asyncResult parameter.</param>
             <param name="transportContext">The transportContext parameter.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnEndForSql(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.GetResourceName(System.Object)">
             <summary>
-            On end for SQL callback.
+            Gets HTTP request resource name.
             </summary>
-            <param name="context">The context.</param>
-            <param name="returnValue">The return value.</param>
-            <param name="thisObj">This object.</param>
-            <returns>The resulting return value.</returns>
+            <param name="thisObj">Represents web request.</param>
+            <returns>The resource name if possible otherwise empty string.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForSql(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.GetDependencyKind">
             <summary>
-            On exception for SQL callback.
+            Gets Dependency Kind for Resource.
             </summary>
-            <param name="context">The context.</param>
-            <param name="exception">The exception.</param>
-            <param name="thisObj">This object.</param>
+            <returns>The dependency kind.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForExecuteReader(System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnBegin(System.Object,System.Boolean)">
             <summary>
-            On begin for ExecuteReader callback.
+            Common helper for all Begin Callbacks.
+            </summary>
+            <param name="thisObj">This object.</param>        
+            <param name="isAsyncCall">Indicates if the method used is async or not.</param>        
+            <returns>Null object as all context is maintained in this class via weak tables.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.OnEnd(System.Object,System.Object)">
+            <summary>
+            Common helper for all End Callbacks.
+            </summary>        
+            <param name="exception">The exception object if any.</param>
+            <param name="thisObj">This object.</param>                
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler">
+            <summary>
+            Concrete class with all processing logic to generate RDD data from the calls backs
+            received from Profiler instrumentation for SQL.    
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBeginForExecuteReader(System.Object,System.Object,System.Object)">
+            <summary>
+            On begin callback for ExecuteReader.
             </summary>
             <param name="thisObj">This object.</param>
             <param name="behavior">The callback parameter.</param>
             <param name="method">The state parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnEndForExecuteReader(System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBeginForSync(System.Object)">
             <summary>
-            On end for ExecuteReader callback.
+            On begin callback for sync methods except ExecuteReader.
+            </summary>
+            <param name="thisObj">This object.</param>        
+            <returns>The context for end callback.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnEndForExecuteReader(System.Object,System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            On end callback for ExecuteReader.
             </summary>
             <param name="context">The context.</param>
             <param name="returnValue">The return value.</param>
@@ -549,9 +783,18 @@
             <param name="method">The state parameter.</param>
             <returns>The resulting return value.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForExecuteReader(System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnEndForSync(System.Object,System.Object,System.Object)">
             <summary>
-            On exception for ExecuteReader callback.
+            On end for sync methods except ExecuteReader callback.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="returnValue">The return value.</param>
+            <param name="thisObj">This object.</param>        
+            <returns>The resulting return value.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnExceptionForExecuteReader(System.Object,System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            On exception callback for ExecuteReader.
             </summary>
             <param name="context">The context.</param>
             <param name="exception">The exception.</param>
@@ -559,7 +802,15 @@
             <param name="behavior">The callback parameter.</param>
             <param name="method">The state parameter.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForBeginExecuteNonQueryInternal(System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnExceptionForSync(System.Object,System.Object,System.Object)">
+            <summary>
+            On end callback for sync methods except ExecuteReader.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="exception">The exception.</param>
+            <param name="thisObj">This object.</param>        
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBeginForBeginExecuteNonQueryInternal(System.Object,System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On begin for BeginExecuteNonQueryInternal callback.
             </summary>
@@ -570,7 +821,7 @@
             <param name="asyncWrite">The asyncWrite parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForBeginExecuteReaderInternal(System.Object,System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBeginForBeginExecuteReaderInternal(System.Object,System.Object,System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On begin for BeginExecuteReaderInternal callback.
             </summary>
@@ -582,7 +833,7 @@
             <param name="asyncWrite">The asyncWrite parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnBeginForBeginExecuteXmlReaderInternal(System.Object,System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBeginForBeginExecuteXmlReaderInternal(System.Object,System.Object,System.Object,System.Object,System.Object)">
             <summary>
             On begin for BeginExecuteXmlReaderInternal callback.
             </summary>
@@ -593,9 +844,9 @@
             <param name="asyncWrite">The asyncWrite parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnEndForSqlAsync(System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnEndForSqlAsync(System.Object,System.Object,System.Object,System.Object)">
             <summary>
-            On end for SQL async callbacks.
+            On end for all SQL async callbacks.
             </summary>
             <param name="context">The context.</param>
             <param name="returnValue">The return value.</param>
@@ -603,149 +854,45 @@
             <param name="asyncResult">The asyncResult parameter.</param>
             <returns>The context for end callback.</returns>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.OnExceptionForSqlAsync(System.Object,System.Object,System.Object,System.Object)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnExceptionForSqlAsync(System.Object,System.Object,System.Object,System.Object)">
             <summary>
-            On exception SQL async callback.
+            On exception for all SQL async callback.
             </summary>
             <param name="context">The context.</param>
             <param name="exception">The exception.</param>
             <param name="thisObj">This object.</param>
             <param name="asyncResult">The asyncResult parameter.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.ProcessHttpCall(System.Object,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.ProcessingOnCallback,System.Int32,System.Object)">
-            <summary>
-            Processor for Http Calls.
-            </summary>
-            <param name="requestObject">The request object.</param>
-            <param name="processingEnum">The processing enumeration.</param>
-            <param name="errorCode">The error code 0 indicates success, otherwise failure.</param>
-            <param name="watchObject">The watch object.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.ProcessSqlCall(System.Object,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.ProcessingOnCallback,System.Int32,System.Object)">
-            <summary>
-            Processor for SQL Calls.
-            </summary>
-            <param name="sqlObject">The SQL object.</param>
-            <param name="processingEnum">The processing enumeration.</param>
-            <param name="errorCode">The error code 0 indicates success, otherwise failure.</param>
-            <param name="watchObject">The watch object.</param>
-        </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RuntimeInstrumentation.RuntimeInstrumentationCallbacks.ProcessingOnCallback">
-            <summary>
-            The processing enumeration for callbacks.
-            </summary>
-        </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor">
-            <summary>
-            Event processor.
-            <remarks>We are using Strategy Method pattern to attach EventListener to EventSource in both FW 4.0 and FW 4.5.</remarks>
-            </summary>
-        </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ICoreProcessor">
-            <summary>
-            Identifies the interface for processing remote dependency events.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ICoreProcessor.ProcessRawRemoteDependency(System.String,System.Double,Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.DependencyKind,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
-            <summary>
-            Processing raw remote dependency data.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="duration">The duration in milliseconds.</param>
-            <param name="dependencyKind">Remote dependency group.</param>
-            <param name="errorCode">The errorCode to indicate if the dependency call completed successfully (0) or not (error code>0).</param>
-            <param name="async">The async flag to indicate if the dependency call was asynchronous or not.</param>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.ErrorCodeForSuccess">
-            <summary>
-             The error code for success.
-            </summary>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.ErrorCodeForFailure">
-            <summary>
-             The error code for failure.
-            </summary>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.IsAsyncCall">
-            <summary>
-             The call for async.
-            </summary>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.rddSource">
-            <summary>
-            Identifies the source of RDD data.        
-            </summary>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.telemetryClient">
-            <summary>
-            The telemetry client.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.ProcessRawRemoteDependency(System.String,System.Double,Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryTypes.DependencyKind,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
-            <summary>
-            Processing GetResponse Event.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="duration">The duration in milliseconds.</param>
-            <param name="dependencyKind">Remote dependency group.</param>
-            <param name="errorCode">The errorCode to indicate if the dependency call completed successfully (0) or not (error code>0).</param>
-            <param name="async">The async flag to indicate if the dependency call was asynchronous or not.</param>
-        </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.CoreProcessor.Configuration">
-            <summary>
-            Gets a value indicating the telemetry configuration.
-            </summary>
-        </member>
-        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor">
-            <summary>
-            The manager for processing asynchronous telemetry events.
-            </summary>
-        </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.coreProcessor">
-            <summary>
-            The core processor.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.#ctor(Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ICoreProcessor)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor"/> class. 
-            Prevents a default instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor"/> class from being created.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.OnBeginCallback(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Processes asynchronous begin operation.
-            </summary>
-            <param name="sqlCommand">Represents a Transact-SQL statement or stored procedure to execute against a SQL Server database. This class cannot be inherited.</param>        
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.OnEndCallback(System.Data.SqlClient.SqlCommand,System.Int32)">
-            <summary>
-            Processes asynchronous end operation.
-            </summary>
-            <param name="command">Represents a Transact-SQL statement or stored procedure to execute against a SQL Server database. This class cannot be inherited.</param>
-            <param name="errorCode">The errorCode to indicate if the call completed successfully or not. 0 indicates success, else failure.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.OnExecuteCallback(System.Data.SqlClient.SqlCommand,System.Int64,System.Int32,System.Nullable{System.Boolean})">
-            <summary>
-            Process synchronous SQL execute command.
-            </summary>
-            <param name="command">SQL command.</param>
-            <param name="duration">SQL command duration.</param>
-            <param name="errorCode">The errorCode to indicate if the call completed successfully or not. 0 indicates success, else failure.</param>
-            <param name="isAsync">The async flag to indicate if the dependency call was asynchronous or not.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.GetResourceName(System.Data.SqlClient.SqlCommand)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.GetResourceName(System.Object)">
             <summary>
             Gets SQL command resource name.
             </summary>
-            <param name="command">The SQL command.</param>
+            <param name="thisObj">The SQL command.</param>
             <remarks>Before we have clarity with SQL team around EventSource instrumentation, providing name as a concatenation of parameters.</remarks>
             <returns>The resource name if possible otherwise empty string.</returns>
         </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.SqlProcessor.SqlWeakTable">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.GetDependencyKind">
             <summary>
-            Gets a conditional weak table for correlating begin / end operations on SQL command.
+            Gets Dependency Kind for Resource.
             </summary>
+            <returns>The dependency kind.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnBegin(System.Object,System.Boolean)">
+            <summary>
+             Common helper for all Begin Callbacks.
+            </summary>
+            <param name="thisObj">This object.</param>
+            <param name="isAsyncCall">Is Async Invocation.</param>
+            <returns>The context for end callback.</returns>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.OnEnd(System.Object,System.Object,System.Object,System.Boolean)">
+            <summary>
+             Common helper for all End Callbacks.
+            </summary>
+            <param name="context">The context.</param>        
+            <param name="exception">The exception object if any.</param>
+            <param name="thisObj">This object.</param>
+            <param name="isAsync">Whether the End is for an async invocation.</param>        
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule">
             <summary>
@@ -767,17 +914,24 @@
             Initialize method is called after all configuration properties have been loaded from the configuration.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.InitializeForFrameworkEventSource(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.InitializeForFrameworkEventSource">
             <summary>
             Initialize for framework event source (not supported for Net40).
             </summary>
-            <param name="configuration">The configuration.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.InitializeForRuntimeInstrumentation(Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.InitializeForRuntimeInstrumentationOrFramework">
             <summary>
-            Initialize for runtime instrumentation (not supported for WinRT).
+            Initialize for runtime instrumentation or framework event source.
             </summary>
-            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.SamplingRatio">
+            <summary>
+            Gets or sets a value indicating the sample ratio.
+            The sampling ratio is the ratio of the number of expected samples over actual number of calls.
+            The sampling ratio can be 1 which means sample on all calls.
+            The sampling ratio can be 0.5 which means sample on every other call.
+            The sampling ratio can be 1/10 which means sample on every tenth call.
+            </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.DisableRuntimeInstrumentation">
             <summary>
@@ -787,6 +941,74 @@
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.RemoteDependencyModule.PretendProfilerIsAttached">
             <summary>
             Gets or sets a value indicating whether pretending the profiler is attached or not.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation">
+            <summary>
+            Base class to support logical operations within an application. These could represent remote dependencies
+            or local operations. The paradigm should be symmetric for async and sync invocations
+            Start, Stop are the two main operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Start(System.String,System.Nullable{System.Boolean},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencyKind},System.Nullable{Microsoft.ApplicationInsights.Extensibility.Implementation.External.DependencySourceType})">
+            <summary>
+            Starts a DependencyOperation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Complete">
+            <summary>
+            Stops a previously started DependencyOperation and marks as success.        
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Fail">
+            <summary>
+            Stops a previously started DependencyOperation and marks as failed.        
+            </summary>
+        </member>
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Stop(System.Boolean)">
+            <summary>
+            Stops a previously started DependencyOperation.
+            <param name="success">success flag.</param>
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Name">
+            <summary>
+            Gets identifying the dependency.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Duration">
+            <summary>
+            Gets duration for the dependency.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.DependencyKind">
+            <summary>
+            Gets or sets DependencyKind.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.RddSourceType">
+            <summary>
+            Gets or sets the RDD SourceType.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Async">
+            <summary>
+            Gets or sets a value indicating whether dependency operation was made asynchronously or not.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Success">
+            <summary>
+            Gets or sets a value indicating whether dependency operation was successfully finished or not.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.StartTicks">
+            <summary>
+            Gets or sets the total elapsed time from the start of HTTP request.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.IsStarted">
+            <summary>
+            Gets or sets a value indicating whether start was called.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource">
