@@ -113,13 +113,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString();
                                     }
 
-                                    //requestTrackingEvents.OnEndRequest(requestTelemetry);
+                                    requestTrackingEvents.OnEndRequest(requestTelemetry);
 
-                                    //var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
-                                    //if (telemetryClient != null)
-                                    //{
-                                    //    telemetryClient.TrackRequest(requestTelemetry);
-                                    //}
+                                    var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
+                                    if (telemetryClient != null)
+                                    {
+                                        telemetryClient.TrackRequest(requestTelemetry);
+                                    }
                                 }
                                 else
                                 {
