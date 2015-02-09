@@ -42,7 +42,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryConfiguration CreateConfiguration(string instrumentationKey)
         {
-            var configuration = new TelemetryConfiguration { InstrumentationKey = instrumentationKey };
+            TelemetryConfiguration.CreateDefault();
+
+            var configuration = TelemetryConfiguration.CreateDefault();
+            configuration.InstrumentationKey = instrumentationKey;
 
             PopulateWithCommonConfiguration(configuration);
 
@@ -59,11 +62,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             contextInitializers.Add(new ComponentContextInitializer());
             contextInitializers.Add(new DeviceContextInitializer());
 
-            configuration.TelemetryChannel = new InProcessTelemetryChannel();
-            ((ISupportConfiguration)configuration.TelemetryChannel).Initialize(configuration);
-
             var telemetryInitializers = configuration.TelemetryInitializers;
-            telemetryInitializers.Add(new TimestampPropertyInitializer());
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
 
 
