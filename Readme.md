@@ -2,9 +2,11 @@
 
 
 
-This Orchard module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry.
+This [Orchard](http://orchardproject.net/) CMS module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry.
 
 Note that the module depends on the [Helpful Libraries module](http://helpfullibraries.codeplex.com/) so you should have that installed as well.
+
+The module was created by [Lombiq](http://lombiq.com), one of the core developers of Orchard itself.
 
 
 ## Note on assembly binding errors when using dynamic compilation
