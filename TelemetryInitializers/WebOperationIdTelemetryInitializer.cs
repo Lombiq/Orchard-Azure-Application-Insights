@@ -19,6 +19,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
     {
         public void Initialize(ITelemetry telemetry)
         {
+            if (HttpContext.Current == null) return;
             var requestId = HttpContext.Current.Items[Constants.RequestIdKey];
             if (requestId == null || !string.IsNullOrEmpty(telemetry.Context.Operation.Id)) return;
             telemetry.Context.Operation.Id = requestId as string;
