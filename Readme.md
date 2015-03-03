@@ -1,8 +1,10 @@
-# Hosting - Azure Application Insights Readme
+# [Hosting - Azure Application Insights](https://orchardazureappinsights.codeplex.com/) Readme
 
 
 
-This [Orchard](http://orchardproject.net/) CMS module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry.
+This [Orchard CMS](http://orchardproject.net/) module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry into Orchard. Just install the module, configure the instrumentation key from the admin and collected data will start appearing in Application Insights. The module is tenant-aware, so in a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants. This is also available on all sites of [DotNest, the Orchard CMS as a Service](https://dotnest.com/).
+
+Warning: this module is only compatible with the to-be Orchard 1.9 version which is in the 1.x branch of the  latest [Orchard source](http://orchard.codeplex.com/).
 
 Note that the module depends on the [Helpful Libraries module](http://helpfullibraries.codeplex.com/) so you should have that installed as well.
 
