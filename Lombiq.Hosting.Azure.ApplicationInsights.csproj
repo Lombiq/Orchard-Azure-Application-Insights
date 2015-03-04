@@ -155,6 +155,7 @@
     <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
+    <Compile Include="TelemetryInitializers\ShellNameTelemetryInitializer.cs" />
     <Compile Include="TelemetryInitializers\WebOperationIdTelemetryInitializer.cs" />
   </ItemGroup>
   <ItemGroup>

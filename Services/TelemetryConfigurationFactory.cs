@@ -4,6 +4,7 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
 using Orchard;
+using Orchard.Environment.Configuration;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -32,7 +33,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     public class TelemetryConfigurationFactory : ITelemetryConfigurationFactory
     {
         private readonly ITelemetryConfigurationEventHandler _telemetryConfigurationEventHandler;
-
 
         public TelemetryConfigurationFactory(ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler)
         {
@@ -64,6 +64,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+            telemetryInitializers.Add(new ShellNameTelemetryInitializer());
 
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
