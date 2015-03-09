@@ -232,16 +232,6 @@
              The error code for success.
             </summary>
         </member>
-        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.endpointLeftPart">
-            <summary>
-            The left part of the endpoint.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.#cctor">
-            <summary>
-            Initializes static members of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils"/> class.        
-            </summary>
-        </member>
         <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Helpers.RddUtils.IsApplicationInsightsUrl(System.String)">
             <summary>
             Determines whether an URL is application insights URL.
