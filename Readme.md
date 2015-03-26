@@ -38,3 +38,5 @@ Note that since there is a 260 characters limit on paths on Windows, some unused
 - Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81
 - Microsoft.Diagnostics.Instrumentation.Extensions.Intercept files are in the folder Libs/Intercept
 - Microsoft.Diagnostics.Tracing.EventSource.Redist/build/portable-net45+win8+wpa81
+
+After updating you can check for breaking changes between the old and new assembly versions with [BitDiffer](http://www.bitwidgets.com/).
