@@ -27,15 +27,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                Curently the following redirects are mimicked here (edit these when necessary after updating AI libraries):
                 <dependentAssembly>
                   <assemblyIdentity name="Microsoft.Diagnostics.Tracing.EventSource" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
-                  <bindingRedirect oldVersion="0.0.0.0-1.1.17.0" newVersion="1.1.17.0" />
+                  <bindingRedirect oldVersion="0.0.0.0-1.1.20.0" newVersion="1.1.20.0" />
                 </dependentAssembly>
                 <dependentAssembly>
                   <assemblyIdentity name="Microsoft.ApplicationInsights" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                  <bindingRedirect oldVersion="0.0.0.0-0.13.2.132" newVersion="0.13.2.132" />
+                  <bindingRedirect oldVersion="0.0.0.0-0.14.0.20632" newVersion="0.14.0.20632" />
                 </dependentAssembly>
                 <dependentAssembly>
-                    <assemblyIdentity name="Microsoft.Diagnostics.Instrumentation.Extensions.Intercept" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                    <bindingRedirect oldVersion="0.0.0.0-0.13.0.22715" newVersion="0.13.0.22715" />
+                  <assemblyIdentity name="Microsoft.Diagnostics.Instrumentation.Extensions.Intercept" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                  <bindingRedirect oldVersion="0.0.0.0-0.14.0.2544" newVersion="0.14.0.2544" />
                 </dependentAssembly>
              */
 

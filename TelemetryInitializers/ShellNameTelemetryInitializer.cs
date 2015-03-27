@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Orchard.Environment;
 
@@ -27,8 +28,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 
         public void Initialize(ITelemetry telemetry)
         {
+            var telemetryWithProperties = telemetry as ISupportProperties;
+
+            if (telemetryWithProperties == null) return;
+
+
             // If already set, nothing to do.
-            if (telemetry.Properties.ContainsKey(Constants.ShellNameKey)) return;
+            if (telemetryWithProperties.Properties.ContainsKey(Constants.ShellNameKey)) return;
 
 
             // Below algorithm copied from OrchardLog4netLogger.
@@ -53,7 +59,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
                 return;
 
 
-            telemetry.Properties[Constants.ShellNameKey] = shellContext.Settings.Name;
+            telemetryWithProperties.Properties[Constants.ShellNameKey] = shellContext.Settings.Name;
         }
     }
 }

@@ -120,13 +120,13 @@
         <member name="M:Microsoft.Diagnostics.Tracing.ActivityTracker.ActivityInfo.CreateOverflowGuid(System.Guid*)">
             <summary>
             If we can't fit the activity Path into the GUID we come here.   What we do is simply
-            generate a 4 byte number (s_nextOverflowId).  Then look for an anscesor that has  
+            generate a 4 byte number (s_nextOverflowId).  Then look for an ancestor that has  
             sufficient space for this ID.   By doing this, we preserve the fact that this activity
             is a child (of unknown depth) from that ancestor.
             </summary>
         </member>
         <member name="M:Microsoft.Diagnostics.Tracing.ActivityTracker.ActivityInfo.AddIdToGuid(System.Guid*,System.Int32,System.UInt32,System.Boolean)">
-            Add the acivity id 'id' to the output Guid 'outPtr' starting at the offset 'whereToAddId'
+            Add the activity id 'id' to the output Guid 'outPtr' starting at the offset 'whereToAddId'
             Thus if this number is 6 that is where 'id' will be added.    This will return 13 (12
             is the maximum number of bytes that fit in a GUID) if the path did not fit.  
             If 'overflow' is true, then the number is encoded as an 'overflow number (which has a
@@ -143,8 +143,8 @@
         </member>
         <member name="T:Microsoft.Diagnostics.Tracing.ActivityTracker.ActivityInfo.NumberListCodes">
             <summary>
-            The encoding for a list of numbers used to make Activity  Guids.   Basically
-            we operate on nibbles (which are nice becase they show up as hex digits).  The
+            The encoding for a list of numbers used to make Activity  GUIDs.   Basically
+            we operate on nibbles (which are nice because they show up as hex digits).  The
             list is ended with a end nibble (0) and depending on the nibble value (Below)
             the value is either encoded into nibble itself or it can spill over into the
             bytes that follow.   
