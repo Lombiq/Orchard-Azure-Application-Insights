@@ -58,8 +58,9 @@
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>Libs\Microsoft.ApplicationInsights\lib\net40\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry">
-      <HintPath>Libs\Microsoft.ApplicationInsights.RuntimeTelemetry\lib\net45\Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry, Version=0.14.0.20632, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Microsoft.ApplicationInsights.DependencyCollector\lib\net45\Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender">
       <HintPath>Libs\Microsoft.ApplicationInsights.Log4NetAppender\lib\net40\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
