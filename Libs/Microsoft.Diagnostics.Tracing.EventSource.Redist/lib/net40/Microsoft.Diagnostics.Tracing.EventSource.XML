@@ -6,10 +6,10 @@
     <members>
         <member name="T:Microsoft.Diagnostics.Tracing.ActivityTracker">
              <summary>
-             Tracks activities.  This is meant to be a singledon (accessed by the ActivityTracer.Instance static property)
+             Tracks activities.  This is meant to be a singleton (accessed by the ActivityTracer.Instance static property)
               
              Logically this is simply holds the m_current variable that holds the async local that holds the current ActivityInfo
-             An ActivityInfo is represents a actvity (which knows its creator and thus knows its path). 
+             An ActivityInfo is represents a activity (which knows its creator and thus knows its path). 
             
              Most of the magic is in the async local (it gets copied to new tasks)
              
