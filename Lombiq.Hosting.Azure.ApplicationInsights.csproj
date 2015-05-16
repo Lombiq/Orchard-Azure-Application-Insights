@@ -58,6 +58,10 @@
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>Libs\Microsoft.ApplicationInsights\lib\net40\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.PerfCollector, Version=0.16.1.444, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Microsoft.ApplicationInsights.PerfCounterCollector\lib\net40\Microsoft.ApplicationInsights.Extensibility.PerfCollector.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry, Version=0.14.0.20632, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Microsoft.ApplicationInsights.DependencyCollector\lib\net45\Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.dll</HintPath>
@@ -166,7 +170,6 @@
   <ItemGroup>
     <Content Include="Views\Azure.ApplicationInsights.TrackingScript.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

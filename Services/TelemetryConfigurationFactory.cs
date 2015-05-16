@@ -2,6 +2,7 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.PerfCollector;
 using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
 using Orchard;
 using Orchard.Environment.Configuration;
@@ -57,6 +58,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
             var telemetryModules = configuration.TelemetryModules;
             telemetryModules.Add(new RemoteDependencyModule());
+            telemetryModules.Add(new PerformanceCollectorModule());
 
             var contextInitializers = configuration.ContextInitializers;
             contextInitializers.Add(new ComponentContextInitializer());
