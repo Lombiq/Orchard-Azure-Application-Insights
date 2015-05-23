@@ -43,8 +43,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             switch (assemblyShortName)
             {
-                case "Microsoft.Diagnostics.Tracing.EventSource":
-                    return typeof(Microsoft.Diagnostics.Tracing.EventAttribute).Assembly;
                 case "Microsoft.ApplicationInsights":
                     return typeof(Microsoft.ApplicationInsights.TelemetryClient).Assembly;
                 case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":

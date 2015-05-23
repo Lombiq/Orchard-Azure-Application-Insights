@@ -60,10 +60,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             telemetryModules.Add(new RemoteDependencyModule());
             telemetryModules.Add(new PerformanceCollectorModule());
 
-            var contextInitializers = configuration.ContextInitializers;
-            contextInitializers.Add(new ComponentContextInitializer());
-            contextInitializers.Add(new DeviceContextInitializer());
-
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());

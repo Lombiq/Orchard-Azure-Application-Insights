@@ -499,6 +499,11 @@
             The telemetryClient to use while sending RDD.
             </summary>
         </member>
+        <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.telemetryConfiguration">
+            <summary>
+            The telemetryConfiguration associated with this.telemetryClient.
+            </summary>
+        </member>
         <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.BaseProcessing.count">
             <summary>
             This value indicates the count between two samples.
@@ -593,7 +598,7 @@
             Ends the dependency operation and sends telemetry.
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.SqlProcessingFramework"/> class.
             </summary>
@@ -640,7 +645,7 @@
             <param name="success">The success flag to indicate if the dependency call completed successfully or not.</param>
             <param name="synchronous">The synchronous flag to indicate if the dependency call was made synchronously or not.</param>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.FrameworkProcessing.HttpProcessingFramework"/> class.
             </summary>
@@ -735,7 +740,7 @@
             received from Profiler instrumentation for HTTP.   
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.HttpProcessingProfiler"/> class.
             </summary>
@@ -864,7 +869,7 @@
             received from Profiler instrumentation for SQL.    
             </summary>
         </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
+        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler.#ctor(Microsoft.ApplicationInsights.TelemetryClient,Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration,Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Policy.ISamplingPolicy)">
             <summary>
             Initializes a new instance of the <see cref="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Processing.ProfilerProcessing.SqlProcessingProfiler"/> class.
             </summary>
@@ -1093,17 +1098,17 @@
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Name">
             <summary>
-            Gets identifying the dependency.
+            Gets or sets identifying the dependency.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.CommandName">
             <summary>
-            Gets the SQL command text.
+            Gets or sets the SQL command text.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.Duration">
             <summary>
-            Gets duration for the dependency.
+            Gets or sets duration for the dependency.
             </summary>
         </member>
         <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.DependencyOperation.DependencyCallOperation.DependencyKind">
@@ -1144,51 +1149,6 @@
         <member name="F:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.Log">
             <summary>
             Instance of the RuntimeTelemetryEventSource class.
-            </summary>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyModuleFailure(System.String,System.String)">
-            <summary>
-            Remote dependency module failed.
-            </summary>
-            <param name="msg">Exception message.</param>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyDisabledApmcEnabled(System.String)">
-            <summary>
-            Remote dependency module failed.
-            </summary>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyModuleWarning(System.String,System.String)">
-            <summary>
-            Remote dependency module warning.
-            </summary>
-            <param name="msg">Error message.</param>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyModuleVerbose(System.String,System.String)">
-            <summary>
-            Remote dependency module verbose.
-            </summary>
-            <param name="msg">Verbose message.</param>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyModuleInformation(System.String,System.String)">
-            <summary>
-            Remote dependency module information.
-            </summary>
-            <param name="msg">Information message.</param>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="M:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.RemoteDependencyModuleProfilerNotAttached(System.String)">
-            <summary>
-            Remote dependency module profiler is not attached.
-            </summary>
-            <param name="appDomainName">Parameter is not used. Added to comply EventSource rules.</param>
-        </member>
-        <member name="P:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.IsVerboseLoggingEnabled">
-            <summary>
-            Gets a value indicating whether verbose logging is enabled.
             </summary>
         </member>
         <member name="T:Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.Tracing.RuntimeTelemetryEventSource.Keywords">
