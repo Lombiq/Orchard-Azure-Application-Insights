@@ -13,7 +13,7 @@
     <RootNamespace>Lombiq.Hosting.Azure.ApplicationInsights</RootNamespace>
     <AssemblyName>Lombiq.Hosting.Azure.ApplicationInsights</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews Condition=" '$(BuildViews)' == 'true' ">true</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -56,33 +56,24 @@
       <HintPath>..\..\..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
-      <HintPath>Libs\Microsoft.ApplicationInsights\lib\net40\Microsoft.ApplicationInsights.dll</HintPath>
+      <HintPath>Libs\AI\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.PerfCollector">
+      <HintPath>Libs\AI.PerfCounterCollector\lib\net40\Microsoft.ApplicationInsights.Extensibility.PerfCollector.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry">
-      <HintPath>Libs\Microsoft.ApplicationInsights.RuntimeTelemetry\lib\net45\Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.dll</HintPath>
+      <HintPath>Libs\AI.DependencyCollector\lib\net45\Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender">
-      <HintPath>Libs\Microsoft.ApplicationInsights.Log4NetAppender\lib\net40\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
+      <HintPath>Libs\AI.Log4NetAppender\lib\net45\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Diagnostics.Instrumentation.Extensions.Intercept">
-      <HintPath>Libs\Intercept\lib\net40\Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource">
-      <HintPath>Libs\Microsoft.Diagnostics.Tracing.EventSource.Redist\lib\net40\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+      <HintPath>Libs\AI.Agent.Intercept\lib\net45\Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\owin\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks">
-      <HintPath>Libs\Microsoft.Bcl.Async\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions">
-      <HintPath>Libs\Microsoft.Bcl.Async\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
-      <HintPath>Libs\Microsoft.Bcl.Async\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,12 +83,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.Extensions" />
+    </Reference>   
+    <Reference Include="System.Web.DynamicData" />    
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
@@ -158,6 +145,7 @@
     <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
+    <Compile Include="TelemetryInitializers\ShellNameTelemetryInitializer.cs" />
     <Compile Include="TelemetryInitializers\WebOperationIdTelemetryInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +154,6 @@
   <ItemGroup>
     <Content Include="Views\Azure.ApplicationInsights.TrackingScript.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -29,12 +29,10 @@ This is because on the fly assembly redirection (see below) doesn't work for som
 
 ## Updating AI libraries
 
-Application Insights NuGet packages are included in the Lib folder. If you want to update them just open the [Hosting - Azure Application Insights Packages](https://bitbucket.org/Lombiq/hosting-azure-application-insights-packages) project, update them there through NuGet and copy over the updated libraries (you can leave out the nupkg files). Note that libraries, unlike how they are created by NuGet, should go into a subfolder whose name doesn't contain their version, to simplify updates. Make sure to apply any changes that are necessary to be made on the client code (like after API changes).
+Application Insights NuGet packages are included in the Lib folder. If you want to update them just open the [Hosting - Azure Application Insights Packages](https://bitbucket.org/Lombiq/hosting-azure-application-insights-packages) project, update them there through NuGet and copy over the updated libraries (make sure to only copy necessary folder but leave out e.g. content, buid folder and libs for other platforms). Note that libraries, unlike how they are created by NuGet, should go into a subfolder whose name doesn't contain their version, to simplify updates. Make sure to apply any changes that are necessary to be made on the client code (like after API changes).
 
 When assembly binding redirects are changed make sure to also edit `AssemblyRedirectSetupShellEventHandler` that mimicks such redirects instead of relying on the Web.config.
 
-Note that since there is a 260 characters limit on paths on Windows, some unused library folders and files should be removed or renamed:
+Note that since there is a 260 characters limit on paths on Windows, all unused library folders and files should be removed and folders shortened.
 
-- Microsoft.ApplicationInsights.RuntimeTelemetry/lib/portable-win81+wpa81
-- Microsoft.Diagnostics.Instrumentation.Extensions.Intercept files are in the folder Libs/Intercept
-- Microsoft.Diagnostics.Tracing.EventSource.Redist/build/portable-net45+win8+wpa81
+After updating you can check for breaking changes between the old and new assembly versions with [BitDiffer](http://www.bitwidgets.com/).

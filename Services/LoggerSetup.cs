@@ -39,7 +39,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             var patternLayout = new PatternLayout
             {
-                ConversionPattern = "%date [%thread] %-5level %logger - %P{Tenant} - %message%newline"
+                ConversionPattern = "%message"
             };
             patternLayout.ActivateOptions();
 

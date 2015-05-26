@@ -35,7 +35,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             // ISiteService couldn't be resolved because there is no work context during shell startup, that's
             // the reason for the custom work context.
-            // See: https://orchard.codeplex.com/workitem/21023
+            // See: https://github.com/OrchardCMS/Orchard/issues/4852
             using (var wc = _wca.CreateWorkContextScope())
             {
                 var settings = wc.Resolve<ITelemetrySettingsAccessor>().GetDefaultSettings();

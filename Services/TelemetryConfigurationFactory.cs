@@ -2,8 +2,10 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.PerfCollector;
 using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
 using Orchard;
+using Orchard.Environment.Configuration;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -33,7 +35,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     {
         private readonly ITelemetryConfigurationEventHandler _telemetryConfigurationEventHandler;
 
-
         public TelemetryConfigurationFactory(ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler)
         {
             _telemetryConfigurationEventHandler = telemetryConfigurationEventHandler;
@@ -57,13 +58,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
             var telemetryModules = configuration.TelemetryModules;
             telemetryModules.Add(new RemoteDependencyModule());
-
-            var contextInitializers = configuration.ContextInitializers;
-            contextInitializers.Add(new ComponentContextInitializer());
-            contextInitializers.Add(new DeviceContextInitializer());
+            telemetryModules.Add(new PerformanceCollectorModule());
 
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+            telemetryInitializers.Add(new ShellNameTelemetryInitializer());
 
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);

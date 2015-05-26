@@ -11,6 +11,7 @@ using Owin;
 using Orchard.Exceptions;
 using Orchard.Logging;
 using Lombiq.Hosting.Azure.ApplicationInsights.Exceptions;
+using Orchard.Environment.Configuration;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -69,6 +70,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                     requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
                                     if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
                                     requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
+                                    requestTelemetry.Properties[Constants.ShellNameKey] = workContext.Resolve<ShellSettings>().Name;
 
                                     if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
                                     {
