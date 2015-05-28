@@ -2,7 +2,7 @@
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Settings;
-using Piedone.HelpfulLibraries.Utilities;
+using Orchard.Environment.Configuration;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
