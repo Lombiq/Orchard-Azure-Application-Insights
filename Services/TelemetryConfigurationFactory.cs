@@ -1,9 +1,9 @@
 ﻿using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.PerfCollector;
-using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Orchard;
 using Orchard.Environment.Configuration;
 
@@ -55,10 +55,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
         {
-            // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
-            var telemetryModules = configuration.TelemetryModules;
-            telemetryModules.Add(new RemoteDependencyModule());
-            telemetryModules.Add(new PerformanceCollectorModule());
+            // As of AI 1.2.0 telemetry modules can't be added from code...
+            //var telemetryModules = configuration.TelemetryModules;
+            //telemetryModules.Add(new DependencyTrackingTelemetryModule());
+            //telemetryModules.Add(new PerformanceCollectorModule());
 
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
