@@ -9,9 +9,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     /// Sets up global AI configuration on shell start.
     /// </summary>
     /// <remarks>
-    /// That there is such global setup is unfortunate, however with the current design of AI there is simply a need for an "Active" configuration.
-    /// Also logging can currently only happen application-wide, since from the logger it's not always possible to determine the current tenant
-    /// (and when logging application-level entries, there is no tenant).
+    /// That there is such global setup is unfortunate, however with the current design of AI there is simply a need for
+    /// an "Active" configuration.
+    /// Also logging can currently only happen application-wide, since from the logger it's not always possible to
+    /// determine the current tenant (and when logging application-level entries, there is no tenant).
     /// </remarks>
     public class GlobalSetupShellEventHandler : IOrchardShellEvents
     {

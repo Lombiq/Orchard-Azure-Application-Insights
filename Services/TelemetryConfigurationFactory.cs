@@ -24,7 +24,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         TelemetryConfiguration CreateConfiguration(string instrumentationKey);
 
         /// <summary>
-        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and context initializers.
+        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and 
+        /// context initializers.
         /// </summary>
         /// <param name="configuration">The existing configuration object.</param>
         void PopulateWithCommonConfiguration(TelemetryConfiguration configuration);
