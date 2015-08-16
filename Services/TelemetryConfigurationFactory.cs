@@ -56,11 +56,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
         {
-            // As of AI 1.2.0 telemetry modules can't be added from code...
-            //var telemetryModules = configuration.TelemetryModules;
-            //telemetryModules.Add(new DependencyTrackingTelemetryModule());
-            //telemetryModules.Add(new PerformanceCollectorModule());
-
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());

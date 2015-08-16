@@ -131,6 +131,7 @@
     <Compile Include="Drivers\AzureApplicationInsightsTelemetrySettingsPartDriver.cs" />
     <Compile Include="Events\IRequestTrackingEventHandler.cs" />
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
+    <Compile Include="Events\ITelemetryModulesInitializationEventHandler.cs" />
     <Compile Include="Exceptions\RequestException.cs" />
     <Compile Include="Filters\ClientSideTrackingInjectingFilter.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
     <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
     <Compile Include="Services\StartupLogEntriesCollector.cs" />
+    <Compile Include="Services\TelemetryModulesHolder.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
