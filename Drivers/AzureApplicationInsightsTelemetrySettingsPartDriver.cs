@@ -1,22 +1,31 @@
 ﻿using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
+using Microsoft.ApplicationInsights.Extensibility;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment;
+using Orchard.Environment.Configuration;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
 {
     public class AzureApplicationInsightsTelemetrySettingsPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetrySettingsPart>
     {
+        private readonly ShellSettings _shellSettings;
+        private readonly Work<ITelemetrySettingsAccessor> _telemetrySettingsAccessorWork;
         private readonly Work<ILoggerSetup> _loggerSetupWork;
 
 
-        public AzureApplicationInsightsTelemetrySettingsPartDriver(Work<ILoggerSetup> loggerSetupWork)
+        public AzureApplicationInsightsTelemetrySettingsPartDriver(
+            ShellSettings shellSettings,
+            Work<ITelemetrySettingsAccessor> telemetrySettingsAccessorWork,
+            Work<ILoggerSetup> loggerSetupWork)
         {
+            _shellSettings = shellSettings;
+            _telemetrySettingsAccessorWork = telemetrySettingsAccessorWork;
             _loggerSetupWork = loggerSetupWork;
         }
-        
-        
+
+
         protected override DriverResult Editor(AzureApplicationInsightsTelemetrySettingsPart part, dynamic shapeHelper)
         {
             return Editor(part, null, shapeHelper);
@@ -29,20 +38,28 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                 {
                     if (updater != null)
                     {
-                        var previousInstrumentationKey = part.InstrumentationKey;
                         var previousEnableLogCollection = part.ApplicationWideLogCollectionIsEnabled;
 
                         updater.TryUpdateModel(part, Prefix, null, null);
 
-                        if (part.ApplicationWideLogCollectionIsEnabled &&
-                            (previousEnableLogCollection != part.ApplicationWideLogCollectionIsEnabled && !string.IsNullOrEmpty(part.InstrumentationKey)) ||
-                            previousInstrumentationKey != part.InstrumentationKey)
+                        if (_shellSettings.Name == ShellSettings.DefaultName)
                         {
-                            _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, part.InstrumentationKey);
-                        }
-                        else if (!part.ApplicationWideLogCollectionIsEnabled)
-                        {
-                            _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultLogAppenderName);
+                            // The default settings could come from elsewhere, not just this settings part, so using
+                            // the service.
+                            var defaultInstrumenationKey = _telemetrySettingsAccessorWork.Value
+                                .GetDefaultSettings()
+                                .InstrumentationKey;
+
+                            TelemetryConfiguration.Active.InstrumentationKey = defaultInstrumenationKey;
+
+                            if (part.ApplicationWideLogCollectionIsEnabled)
+                            {
+                                _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, defaultInstrumenationKey);
+                            }
+                            else
+                            {
+                                _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultLogAppenderName);
+                            }
                         }
                     }
 

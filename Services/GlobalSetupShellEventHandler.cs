@@ -1,7 +1,11 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Orchard;
 using Orchard.Environment;
 using Orchard.Environment.Configuration;
+using System.Linq;
+using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -9,9 +13,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     /// Sets up global AI configuration on shell start.
     /// </summary>
     /// <remarks>
-    /// That there is such global setup is unfortunate, however with the current design of AI there is simply a need for an "Active" configuration.
-    /// Also logging can currently only happen application-wide, since from the logger it's not always possible to determine the current tenant
-    /// (and when logging application-level entries, there is no tenant).
+    /// That there is such global setup is unfortunate, however with the current design of AI there is simply a need for
+    /// an "Active" configuration.
+    /// Also logging can currently only happen application-wide, since from the logger it's not always possible to
+    /// determine the current tenant (and when logging application-level entries, there is no tenant).
     /// </remarks>
     public class GlobalSetupShellEventHandler : IOrchardShellEvents
     {
@@ -26,8 +31,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             _shellSettings = shellSettings;
             _wca = wca;
         }
-        
-        
+
+
         public void Activated()
         {
             // Global configuration is application-wide, thus should happen only once.
@@ -42,14 +47,24 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                 if (string.IsNullOrEmpty(settings.InstrumentationKey)) return;
 
+                TelemetryConfiguration.Active.InstrumentationKey = settings.InstrumentationKey;
+                wc.Resolve<ITelemetryConfigurationFactory>().PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
+
+                var telemetryModulesHolder = wc.Resolve<ITelemetryModulesHolder>();
+                telemetryModulesHolder.RegisterTelemetryModule(new DependencyTrackingTelemetryModule());
+                telemetryModulesHolder.RegisterTelemetryModule(new PerformanceCollectorModule());
+                var registeredTelemetryModules = telemetryModulesHolder.GetRegisteredModules().ToList();
+                wc.Resolve<ITelemetryModulesInitializationEventHandler>().TelemetryModulesInitializing(registeredTelemetryModules);
+                foreach (var telemetryModule in registeredTelemetryModules)
+                {
+                    telemetryModule.Initialize(TelemetryConfiguration.Active);
+                }
+
                 if (settings.ApplicationWideLogCollectionIsEnabled)
                 {
                     wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultLogAppenderName, settings.InstrumentationKey);
-                    wc.Resolve<IStartupLogEntriesCollector>().ReLogStartupLogEntriesIfNew(); 
+                    wc.Resolve<IStartupLogEntriesCollector>().ReLogStartupLogEntriesIfNew();
                 }
-
-                TelemetryConfiguration.Active.InstrumentationKey = settings.InstrumentationKey;
-                wc.Resolve<ITelemetryConfigurationFactory>().PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
             }
         }
 

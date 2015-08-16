@@ -5,7 +5,8 @@ using Orchard.Environment;
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     /// <summary>
-    /// Redirects assembly resolutions for AI-related assemblies. This is instead of putting assembly redirects into the Web.config.
+    /// Redirects assembly resolutions for AI-related assemblies. This is instead of putting assembly redirects into the 
+    /// Web.config.
     /// </summary>
     public class AssemblyRedirectSetupShellEventHandler : IOrchardShellEvents
     {

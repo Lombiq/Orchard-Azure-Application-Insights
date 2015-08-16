@@ -1,9 +1,9 @@
 ﻿using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.PerfCollector;
-using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Orchard;
 using Orchard.Environment.Configuration;
 
@@ -24,7 +24,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         TelemetryConfiguration CreateConfiguration(string instrumentationKey);
 
         /// <summary>
-        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and context initializers.
+        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and 
+        /// context initializers.
         /// </summary>
         /// <param name="configuration">The existing configuration object.</param>
         void PopulateWithCommonConfiguration(TelemetryConfiguration configuration);
@@ -55,11 +56,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
         {
-            // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
-            var telemetryModules = configuration.TelemetryModules;
-            telemetryModules.Add(new RemoteDependencyModule());
-            telemetryModules.Add(new PerformanceCollectorModule());
-
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());
