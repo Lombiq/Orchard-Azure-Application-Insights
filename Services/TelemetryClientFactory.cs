@@ -16,20 +16,21 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         TelemetryClient CreateTelemetryClient(TelemetryConfiguration configuration);
 
         /// <summary>
-        /// Creates a <see cref="TelemetryClient"/> object with the default configuration that can be modified from the admin.
+        /// Creates a <see cref="TelemetryClient"/> object with the current configuration that can be modified from the 
+        /// admin or set from static configuration.
         /// </summary>
-        TelemetryClient CreateTelemetryClientFromDefaultConfiguration();
+        TelemetryClient CreateTelemetryClientFromCurrentConfiguration();
     }
 
 
     public class TelemetryClientFactory : ITelemetryClientFactory
     {
-        private readonly ITelemetryConfigurationAccessor _defaultTelemetryConfigurationAccessor;
+        private readonly ITelemetryConfigurationAccessor _telemetryConfigurationAccessor;
 
 
-        public TelemetryClientFactory(ITelemetryConfigurationAccessor defaultTelemetryConfigurationAccessor)
+        public TelemetryClientFactory(ITelemetryConfigurationAccessor telemetryConfigurationAccessor)
         {
-            _defaultTelemetryConfigurationAccessor = defaultTelemetryConfigurationAccessor;
+            _telemetryConfigurationAccessor = telemetryConfigurationAccessor;
         }
         
         
@@ -38,9 +39,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             return new TelemetryClient(configuration);
         }
 
-        public TelemetryClient CreateTelemetryClientFromDefaultConfiguration()
+        public TelemetryClient CreateTelemetryClientFromCurrentConfiguration()
         {
-            var defaultConfiguration = _defaultTelemetryConfigurationAccessor.GetCurrentConfiguration();
+            var defaultConfiguration = _telemetryConfigurationAccessor.GetCurrentConfiguration();
             if (defaultConfiguration == null) return null;
             return CreateTelemetryClient(defaultConfiguration);
         }
