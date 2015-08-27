@@ -46,15 +46,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                         {
                             // The default settings could come from elsewhere, not just this settings part, so using
                             // the service.
-                            var defaultInstrumenationKey = _telemetrySettingsAccessorWork.Value
-                                .GetDefaultSettings()
+                            var currentInstrumenationKey = _telemetrySettingsAccessorWork.Value
+                                .GetCurrentSettings()
                                 .InstrumentationKey;
 
-                            TelemetryConfiguration.Active.InstrumentationKey = defaultInstrumenationKey;
+                            TelemetryConfiguration.Active.InstrumentationKey = currentInstrumenationKey;
 
                             if (part.ApplicationWideLogCollectionIsEnabled)
                             {
-                                _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, defaultInstrumenationKey);
+                                _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, currentInstrumenationKey);
                             }
                             else
                             {

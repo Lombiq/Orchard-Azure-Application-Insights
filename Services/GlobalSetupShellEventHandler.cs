@@ -43,7 +43,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // See: https://github.com/OrchardCMS/Orchard/issues/4852
             using (var wc = _wca.CreateWorkContextScope())
             {
-                var settings = wc.Resolve<ITelemetrySettingsAccessor>().GetDefaultSettings();
+                var settings = wc.Resolve<ITelemetrySettingsAccessor>().GetCurrentSettings();
 
                 if (string.IsNullOrEmpty(settings.InstrumentationKey)) return;
 

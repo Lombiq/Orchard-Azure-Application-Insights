@@ -36,7 +36,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Filters
 
             if (!workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().ClientSideTrackingIsEnabled) return;
 
-            var instrumentationKey = _telemetrySettingsAccessor.GetDefaultSettings().InstrumentationKey;
+            var instrumentationKey = _telemetrySettingsAccessor.GetCurrentSettings().InstrumentationKey;
 
             if (string.IsNullOrEmpty(instrumentationKey)) return;
 

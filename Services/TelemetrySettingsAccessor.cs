@@ -8,7 +8,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     public interface ITelemetrySettingsAccessor : IDependency
     {
-        ITelemetrySettings GetDefaultSettings();
+        ITelemetrySettings GetCurrentSettings();
     }
 
 
@@ -27,7 +27,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public ITelemetrySettings GetDefaultSettings()
+        public ITelemetrySettings GetCurrentSettings()
         {
             var defaultInstrumentationKey = _appConfigurationAccessor.GetConfiguration(Constants.DefaultInstrumentationKeyConfigurationKey);
             var settings = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
