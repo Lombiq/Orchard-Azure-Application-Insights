@@ -142,7 +142,7 @@
     <Compile Include="Services\StartupLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetryModulesHolder.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
-    <Compile Include="Services\DefaultTelemetryConfigurationAccessor.cs" />
+    <Compile Include="Services\TelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
     <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />

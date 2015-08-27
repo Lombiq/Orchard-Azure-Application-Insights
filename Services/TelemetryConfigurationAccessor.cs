@@ -11,16 +11,17 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     /// <summary>
     /// Provides access to the default <see cref="TelemetryConfiguration"/> that can be modified from the admin.
     /// </summary>
-    public interface IDefaultTelemetryConfigurationAccessor : ISingletonDependency
+    public interface ITelemetryConfigurationAccessor : ISingletonDependency
     {
         /// <summary>
-        /// Returns the default <see cref="TelemetryConfiguration"/> that can be modified from the admin.
+        /// Returns the <see cref="TelemetryConfiguration"/> that can be modified from the admin or set from static
+        /// configuration.
         /// </summary>
-        TelemetryConfiguration GetDefaultConfiguration();
+        TelemetryConfiguration GetCurrentConfiguration();
     }
 
 
-    public class DefaultTelemetryConfigurationAccessor : ContentHandler, IDefaultTelemetryConfigurationAccessor, IDisposable
+    public class TelemetryConfigurationAccessor : ContentHandler, ITelemetryConfigurationAccessor, IDisposable
     {
         private object _lock = new object();
 
@@ -29,7 +30,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private TelemetryConfiguration _defaultConfiguration;
 
 
-        public DefaultTelemetryConfigurationAccessor(
+        public TelemetryConfigurationAccessor(
             Work<ITelemetrySettingsAccessor> telemetrySettingsAccessorWork,
             Work<ITelemetryConfigurationFactory> telemetryConfigurationFactoryWork)
         {
@@ -51,7 +52,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public TelemetryConfiguration GetDefaultConfiguration()
+        public TelemetryConfiguration GetCurrentConfiguration()
         {
             lock (_lock)
             {

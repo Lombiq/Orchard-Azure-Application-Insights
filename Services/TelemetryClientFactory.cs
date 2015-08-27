@@ -24,10 +24,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
     public class TelemetryClientFactory : ITelemetryClientFactory
     {
-        private readonly IDefaultTelemetryConfigurationAccessor _defaultTelemetryConfigurationAccessor;
+        private readonly ITelemetryConfigurationAccessor _defaultTelemetryConfigurationAccessor;
 
 
-        public TelemetryClientFactory(IDefaultTelemetryConfigurationAccessor defaultTelemetryConfigurationAccessor)
+        public TelemetryClientFactory(ITelemetryConfigurationAccessor defaultTelemetryConfigurationAccessor)
         {
             _defaultTelemetryConfigurationAccessor = defaultTelemetryConfigurationAccessor;
         }
@@ -40,7 +40,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryClient CreateTelemetryClientFromDefaultConfiguration()
         {
-            var defaultConfiguration = _defaultTelemetryConfigurationAccessor.GetDefaultConfiguration();
+            var defaultConfiguration = _defaultTelemetryConfigurationAccessor.GetCurrentConfiguration();
             if (defaultConfiguration == null) return null;
             return CreateTelemetryClient(defaultConfiguration);
         }
