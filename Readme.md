@@ -4,7 +4,7 @@
 
 This [Orchard CMS](http://orchardproject.net/) module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry into Orchard. Just install the module, configure the instrumentation key from the admin and collected data will start appearing in Application Insights. The module is tenant-aware, so in a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants. This is also available on all sites of [DotNest, the Orchard CMS as a Service](https://dotnest.com/).
 
-Warning: this module is only compatible with the to-be Orchard 1.9 version which is in the 1.x branch of the  latest [Orchard source](http://orchard.codeplex.com/).
+Warning: this module is only compatible with the Orchard 1.9+.
 
 Note that the module depends on the [Helpful Libraries module](http://helpfullibraries.codeplex.com/) so you should have that installed as well.
 
@@ -16,6 +16,8 @@ The module was created by [Lombiq](http://lombiq.com), one of the core developer
 ## Configuration
 
 You can configure the module, including setting the AI instrumentation key from the admin site, for each tenant. You can also set an application-wide instrumentation key to be used by all tenants (if the module is enabled) in the static configuration (i.e. Web.config, Azure Portal) with the key shown in the `Constants` class.
+
+To collect detailed dependency data and server resource information you'll need to [install the AI Status Monitor](https://azure.microsoft.com/en-us/documentation/articles/app-insights-monitor-performance-live-website-now/) (for VMs and local development) or the Application Insights site extension for Azure Web Apps. Be aware that both tools will add DLLs to the app and create an ApplicationInsights.config file, but neither are needed. To fix this remove the config file and re-deploy (or locally: delete Orchard.Web/bin and App_Data/Dependencies and re-build) the app.
 
 
 ## Note on assembly binding errors when using dynamic compilation

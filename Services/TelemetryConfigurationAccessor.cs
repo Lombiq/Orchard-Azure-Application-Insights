@@ -4,6 +4,8 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Orchard;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment;
+using Orchard.Environment.Configuration;
+using Orchard.Services;
 using Piedone.HelpfulLibraries.Contents;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
@@ -32,27 +34,51 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryConfigurationAccessor(
             Work<ITelemetrySettingsAccessor> telemetrySettingsAccessorWork,
-            Work<ITelemetryConfigurationFactory> telemetryConfigurationFactoryWork)
+            Work<ITelemetryConfigurationFactory> telemetryConfigurationFactoryWork,
+            ShellSettings shellSettings,
+            Work<IAppWideSetup> appWideSetupWork)
         {
             _telemetrySettingsAccessorWork = telemetrySettingsAccessorWork;
             _telemetryConfigurationFactoryWork = telemetryConfigurationFactoryWork;
 
 
             OnLoaded<AzureApplicationInsightsTelemetrySettingsPart>((ctx, part) =>
-                ctx.ContentItem.SetContext("PreviousInstrumentationKey", part.InstrumentationKey));
+                ctx.ContentItem.SetContext("PreviousAISettingsContent", part.Stringify()));
 
             OnUpdated<AzureApplicationInsightsTelemetrySettingsPart>((ctx, part) =>
                 {
-                    var previousInstrumentationKey = ctx.ContentItem.GetContext<string>("PreviousInstrumentationKey");
-                    if (!string.IsNullOrEmpty(previousInstrumentationKey) && previousInstrumentationKey != part.InstrumentationKey)
+                    var previousAISettingsContent = ctx.ContentItem.GetContext<string>("PreviousAISettingsContent");
+                    var settingsContent = part.Stringify();
+                    // Checking whether the settings changed. We need this since this method is invoked when any site
+                    // settings change.
+                    if (!string.IsNullOrEmpty(previousAISettingsContent) && previousAISettingsContent != settingsContent)
                     {
                         Clear();
+
+                        if (shellSettings.Name == ShellSettings.DefaultName)
+                        {
+                            appWideSetupWork.Value.SetupAppWideServices(
+                                LoadConfiguration(),
+                                part.ApplicationWideDependencyTrackingIsEnabled,
+                                part.ApplicationWideLogCollectionIsEnabled);
+                        }
                     }
                 });
         }
 
 
         public TelemetryConfiguration GetCurrentConfiguration()
+        {
+            return LoadConfiguration();
+        }
+
+        public void Dispose()
+        {
+            Clear();
+        }
+
+
+        private TelemetryConfiguration LoadConfiguration()
         {
             lock (_lock)
             {
@@ -66,13 +92,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 return _defaultConfiguration;
             }
         }
-
-        public void Dispose()
-        {
-            Clear();
-        }
-
-
         private void Clear()
         {
             lock (_lock)

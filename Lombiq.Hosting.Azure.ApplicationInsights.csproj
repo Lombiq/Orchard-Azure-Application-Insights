@@ -138,13 +138,14 @@
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
     <Compile Include="Models\ITelemetrySettings.cs" />
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
+    <Compile Include="Services\AppWideSetup.cs" />
     <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
-    <Compile Include="Services\StartupLogEntriesCollector.cs" />
+    <Compile Include="Services\PreviousLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetryModulesHolder.cs" />
     <Compile Include="Services\TelemetrySettingsAccessor.cs" />
     <Compile Include="Services\TelemetryConfigurationAccessor.cs" />
     <Compile Include="Services\LoggerSetup.cs" />
-    <Compile Include="Services\GlobalSetupShellEventHandler.cs" />
+    <Compile Include="Services\AppWideSetupShellEventHandler.cs" />
     <Compile Include="Services\TelemetryClientFactory.cs" />
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
     <Compile Include="TelemetryInitializers\ShellNameTelemetryInitializer.cs" />

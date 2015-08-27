@@ -13,7 +13,7 @@ using Orchard.ContentManagement;
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     /// <summary>
-    /// Sets up global AI configuration on shell start.
+    /// Sets up application-wide AI configuration on shell start.
     /// </summary>
     /// <remarks>
     /// That there is such global setup is unfortunate, however with the current design of AI there is simply a need for
@@ -21,13 +21,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     /// Also logging can currently only happen application-wide, since from the logger it's not always possible to
     /// determine the current tenant (and when logging application-level entries, there is no tenant).
     /// </remarks>
-    public class GlobalSetupShellEventHandler : IOrchardShellEvents
+    public class AppWideSetupShellEventHandler : IOrchardShellEvents
     {
         private readonly ShellSettings _shellSettings;
         private readonly IWorkContextAccessor _wca;
 
 
-        public GlobalSetupShellEventHandler(
+        public AppWideSetupShellEventHandler(
             ShellSettings shellSettings,
             IWorkContextAccessor wca)
         {
@@ -46,32 +46,20 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // See: https://github.com/OrchardCMS/Orchard/issues/4852
             using (var wc = _wca.CreateWorkContextScope())
             {
-                var settings = wc.Resolve<ITelemetrySettingsAccessor>().GetCurrentSettings();
+                var currentConfiguration = wc.Resolve<ITelemetryConfigurationAccessor>().GetCurrentConfiguration();
 
-                if (string.IsNullOrEmpty(settings.InstrumentationKey)) return;
-
-                TelemetryConfiguration.Active.InstrumentationKey = settings.InstrumentationKey;
-                wc.Resolve<ITelemetryConfigurationFactory>().PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
+                if (currentConfiguration == null) return;
 
                 var settingsPart = wc.Resolve<ISiteService>().GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
 
-                var telemetryModulesHolder = wc.Resolve<ITelemetryModulesHolder>();
-                if (settingsPart.ApplicationWideDependencyTrackingIsEnabled)
-                {
-                    telemetryModulesHolder.RegisterTelemetryModule(new DependencyTrackingTelemetryModule());
-                }
-                telemetryModulesHolder.RegisterTelemetryModule(new PerformanceCollectorModule());
-                var registeredTelemetryModules = telemetryModulesHolder.GetRegisteredModules().ToList();
-                wc.Resolve<ITelemetryModulesInitializationEventHandler>().TelemetryModulesInitializing(registeredTelemetryModules);
-                foreach (var telemetryModule in registeredTelemetryModules)
-                {
-                    telemetryModule.Initialize(TelemetryConfiguration.Active);
-                }
+                wc.Resolve<IAppWideSetup>().SetupAppWideServices(
+                    currentConfiguration,
+                    settingsPart.ApplicationWideDependencyTrackingIsEnabled,
+                    settingsPart.ApplicationWideLogCollectionIsEnabled);
 
                 if (settingsPart.ApplicationWideLogCollectionIsEnabled)
                 {
-                    wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultLogAppenderName, settings.InstrumentationKey);
-                    wc.Resolve<IStartupLogEntriesCollector>().ReLogStartupLogEntriesIfNew();
+                    wc.Resolve<IPreviousLogEntriesCollector>().ReLogPreviousLogEntries();
                 }
             }
         }

@@ -15,6 +15,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         IEnumerable<ITelemetryModule> GetRegisteredModules();
         void RegisterTelemetryModule(ITelemetryModule module);
         void UnRegisterTelemetryModule(ITelemetryModule module);
+        void Clear();
     }
 
 
@@ -46,11 +47,30 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             {
                 _modules.Remove(module);
 
-                var disposeMethod = module.GetType().GetMethod("Dispose");
-                if (disposeMethod != null)
+                DisposeModule(module);
+            }
+        }
+
+        public void Clear()
+        {
+            lock (_lock)
+            {
+                foreach (var module in _modules)
                 {
-                    disposeMethod.Invoke(module, null);
+                    DisposeModule(module); 
                 }
+
+                _modules.Clear();
+            }
+        }
+
+
+        private void DisposeModule(ITelemetryModule module)
+        {
+            var disposeMethod = module.GetType().GetMethod("Dispose");
+            if (disposeMethod != null)
+            {
+                disposeMethod.Invoke(module, null);
             }
         }
     }
