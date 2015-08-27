@@ -15,19 +15,19 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
         private readonly ShellSettings _shellSettings;
         private readonly Work<ITelemetrySettingsAccessor> _telemetrySettingsAccessorWork;
         private readonly Work<ILoggerSetup> _loggerSetupWork;
-        private readonly ITelemetryModulesHolder _telemetryModulesHolder;
+        private readonly Work<ITelemetryModulesHolder> _telemetryModulesHolderWork;
 
 
         public AzureApplicationInsightsTelemetrySettingsPartDriver(
             ShellSettings shellSettings,
             Work<ITelemetrySettingsAccessor> telemetrySettingsAccessorWork,
             Work<ILoggerSetup> loggerSetupWork,
-            ITelemetryModulesHolder telemetryModulesHolder)
+            Work<ITelemetryModulesHolder> telemetryModulesHolderWork)
         {
             _shellSettings = shellSettings;
             _telemetrySettingsAccessorWork = telemetrySettingsAccessorWork;
             _loggerSetupWork = loggerSetupWork;
-            _telemetryModulesHolder = telemetryModulesHolder;
+            _telemetryModulesHolderWork = telemetryModulesHolderWork;
         }
 
 
@@ -66,7 +66,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                                 _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultLogAppenderName);
                             }
 
-                            var dependencyTrackingModule = _telemetryModulesHolder
+                            var dependencyTrackingModule = _telemetryModulesHolderWork.Value
                                 .GetRegisteredModules()
                                 .FirstOrDefault(module => module is DependencyTrackingTelemetryModule);
                             var dependencyTrackingModuleIsRegistered = dependencyTrackingModule != null;
@@ -76,12 +76,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                                 {
                                     dependencyTrackingModule = new DependencyTrackingTelemetryModule();
                                     dependencyTrackingModule.Initialize(TelemetryConfiguration.Active);
-                                    _telemetryModulesHolder.RegisterTelemetryModule(dependencyTrackingModule); 
+                                    _telemetryModulesHolderWork.Value.RegisterTelemetryModule(dependencyTrackingModule); 
                                 }
                             }
                             else if (dependencyTrackingModuleIsRegistered)
                             {
-                                _telemetryModulesHolder.UnRegisterTelemetryModule(dependencyTrackingModule);
+                                _telemetryModulesHolderWork.Value.UnRegisterTelemetryModule(dependencyTrackingModule);
                             }
                         }
                     }
