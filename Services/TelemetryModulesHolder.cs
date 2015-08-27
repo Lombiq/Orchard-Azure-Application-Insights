@@ -45,6 +45,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             lock (_lock)
             {
                 _modules.Remove(module);
+
+                var disposeMethod = module.GetType().GetMethod("Dispose");
+                if (disposeMethod != null)
+                {
+                    disposeMethod.Invoke(module, null);
+                }
             }
         }
     }
