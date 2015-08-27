@@ -10,4 +10,4 @@ Features:
         Name: Hosting - Azure Application Insights
         Description: Integrates Azure Application Insights telemetry collection into Orchard.
         Category: Hosting
-        Dependencies: Piedone.HelpfulLibraries.Contents, Piedone.HelpfulLibraries.Utilities
+        Dependencies: Piedone.HelpfulLibraries.Contents
