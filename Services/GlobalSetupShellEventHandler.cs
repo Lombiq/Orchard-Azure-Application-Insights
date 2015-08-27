@@ -6,6 +6,9 @@ using Orchard.Environment;
 using Orchard.Environment.Configuration;
 using System.Linq;
 using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+using Orchard.Settings;
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
+using Orchard.ContentManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -38,7 +41,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // Global configuration is application-wide, thus should happen only once.
             if (_shellSettings.Name != ShellSettings.DefaultName) return;
 
-            // ISiteService couldn't be resolved because there is no work context during shell startup, that's
+            // ISiteService can't be resolved because there is no work context during shell startup, that's
             // the reason for the custom work context.
             // See: https://github.com/OrchardCMS/Orchard/issues/4852
             using (var wc = _wca.CreateWorkContextScope())
@@ -50,8 +53,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 TelemetryConfiguration.Active.InstrumentationKey = settings.InstrumentationKey;
                 wc.Resolve<ITelemetryConfigurationFactory>().PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
 
+                var settingsPart = wc.Resolve<ISiteService>().GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
+
                 var telemetryModulesHolder = wc.Resolve<ITelemetryModulesHolder>();
-                if (settings.ApplicationWideDependencyTrackingIsEnabled)
+                if (settingsPart.ApplicationWideDependencyTrackingIsEnabled)
                 {
                     telemetryModulesHolder.RegisterTelemetryModule(new DependencyTrackingTelemetryModule());
                 }
@@ -63,7 +68,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                     telemetryModule.Initialize(TelemetryConfiguration.Active);
                 }
 
-                if (settings.ApplicationWideLogCollectionIsEnabled)
+                if (settingsPart.ApplicationWideLogCollectionIsEnabled)
                 {
                     wc.Resolve<ILoggerSetup>().SetupAiAppender(Constants.DefaultLogAppenderName, settings.InstrumentationKey);
                     wc.Resolve<IStartupLogEntriesCollector>().ReLogStartupLogEntriesIfNew();

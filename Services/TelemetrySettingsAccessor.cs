@@ -43,14 +43,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private class TelemetrySettings : ITelemetrySettings
         {
             public string InstrumentationKey { get; set; }
-            public bool ApplicationWideLogCollectionIsEnabled { get; set; }
-            public bool ApplicationWideDependencyTrackingIsEnabled { get; set; }
 
             public TelemetrySettings(ITelemetrySettings previousSettings)
             {
                 InstrumentationKey = previousSettings.InstrumentationKey;
-                ApplicationWideLogCollectionIsEnabled = previousSettings.ApplicationWideLogCollectionIsEnabled;
-                ApplicationWideDependencyTrackingIsEnabled = previousSettings.ApplicationWideDependencyTrackingIsEnabled;
             }
         }
     }
