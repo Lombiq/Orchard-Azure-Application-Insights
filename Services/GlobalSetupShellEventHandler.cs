@@ -51,7 +51,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 wc.Resolve<ITelemetryConfigurationFactory>().PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
 
                 var telemetryModulesHolder = wc.Resolve<ITelemetryModulesHolder>();
-                telemetryModulesHolder.RegisterTelemetryModule(new DependencyTrackingTelemetryModule());
+                if (settings.ApplicationWideDependencyTrackingIsEnabled)
+                {
+                    telemetryModulesHolder.RegisterTelemetryModule(new DependencyTrackingTelemetryModule());
+                }
                 telemetryModulesHolder.RegisterTelemetryModule(new PerformanceCollectorModule());
                 var registeredTelemetryModules = telemetryModulesHolder.GetRegisteredModules().ToList();
                 wc.Resolve<ITelemetryModulesInitializationEventHandler>().TelemetryModulesInitializing(registeredTelemetryModules);

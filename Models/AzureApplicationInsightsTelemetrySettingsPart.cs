@@ -16,6 +16,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
             set { this.Store(x => x.ApplicationWideLogCollectionIsEnabled, value); }
         }
 
+        public bool ApplicationWideDependencyTrackingIsEnabled
+        {
+            get { return this.Retrieve(x => x.ApplicationWideDependencyTrackingIsEnabled); }
+            set { this.Store(x => x.ApplicationWideDependencyTrackingIsEnabled, value); }
+        }
+
         public bool RequestTrackingIsEnabled
         {
             get { return this.Retrieve(x => x.RequestTrackingIsEnabled, true); }

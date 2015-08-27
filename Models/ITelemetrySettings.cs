@@ -15,5 +15,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
         /// Indicates whether log entries are collected and sent to AI application-wide.
         /// </summary>
         bool ApplicationWideLogCollectionIsEnabled { get; }
+
+        /// <summary>
+        /// Indicates whether AI dependency tracking is enabled for the whole application.
+        /// </summary>
+        bool ApplicationWideDependencyTrackingIsEnabled { get; }
     }
 }
