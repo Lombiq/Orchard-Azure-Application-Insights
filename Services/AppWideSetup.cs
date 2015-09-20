@@ -18,6 +18,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
     public class AppWideSetup : IAppWideSetup
     {
+        private static bool _telemetryModulesInitialized = false;
+
         private readonly ITelemetryConfigurationFactory _telemetryConfigurationFactory;
         private readonly ITelemetryModulesHolder _telemetryModulesHolder;
         private readonly ITelemetryModulesInitializationEventHandler _telemetryModulesInitializationEventHandler;
@@ -44,20 +46,23 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             TelemetryConfiguration.Active.InstrumentationKey = telemetryConfiguration.InstrumentationKey;
             _telemetryConfigurationFactory.PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
 
-            // Can't re-initialize modules with a changed configuration, so need to re-register all of them.
-            _telemetryModulesHolder.Clear();
+            // Telemetry modules can be only instantiated and initialized once per app domain.
+            if (!_telemetryModulesInitialized)
+            {
+                var telemetryModules = new List<ITelemetryModule>();
+                if (enableDependencyTracking)
+                {
+                    telemetryModules.Add(new DependencyTrackingTelemetryModule());
+                }
+                telemetryModules.Add(new PerformanceCollectorModule());
+                _telemetryModulesInitializationEventHandler.TelemetryModulesInitializing(telemetryModules);
+                foreach (var telemetryModule in telemetryModules)
+                {
+                    telemetryModule.Initialize(telemetryConfiguration);
+                    _telemetryModulesHolder.RegisterTelemetryModule(telemetryModule);
+                }
 
-            var telemetryModules = new List<ITelemetryModule>();
-            if (enableDependencyTracking)
-            {
-                telemetryModules.Add(new DependencyTrackingTelemetryModule());
-            }
-            telemetryModules.Add(new PerformanceCollectorModule());
-            _telemetryModulesInitializationEventHandler.TelemetryModulesInitializing(telemetryModules);
-            foreach (var telemetryModule in telemetryModules)
-            {
-                telemetryModule.Initialize(telemetryConfiguration);
-                _telemetryModulesHolder.RegisterTelemetryModule(telemetryModule);
+                _telemetryModulesInitialized = true;
             }
 
             if (enableLogCollection)

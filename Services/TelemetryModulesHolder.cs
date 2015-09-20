@@ -8,7 +8,9 @@ using Orchard;
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     /// <summary>
-    /// Stores telemetry modules that should be application-wide singletons.
+    /// Stores telemetry modules that should be application-wide singletons. Note that telemetry modules aren't just
+    /// singletons but can't even be instantiated a second time, even after being disposed. So any changes in them
+    /// should be followed by an app restart.
     /// </summary>
     public interface ITelemetryModulesHolder : ISingletonDependency
     {

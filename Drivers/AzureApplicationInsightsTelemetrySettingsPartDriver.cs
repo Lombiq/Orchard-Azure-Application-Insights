@@ -7,11 +7,21 @@ using Orchard.ContentManagement.Drivers;
 using Orchard.Environment;
 using Orchard.Environment.Configuration;
 using System.Linq;
+using Piedone.HelpfulLibraries.Libraries.Utilities;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
 {
     public class AzureApplicationInsightsTelemetrySettingsPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetrySettingsPart>
     {
+        private readonly IDeferredAppDomainRestarter _appDomainRestarter;
+
+
+        public AzureApplicationInsightsTelemetrySettingsPartDriver(IDeferredAppDomainRestarter appDomainRestarter)
+        {
+            _appDomainRestarter = appDomainRestarter;
+        }
+        
+        
         protected override DriverResult Editor(AzureApplicationInsightsTelemetrySettingsPart part, dynamic shapeHelper)
         {
             return Editor(part, null, shapeHelper);
@@ -24,7 +34,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                 {
                     if (updater != null)
                     {
+                        var previousEnableDependencyTracking = part.ApplicationWideDependencyTrackingIsEnabled;
+
                         updater.TryUpdateModel(part, Prefix, null, null);
+
+                        if (previousEnableDependencyTracking != part.ApplicationWideDependencyTrackingIsEnabled)
+                        {
+                            _appDomainRestarter.RestartAppDomainWhenRequestEnds();
+                        }
                     }
 
                     return shapeHelper.EditorTemplate(
