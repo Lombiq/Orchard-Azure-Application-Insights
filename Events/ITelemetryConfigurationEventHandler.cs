@@ -9,8 +9,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Events
     public interface ITelemetryConfigurationEventHandler : IEventHandler
     {
         /// <summary>
-        /// Fires when the <see cref="TelemetryConfiguration"/> is fully populated with basic configuration. You can alter the configuration
-        /// through this event.
+        /// Fires when the <see cref="TelemetryConfiguration"/> is fully populated with basic configuration. You can alter 
+        /// the configuration through this event.
         /// </summary>
         /// <param name="telemetryConfiguration">The configuration currently loaded.</param>
         void ConfigurationLoaded(TelemetryConfiguration telemetryConfiguration);
