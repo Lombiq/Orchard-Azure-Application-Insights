@@ -1,4 +1,4 @@
-# [Hosting - Azure Application Insights](https://orchardazureappinsights.codeplex.com/) Readme
+# [Hosting - Azure Application Insights](https://github.com/Lombiq/Orchard-Azure-Application-Insights) Readme
 
 
 
@@ -6,7 +6,7 @@ This [Orchard CMS](http://orchardproject.net/) module enables easy integration o
 
 Warning: this module is only compatible with the Orchard 1.9+.
 
-Note that the module depends on the [Helpful Libraries module](http://helpfullibraries.codeplex.com/) so you should have that installed as well.
+Note that the module depends on the [Helpful Libraries module](https://github.com/Lombiq/Helpful-Libraries) so you should have that installed as well.
 
 Hosting - Azure Application Insights is part of the [Hosting Suite](https://dotnest.com/knowledge-base/topics/lombiq-hosting-suite), which is a complete Orchard DevOps technology suite for building and maintaining scalable Orchard applications.
 
@@ -49,3 +49,13 @@ When assembly binding redirects are changed make sure to also edit `AssemblyRedi
 Note that since there is a 260 characters limit on paths on Windows, all unused library folders and files should be removed and folders shortened.
 
 After updating you can check for breaking changes between the old and new assembly versions with [BitDiffer](http://www.bitwidgets.com/).
+
+The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
+
+- [https://bitbucket.org/Lombiq/hosting-azure-application-insights](https://bitbucket.org/Lombiq/hosting-azure-application-insights) (Mercurial repository)
+- [https://github.com/Lombiq/Orchard-Azure-Application-Insights](https://github.com/Lombiq/Orchard-Azure-Application-Insights) (Git repository)
+
+Bug reports, feature requests and comments are warmly welcome, **please do so via GitHub**.
+Feel free to send pull requests too, no matter which source repository you choose for this purpose.
+
+This project is developed by [Lombiq Technologies Ltd](http://lombiq.com/). Commercial-grade support is available through Lombiq.
