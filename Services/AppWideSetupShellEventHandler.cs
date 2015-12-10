@@ -1,6 +1,5 @@
 ﻿using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Orchard;
 using Orchard.Environment;
 using Orchard.Environment.Configuration;
