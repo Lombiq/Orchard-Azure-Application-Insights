@@ -35,6 +35,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                     return typeof(Microsoft.ApplicationInsights.TelemetryClient).Assembly;
                 case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":
                     return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
+                case "Microsoft.AI.Agent.Intercept":
+                    return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Base.Callbacks).Assembly;
                 default:
                     return null;
             }
