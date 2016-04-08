@@ -3,7 +3,7 @@ AntiForgery: enabled
 Author: Lombiq
 Website: https://github.com/Lombiq/Orchard-Azure-Application-Insights
 Version: 1.0
-OrchardVersion: 1.9.0
+OrchardVersion: 1.9.1
 Description: Integrates Azure Application Insights telemetry collection into Orchard.
 Features:
     Lombiq.Hosting.Azure.ApplicationInsights:
