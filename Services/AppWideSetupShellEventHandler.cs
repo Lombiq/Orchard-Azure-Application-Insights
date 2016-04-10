@@ -23,15 +23,24 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     public class AppWideSetupShellEventHandler : IOrchardShellEvents
     {
         private readonly ShellSettings _shellSettings;
-        private readonly IWorkContextAccessor _wca;
+        private readonly ITelemetryConfigurationAccessor _telemetryConfigurationAccessor;
+        private readonly ISiteService _siteService;
+        private readonly IAppWideSetup _appWideSetup;
+        private readonly IPreviousLogEntriesCollector _previousLogEntriesCollector;
 
 
         public AppWideSetupShellEventHandler(
             ShellSettings shellSettings,
-            IWorkContextAccessor wca)
+            ITelemetryConfigurationAccessor telemetryConfigurationAccessor,
+            ISiteService siteService,
+            IAppWideSetup appWideSetup,
+            IPreviousLogEntriesCollector previousLogEntriesCollector)
         {
             _shellSettings = shellSettings;
-            _wca = wca;
+            _telemetryConfigurationAccessor = telemetryConfigurationAccessor;
+            _siteService = siteService;
+            _appWideSetup = appWideSetup;
+            _previousLogEntriesCollector = previousLogEntriesCollector;
         }
 
 
@@ -40,28 +49,23 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // Global configuration is application-wide, thus should happen only once.
             if (_shellSettings.Name != ShellSettings.DefaultName) return;
 
-            // ISiteService can't be resolved because there is no work context during shell startup, that's
-            // the reason for the custom work context.
-            // See: https://github.com/OrchardCMS/Orchard/issues/4852
-            using (var wc = _wca.CreateWorkContextScope())
+            var currentConfiguration = _telemetryConfigurationAccessor.GetCurrentConfiguration();
+
+            if (currentConfiguration == null) return;
+
+            var settingsPart = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
+
+            _appWideSetup.SetupAppWideServices(
+                currentConfiguration,
+                settingsPart.ApplicationWideDependencyTrackingIsEnabled,
+                settingsPart.ApplicationWideLogCollectionIsEnabled);
+
+            if (settingsPart.ApplicationWideLogCollectionIsEnabled)
             {
-                var currentConfiguration = wc.Resolve<ITelemetryConfigurationAccessor>().GetCurrentConfiguration();
-
-                if (currentConfiguration == null) return;
-
-                var settingsPart = wc.Resolve<ISiteService>().GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
-
-                wc.Resolve<IAppWideSetup>().SetupAppWideServices(
-                    currentConfiguration,
-                    settingsPart.ApplicationWideDependencyTrackingIsEnabled,
-                    settingsPart.ApplicationWideLogCollectionIsEnabled);
-
-                if (settingsPart.ApplicationWideLogCollectionIsEnabled)
-                {
-                    wc.Resolve<IPreviousLogEntriesCollector>().ReLogPreviousLogEntries();
-                }
+                _previousLogEntriesCollector.ReLogPreviousLogEntries();
             }
         }
+
 
         public void Terminating()
         {
