@@ -84,7 +84,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             {
                 if (_defaultConfiguration == null)
                 {
-                    var instrumentationKey = _telemetrySettingsAccessorWork.Value.GetCurrentSettings().InstrumentationKey;
+                    var telemetrySettingsAccessor = _telemetrySettingsAccessorWork.Value;
+
+                    // Despite a work context existing the settings accessor sometimes can't be resolved for Web API
+                    // requests.
+                    if (telemetrySettingsAccessor == null) return null;
+
+                    var instrumentationKey = telemetrySettingsAccessor.GetCurrentSettings().InstrumentationKey;
                     if (string.IsNullOrEmpty(instrumentationKey)) return null;
                     _defaultConfiguration = _telemetryConfigurationFactoryWork.Value.CreateConfiguration(instrumentationKey);
                 }
