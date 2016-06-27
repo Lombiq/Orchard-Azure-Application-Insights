@@ -6,6 +6,7 @@ using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Orchard;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
@@ -50,12 +51,17 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             if (!_telemetryModulesInitialized)
             {
                 var telemetryModules = new List<ITelemetryModule>();
+
                 if (enableDependencyTracking)
                 {
                     telemetryModules.Add(new DependencyTrackingTelemetryModule());
                 }
+
                 telemetryModules.Add(new PerformanceCollectorModule());
+                telemetryModules.Add(new QuickPulseTelemetryModule());
+
                 _telemetryModulesInitializationEventHandler.TelemetryModulesInitializing(telemetryModules);
+
                 foreach (var telemetryModule in telemetryModules)
                 {
                     telemetryModule.Initialize(telemetryConfiguration);

@@ -3,6 +3,7 @@ using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Orchard;
 using Orchard.Environment.Configuration;
 
@@ -58,6 +59,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             var telemetryInitializers = configuration.TelemetryInitializers;
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());
+
+            configuration.TelemetryProcessorChainBuilder.Use(next => new QuickPulseTelemetryProcessor(next));
+            configuration.TelemetryProcessorChainBuilder.Build();
 
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
