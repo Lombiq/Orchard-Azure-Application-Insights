@@ -58,7 +58,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 }
 
                 telemetryModules.Add(new PerformanceCollectorModule());
-                telemetryModules.Add(new QuickPulseTelemetryModule());
+
+                var quickPulseProcessor = telemetryConfiguration.TelemetryProcessors
+                    .FirstOrDefault(processor => processor is QuickPulseTelemetryProcessor);
+                if (quickPulseProcessor != null)
+                {
+                    var quickPulseModule = new QuickPulseTelemetryModule();
+                    quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);
+                    telemetryModules.Add(quickPulseModule); 
+                }
 
                 _telemetryModulesInitializationEventHandler.TelemetryModulesInitializing(telemetryModules);
 
