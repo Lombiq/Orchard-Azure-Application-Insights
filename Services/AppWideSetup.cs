@@ -13,7 +13,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     public interface IAppWideSetup : IDependency
     {
-        void SetupAppWideServices(TelemetryConfiguration telemetryConfiguration, bool enableDependencyTracking, bool enableLogCollection);
+        void SetupAppWideServices(
+            TelemetryConfiguration telemetryConfiguration, 
+            bool enableDependencyTracking, 
+            bool enableLogCollection);
     }
 
 
@@ -40,7 +43,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public void SetupAppWideServices(TelemetryConfiguration telemetryConfiguration, bool enableDependencyTracking, bool enableLogCollection)
+        public void SetupAppWideServices(
+            TelemetryConfiguration telemetryConfiguration, 
+            bool enableDependencyTracking, 
+            bool enableLogCollection)
         {
             if (telemetryConfiguration == null) return;
 
