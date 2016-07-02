@@ -1,6 +1,7 @@
 ﻿using System;
 using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
+using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryProcessors;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -35,17 +36,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
     public class TelemetryConfigurationFactory : ITelemetryConfigurationFactory
     {
-        // QuickPulseTelemetryProcessor needs to have a single instance per app domain for telemetry from all tenants
-        // to appear in Live Metrics Stream. See: https://github.com/Lombiq/Orchard-Azure-Application-Insights/issues/6
-        private static QuickPulseTelemetryProcessor _quickPulseTelemetryProcessor = 
-            new QuickPulseTelemetryProcessor(new NullTelemetryProcessor());
-
         private readonly ITelemetryConfigurationEventHandler _telemetryConfigurationEventHandler;
+        private readonly IAppWideQuickPulseTelemetryProcessorAccessor _appWideQuickPulseTelemetryProcessorAccessor;
 
 
-        public TelemetryConfigurationFactory(ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler)
+        public TelemetryConfigurationFactory(
+            ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler, 
+            IAppWideQuickPulseTelemetryProcessorAccessor appWideQuickPulseTelemetryProcessorAccessor)
         {
             _telemetryConfigurationEventHandler = telemetryConfigurationEventHandler;
+            _appWideQuickPulseTelemetryProcessorAccessor = appWideQuickPulseTelemetryProcessorAccessor;
         }
         
 
@@ -67,19 +67,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());
 
-            configuration.TelemetryProcessorChainBuilder.Use(next => _quickPulseTelemetryProcessor);
+            configuration.TelemetryProcessorChainBuilder.Use(next => 
+                new DispatchingQuickPulseTelemetryProcessor(
+                    next,
+                    _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor()));
             configuration.TelemetryProcessorChainBuilder.Build();
 
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);
-        }
-
-
-        private class NullTelemetryProcessor : ITelemetryProcessor
-        {
-            public void Process(ITelemetry item)
-            {
-            }
         }
     }
 }

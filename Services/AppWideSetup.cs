@@ -14,8 +14,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     public interface IAppWideSetup : IDependency
     {
         void SetupAppWideServices(
-            TelemetryConfiguration telemetryConfiguration, 
-            bool enableDependencyTracking, 
+            TelemetryConfiguration telemetryConfiguration,
+            bool enableDependencyTracking,
             bool enableLogCollection);
     }
 
@@ -28,24 +28,27 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private readonly ITelemetryModulesHolder _telemetryModulesHolder;
         private readonly ITelemetryModulesInitializationEventHandler _telemetryModulesInitializationEventHandler;
         private readonly ILoggerSetup _loggerSetup;
+        private readonly IAppWideQuickPulseTelemetryProcessorAccessor _appWideQuickPulseTelemetryProcessorAccessor;
 
 
         public AppWideSetup(
             ITelemetryConfigurationFactory telemetryConfigurationFactory,
             ITelemetryModulesHolder telemetryModulesHolder,
             ITelemetryModulesInitializationEventHandler telemetryModulesInitializationEventHandler,
-            ILoggerSetup loggerSetup)
+            ILoggerSetup loggerSetup,
+            IAppWideQuickPulseTelemetryProcessorAccessor appWideQuickPulseTelemetryProcessorAccessor)
         {
             _telemetryConfigurationFactory = telemetryConfigurationFactory;
             _telemetryModulesHolder = telemetryModulesHolder;
             _telemetryModulesInitializationEventHandler = telemetryModulesInitializationEventHandler;
             _loggerSetup = loggerSetup;
+            _appWideQuickPulseTelemetryProcessorAccessor = appWideQuickPulseTelemetryProcessorAccessor;
         }
 
 
         public void SetupAppWideServices(
-            TelemetryConfiguration telemetryConfiguration, 
-            bool enableDependencyTracking, 
+            TelemetryConfiguration telemetryConfiguration,
+            bool enableDependencyTracking,
             bool enableLogCollection)
         {
             if (telemetryConfiguration == null) return;
@@ -65,14 +68,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                 telemetryModules.Add(new PerformanceCollectorModule());
 
-                var quickPulseProcessor = telemetryConfiguration.TelemetryProcessors
-                    .FirstOrDefault(processor => processor is QuickPulseTelemetryProcessor);
-                if (quickPulseProcessor != null)
-                {
-                    var quickPulseModule = new QuickPulseTelemetryModule();
-                    quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);
-                    telemetryModules.Add(quickPulseModule); 
-                }
+                var quickPulseProcessor = _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor();
+                var quickPulseModule = new QuickPulseTelemetryModule();
+                quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);
+                telemetryModules.Add(quickPulseModule);
 
                 _telemetryModulesInitializationEventHandler.TelemetryModulesInitializing(telemetryModules);
 

@@ -144,6 +144,7 @@
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
     <Compile Include="Models\ITelemetrySettings.cs" />
+    <Compile Include="Services\AppWideQuickPulseTelemetryProcessorAccessor.cs" />
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
     <Compile Include="Services\AppWideSetup.cs" />
     <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Services\TelemetryConfigurationFactory.cs" />
     <Compile Include="TelemetryInitializers\ShellNameTelemetryInitializer.cs" />
     <Compile Include="TelemetryInitializers\WebOperationIdTelemetryInitializer.cs" />
+    <Compile Include="TelemetryProcessors\DispatchingQuickPulseTelemetryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.AzureApplicationInsightsTelemetrySettings.cshtml" />
