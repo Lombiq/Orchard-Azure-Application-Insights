@@ -70,8 +70,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                         Url = request.Uri,
                                         HttpMethod = request.Method
                                     };
-                                    requestTelemetry.Context.Location.Ip = 
-                                        workContext.Resolve<IClientHostAddressAccessor>().GetClientAddress();
+
+                                    var clientAddress = workContext.Resolve<IClientHostAddressAccessor>().GetClientAddress();
+                                    // The address can be in the format IP:port.
+                                    requestTelemetry.Context.Location.Ip = clientAddress.Split(new[] { ':' })[0];
+
                                     if (request.Headers.ContainsKey("User-Agent"))
                                     {
                                         requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
