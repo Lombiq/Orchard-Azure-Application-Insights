@@ -64,8 +64,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
         {
             var telemetryInitializers = configuration.TelemetryInitializers;
-            telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+            telemetryInitializers.Add(new ContextPopulatingTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());
+            telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
 
             configuration.TelemetryProcessorChainBuilder.Use(next => 
                 new DispatchingQuickPulseTelemetryProcessor(
