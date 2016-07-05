@@ -8,7 +8,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     public interface ITelemetrySettingsAccessor : IDependency
     {
-        ITelemetrySettings GetDefaultSettings();
+        ITelemetrySettings GetCurrentSettings();
     }
 
 
@@ -27,7 +27,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public ITelemetrySettings GetDefaultSettings()
+        public ITelemetrySettings GetCurrentSettings()
         {
             var defaultInstrumentationKey = _appConfigurationAccessor.GetConfiguration(Constants.DefaultInstrumentationKeyConfigurationKey);
             var settings = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
@@ -43,13 +43,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private class TelemetrySettings : ITelemetrySettings
         {
             public string InstrumentationKey { get; set; }
-            public bool ApplicationWideLogCollectionIsEnabled { get; set; }
-
 
             public TelemetrySettings(ITelemetrySettings previousSettings)
             {
                 InstrumentationKey = previousSettings.InstrumentationKey;
-                ApplicationWideLogCollectionIsEnabled = previousSettings.ApplicationWideLogCollectionIsEnabled;
             }
         }
     }

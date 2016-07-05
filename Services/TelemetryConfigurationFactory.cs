@@ -1,9 +1,11 @@
-﻿using Lombiq.Hosting.Azure.ApplicationInsights.Events;
+﻿using System;
+using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
+using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryProcessors;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.PerfCollector;
-using Microsoft.ApplicationInsights.Extensibility.RuntimeTelemetry;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Orchard;
 using Orchard.Environment.Configuration;
 
@@ -24,7 +26,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         TelemetryConfiguration CreateConfiguration(string instrumentationKey);
 
         /// <summary>
-        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and context initializers.
+        /// Populates an existing <see cref="TelemetryConfiguration"/> object with e.g. common telemetry modules and 
+        /// context initializers.
         /// </summary>
         /// <param name="configuration">The existing configuration object.</param>
         void PopulateWithCommonConfiguration(TelemetryConfiguration configuration);
@@ -34,10 +37,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     public class TelemetryConfigurationFactory : ITelemetryConfigurationFactory
     {
         private readonly ITelemetryConfigurationEventHandler _telemetryConfigurationEventHandler;
+        private readonly IAppWideQuickPulseTelemetryProcessorAccessor _appWideQuickPulseTelemetryProcessorAccessor;
 
-        public TelemetryConfigurationFactory(ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler)
+
+        public TelemetryConfigurationFactory(
+            ITelemetryConfigurationEventHandler telemetryConfigurationEventHandler, 
+            IAppWideQuickPulseTelemetryProcessorAccessor appWideQuickPulseTelemetryProcessorAccessor)
         {
             _telemetryConfigurationEventHandler = telemetryConfigurationEventHandler;
+            _appWideQuickPulseTelemetryProcessorAccessor = appWideQuickPulseTelemetryProcessorAccessor;
         }
         
 
@@ -55,14 +63,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public void PopulateWithCommonConfiguration(TelemetryConfiguration configuration)
         {
-            // DiagnosticsTelemetryModule is internal and can't be added but it's not needed since it only helps debugging.
-            var telemetryModules = configuration.TelemetryModules;
-            telemetryModules.Add(new RemoteDependencyModule());
-            telemetryModules.Add(new PerformanceCollectorModule());
-
             var telemetryInitializers = configuration.TelemetryInitializers;
-            telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+            telemetryInitializers.Add(new ContextPopulatingTelemetryInitializer());
             telemetryInitializers.Add(new ShellNameTelemetryInitializer());
+            telemetryInitializers.Add(new WebOperationIdTelemetryInitializer());
+
+            configuration.TelemetryProcessorChainBuilder.Use(next => 
+                new DispatchingQuickPulseTelemetryProcessor(
+                    next,
+                    _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor()));
+            configuration.TelemetryProcessorChainBuilder.Build();
 
 
             _telemetryConfigurationEventHandler.ConfigurationLoaded(configuration);

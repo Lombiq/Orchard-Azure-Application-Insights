@@ -48,7 +48,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                             {
                                 var workContext = _wca.GetContext();
 
-                                if (workContext.CurrentSite.As<AzureApplicationInsightsTelemetrySettingsPart>().RequestTrackingIsEnabled)
+                                var requestTrackingIsEnabled = workContext.CurrentSite
+                                    .As<AzureApplicationInsightsTelemetrySettingsPart>()
+                                    .RequestTrackingIsEnabled;
+                                if (requestTrackingIsEnabled)
                                 {
                                     var clock = workContext.Resolve<IClock>();
 
@@ -58,23 +61,25 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                     var response = context.Response;
                                     var requestTrackingEvents = workContext.Resolve<IRequestTrackingEventHandler>();
 
-                                    // Ideally filling most of the RequestTelemetry data wouldn't be required: once the types in
-                                    // Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules will be public
-                                    // they can be used instead of re-implementing them here.
+                                    // Ideally filling most of the RequestTelemetry data wouldn't be required: once the
+                                    // types in Microsoft.ApplicationInsights.Extensibility.Web.RequestTracking.TelemetryModules 
+                                    // will be public they can be used instead of re-implementing them here.
                                     var requestTelemetry = new RequestTelemetry
                                     {
                                         Timestamp = requestStart,
                                         Url = request.Uri,
                                         HttpMethod = request.Method
                                     };
-                                    requestTelemetry.Context.Location.Ip = request.RemoteIpAddress;
-                                    if (request.Headers.ContainsKey("User-Agent")) requestTelemetry.Context.User.UserAgent = request.Headers["User-Agent"];
+
+
                                     requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
-                                    requestTelemetry.Properties[Constants.ShellNameKey] = workContext.Resolve<ShellSettings>().Name;
+                                    requestTelemetry.Properties[Constants.ShellNameKey] = 
+                                        workContext.Resolve<ShellSettings>().Name;
 
                                     if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
                                     {
-                                        var httpContext = context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
+                                        var httpContext = 
+                                            context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
                                         if (httpContext != null)
                                         {
                                             var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
@@ -112,12 +117,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                                     if (string.IsNullOrEmpty(requestTelemetry.Name))
                                     {
-                                        requestTelemetry.Name = (string)workContext.Layout.Title.ToString() ?? request.Uri.ToString();
+                                        requestTelemetry.Name = 
+                                            (string)workContext.Layout.Title.ToString() ?? 
+                                            request.Uri.ToString();
                                     }
 
                                     requestTrackingEvents.EndRequest(requestTelemetry);
 
-                                    var telemetryClient = workContext.Resolve<ITelemetryClientFactory>().CreateTelemetryClientFromDefaultConfiguration();
+                                    var telemetryClient = workContext
+                                        .Resolve<ITelemetryClientFactory>()
+                                        .CreateTelemetryClientFromCurrentConfiguration();
                                     if (telemetryClient != null)
                                     {
                                         telemetryClient.TrackRequest(requestTelemetry);

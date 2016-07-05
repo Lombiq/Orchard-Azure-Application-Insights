@@ -1,19 +1,24 @@
 ﻿using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment;
+using Orchard.Environment.Configuration;
+using System.Linq;
+using Piedone.HelpfulLibraries.Libraries.Utilities;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
 {
     public class AzureApplicationInsightsTelemetrySettingsPartDriver : ContentPartDriver<AzureApplicationInsightsTelemetrySettingsPart>
     {
-        private readonly Work<ILoggerSetup> _loggerSetupWork;
+        private readonly IDeferredAppDomainRestarter _appDomainRestarter;
 
 
-        public AzureApplicationInsightsTelemetrySettingsPartDriver(Work<ILoggerSetup> loggerSetupWork)
+        public AzureApplicationInsightsTelemetrySettingsPartDriver(IDeferredAppDomainRestarter appDomainRestarter)
         {
-            _loggerSetupWork = loggerSetupWork;
+            _appDomainRestarter = appDomainRestarter;
         }
         
         
@@ -29,20 +34,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Drivers
                 {
                     if (updater != null)
                     {
-                        var previousInstrumentationKey = part.InstrumentationKey;
-                        var previousEnableLogCollection = part.ApplicationWideLogCollectionIsEnabled;
+                        var previousEnableDependencyTracking = part.ApplicationWideDependencyTrackingIsEnabled;
 
                         updater.TryUpdateModel(part, Prefix, null, null);
 
-                        if (part.ApplicationWideLogCollectionIsEnabled &&
-                            (previousEnableLogCollection != part.ApplicationWideLogCollectionIsEnabled && !string.IsNullOrEmpty(part.InstrumentationKey)) ||
-                            previousInstrumentationKey != part.InstrumentationKey)
+                        if (previousEnableDependencyTracking != part.ApplicationWideDependencyTrackingIsEnabled)
                         {
-                            _loggerSetupWork.Value.SetupAiAppender(Constants.DefaultLogAppenderName, part.InstrumentationKey);
-                        }
-                        else if (!part.ApplicationWideLogCollectionIsEnabled)
-                        {
-                            _loggerSetupWork.Value.RemoveAiAppender(Constants.DefaultLogAppenderName);
+                            _appDomainRestarter.RestartAppDomainWhenRequestEnds();
                         }
                     }
 

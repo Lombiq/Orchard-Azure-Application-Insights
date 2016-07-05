@@ -1,4 +1,5 @@
-﻿@model Lombiq.Hosting.Azure.ApplicationInsights.Models.AzureApplicationInsightsTelemetrySettingsPart
+﻿@using Orchard.Environment.Configuration;
+@model Lombiq.Hosting.Azure.ApplicationInsights.Models.AzureApplicationInsightsTelemetrySettingsPart
 
 <fieldset>
     <legend>@T("Azure Application Insights Telemetry Settings")</legend>
@@ -7,30 +8,34 @@
             @Html.LabelFor(m => m.InstrumentationKey, T("Instrumentation key"))
             @Html.TextBoxFor(m => m.InstrumentationKey, new { @class = "text large" })
             @Html.ValidationMessageFor(m => m.InstrumentationKey)
-            <span class="hint">@T("The textual instrumentation key used to connect to the Azure Application Insights telemetry services. You can get this key from the Azure Portal. <br>If you don't specify a key it will be attempted to be loaded from application settings.")</span>
+            @Html.Hint(T("The textual instrumentation key used to connect to the Azure Application Insights telemetry services. You can get this key from the Azure Portal. <br>If you don't specify a key it will be attempted to be loaded from application settings."))
         </li>
-        @if (WorkContext.Resolve<Orchard.Environment.Configuration.ShellSettings>().Name == Orchard.Environment.Configuration.ShellSettings.DefaultName)
+        @if (WorkContext.Resolve<ShellSettings>().Name == ShellSettings.DefaultName)
         {
             <li>
                 @Html.EditorFor(m => m.ApplicationWideLogCollectionIsEnabled)
-                <label for="@Html.FieldIdFor(m => m.ApplicationWideLogCollectionIsEnabled)" class="forcheckbox">@T("Enable the application-wide collection of log entries in AI")</label>
+                <label for="@Html.FieldIdFor(m => m.ApplicationWideLogCollectionIsEnabled)" class="forcheckbox">@T("Enable application-wide collection of log entries")</label>
                 @Html.ValidationMessageFor(m => m.ApplicationWideLogCollectionIsEnabled)
-                <span class="hint">
-                    @T("If enabled, all log entries from the application will be sent to and collected by Application Insights too (in addition to other log appenders), thus you'll be able to browse log entries on the Azure Portal. <br>Note that since this is an application-wide configuration it's only available on the Default tenant. Also since the logger is set up through this tenant log entries written before the startup of the tenant won't get into AI.")
-                </span>
+                @Html.Hint(T("If enabled, all log entries from the application will be sent to and collected by Application Insights too (in addition to other log appenders), thus you'll be able to browse log entries on the Azure Portal. <br>Note that since this is an application-wide configuration it's only available on the Default tenant. Also since the logger is set up through this tenant log entries written before the startup of the tenant won't get into AI."))
+            </li>
+            <li>
+                @Html.EditorFor(m => m.ApplicationWideDependencyTrackingIsEnabled)
+                <label for="@Html.FieldIdFor(m => m.ApplicationWideDependencyTrackingIsEnabled)" class="forcheckbox">@T("Enable application-wide tracking of dependencies")</label>
+                @Html.ValidationMessageFor(m => m.ApplicationWideDependencyTrackingIsEnabled)
+                @Html.Hint(T("If enabled, dependency tracking (e.g. how SQL queries or Blob storage operations perform) will be enabled for the whole application. It's advised not to enabled dependency tracking all the time as it sends a lot of telemetry data. <br>Note that since this is an application-wide configuration it's only available on the Default tenant. <br>WARNING: changing the state of this option will cause an application restart."))
             </li>
         }
         <li>
             @Html.EditorFor(m => m.RequestTrackingIsEnabled)
             <label for="@Html.FieldIdFor(m => m.RequestTrackingIsEnabled)" class="forcheckbox">@T("Enable request tracking")</label>
             @Html.ValidationMessageFor(m => m.RequestTrackingIsEnabled)
-            <span class="hint">@T("If enabled, server-side request telemetry will be sent to AI, measuring e.g. server-side execution time and indicating failed requests. Request tracking is also necessary to correlate traces (i.e. log entries) with requests.")</span>
+            @Html.Hint(T("If enabled, server-side request telemetry will be sent to AI, measuring e.g. server-side execution time and indicating failed requests. Request tracking is also necessary to correlate traces (i.e. log entries) with requests."))
         </li>
         <li>
             @Html.EditorFor(m => m.ClientSideTrackingIsEnabled)
             <label for="@Html.FieldIdFor(m => m.ClientSideTrackingIsEnabled)" class="forcheckbox">@T("Enable client-side tracking")</label>
             @Html.ValidationMessageFor(m => m.ClientSideTrackingIsEnabled)
-            <span class="hint">@T("If enabled, client-side request telemetry will be sent to AI, measuring e.g. client-side execution time and indicating client-side errors.")</span>
+            @Html.Hint(T("If enabled, client-side request telemetry will be sent to AI, measuring e.g. client-side execution time and indicating client-side errors."))
         </li>
     </ol>
 </fieldset>

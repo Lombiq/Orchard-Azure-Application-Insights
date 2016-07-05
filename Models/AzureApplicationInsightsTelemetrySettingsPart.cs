@@ -16,6 +16,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
             set { this.Store(x => x.ApplicationWideLogCollectionIsEnabled, value); }
         }
 
+        public bool ApplicationWideDependencyTrackingIsEnabled
+        {
+            get { return this.Retrieve(x => x.ApplicationWideDependencyTrackingIsEnabled); }
+            set { this.Store(x => x.ApplicationWideDependencyTrackingIsEnabled, value); }
+        }
+
         public bool RequestTrackingIsEnabled
         {
             get { return this.Retrieve(x => x.RequestTrackingIsEnabled, true); }
@@ -26,6 +32,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
         {
             get { return this.Retrieve(x => x.ClientSideTrackingIsEnabled, true); }
             set { this.Store(x => x.ClientSideTrackingIsEnabled, value); }
+        }
+
+
+        public string Stringify()
+        {
+            return InstrumentationKey + 
+                ApplicationWideLogCollectionIsEnabled + 
+                ApplicationWideDependencyTrackingIsEnabled +
+                RequestTrackingIsEnabled +
+                ClientSideTrackingIsEnabled;
         }
     }
 }

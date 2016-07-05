@@ -13,7 +13,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
     /// <remarks>
     /// The class's aim is basically the same as <see cref="Microsoft.ApplicationInsights.Extensibility.Web.TelemetryInitializers"/>
     /// but that class is internal and thus unusable.
-    /// This is necessary especially for TelemetryConfiguration.Active, as that lives independently from our custom request tracking.
+    /// This is necessary especially for TelemetryConfiguration.Active, as that lives independently from our custom 
+    /// request tracking.
     /// </remarks>
     public class WebOperationIdTelemetryInitializer : ITelemetryInitializer
     {
