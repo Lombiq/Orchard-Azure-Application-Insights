@@ -5,6 +5,7 @@ using System.Web;
 using Lombiq.Hosting.Azure.ApplicationInsights.Events;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Orchard;
@@ -67,6 +68,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 }
 
                 telemetryModules.Add(new PerformanceCollectorModule());
+                telemetryModules.Add(new DiagnosticsTelemetryModule
+                {
+                    DiagnosticsInstrumentationKey = telemetryConfiguration.InstrumentationKey
+                });
 
                 var quickPulseProcessor = _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor();
                 var quickPulseModule = new QuickPulseTelemetryModule();
