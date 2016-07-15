@@ -48,6 +48,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                             {
                                 var workContext = _wca.GetContext();
 
+                                // The authenticated user should be set here so ContextPopulatingTelemetryInitializer
+                                // can retrieve it. If it would try to get it directly it would cause a spiral of calls
+                                // when (SQL) dependency tracking is enabled, resulting in stack overflow.
+                                workContext.SetAuthenticatedUserIdForRequest();
+
                                 var requestTrackingIsEnabled = workContext.CurrentSite
                                     .As<AzureApplicationInsightsTelemetrySettingsPart>()
                                     .RequestTrackingIsEnabled;

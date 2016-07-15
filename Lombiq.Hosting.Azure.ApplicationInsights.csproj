@@ -153,6 +153,7 @@
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
     <Compile Include="Events\ITelemetryModulesInitializationEventHandler.cs" />
     <Compile Include="Exceptions\RequestException.cs" />
+    <Compile Include="Extensions\WorkContextExtensions.cs" />
     <Compile Include="Filters\ClientSideTrackingInjectingFilter.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
     <Compile Include="Models\AzureApplicationInsightsTelemetrySettingsPart.cs" />
