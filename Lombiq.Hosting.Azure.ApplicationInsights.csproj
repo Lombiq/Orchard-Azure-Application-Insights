@@ -153,6 +153,8 @@
     <Compile Include="Events\ITelemetryConfigurationEventHandler.cs" />
     <Compile Include="Events\ITelemetryModulesInitializationEventHandler.cs" />
     <Compile Include="Exceptions\RequestException.cs" />
+    <Compile Include="Extensions\HttpContextExtensions.cs" />
+    <Compile Include="Extensions\SupportPropertiesExtensions.cs" />
     <Compile Include="Extensions\WorkContextExtensions.cs" />
     <Compile Include="Filters\ClientSideTrackingInjectingFilter.cs" />
     <Compile Include="Handlers\AzureApplicationInsightsTelemetrySettingsPartHandler.cs" />
@@ -161,6 +163,8 @@
     <Compile Include="Services\AppWideQuickPulseTelemetryProcessorAccessor.cs" />
     <Compile Include="Services\AssemblyRedirectSetupShellEventHandler.cs" />
     <Compile Include="Services\AppWideSetup.cs" />
+    <Compile Include="Services\BackgroundTaskTelemetry\BackgroundServiceDecorator.cs" />
+    <Compile Include="Services\BackgroundTaskTelemetry\BackgroundServiceDecoratorModule.cs" />
     <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
     <Compile Include="Services\PreviousLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetryModulesHolder.cs" />
