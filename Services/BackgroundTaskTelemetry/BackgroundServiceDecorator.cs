@@ -45,6 +45,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTeleme
 
             var telemetryClient = _telemetryClientFactory.CreateTelemetryClientFromCurrentConfiguration();
 
+            if (telemetryClient == null) return;
+
             var eventTelemetry = new EventTelemetry { Name = "BackgroundServiceSweepEnd", Timestamp = _clock.UtcNow };
             eventTelemetry.SetShellName(_shellSettings);
             eventTelemetry.Metrics["Orchard.BackgroundTasksExecutionTimeSeconds"] = (_clock.UtcNow - beginTime).Seconds;
