@@ -43,13 +43,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTeleme
 
         public void Sweep()
         {
-            var settingsPart = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
-
-            if (!settingsPart.BackgroundTaskTrackingIsEnabled) return;
-
             var beginTime = _clock.UtcNow;
 
             _decorated.Sweep();
+
+            var settingsPart = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
+
+            if (!settingsPart.BackgroundTaskTrackingIsEnabled) return;
 
             var telemetryClient = _telemetryClientFactory.CreateTelemetryClientFromCurrentConfiguration();
 
