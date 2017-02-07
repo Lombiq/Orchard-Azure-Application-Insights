@@ -37,5 +37,11 @@
             @Html.ValidationMessageFor(m => m.ClientSideTrackingIsEnabled)
             @Html.Hint(T("If enabled, client-side request telemetry will be sent to AI, measuring e.g. client-side execution time and indicating client-side errors."))
         </li>
+        <li>
+            @Html.EditorFor(m => m.BackgroundTaskTrackingIsEnabled)
+            <label for="@Html.FieldIdFor(m => m.BackgroundTaskTrackingIsEnabled)" class="forcheckbox">@T("Enable background task tracking")</label>
+            @Html.ValidationMessageFor(m => m.BackgroundTaskTrackingIsEnabled)
+            @Html.Hint(T("If enabled, information about background task execution (including e.g. which background tasks are running and how long they took to be exectued) are sent to Application Insights. Disable to reduce the volume of telemetry data."))
+        </li>
     </ol>
 </fieldset>

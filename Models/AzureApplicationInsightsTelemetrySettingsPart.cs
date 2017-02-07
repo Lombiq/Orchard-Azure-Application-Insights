@@ -34,14 +34,21 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
             set { this.Store(x => x.ClientSideTrackingIsEnabled, value); }
         }
 
+        public bool BackgroundTaskTrackingIsEnabled
+        {
+            get { return this.Retrieve(x => x.BackgroundTaskTrackingIsEnabled); }
+            set { this.Store(x => x.BackgroundTaskTrackingIsEnabled, value); }
+        }
+
 
         public string Stringify()
         {
-            return InstrumentationKey + 
-                ApplicationWideLogCollectionIsEnabled + 
+            return InstrumentationKey +
+                ApplicationWideLogCollectionIsEnabled +
                 ApplicationWideDependencyTrackingIsEnabled +
                 RequestTrackingIsEnabled +
-                ClientSideTrackingIsEnabled;
+                ClientSideTrackingIsEnabled +
+                BackgroundTaskTrackingIsEnabled;
         }
     }
 }

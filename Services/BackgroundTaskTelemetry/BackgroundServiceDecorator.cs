@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Microsoft.ApplicationInsights.DataContracts;
+using Orchard.ContentManagement;
 using Orchard.Environment.Configuration;
 using Orchard.Services;
+using Orchard.Settings;
 using Orchard.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTelemetry
 {
@@ -20,6 +21,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTeleme
         private readonly ShellSettings _shellSettings;
         private readonly IEnumerable<IBackgroundTask> _backgroundTasks;
         private readonly IClock _clock;
+        private readonly ISiteService _siteService;
 
 
         public BackgroundServiceDecorator(
@@ -27,13 +29,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTeleme
             ITelemetryClientFactory telemetryClientFactory,
             ShellSettings shellSettings,
             IEnumerable<IBackgroundTask> backgroundTasks,
-            IClock clock)
+            IClock clock,
+            ISiteService siteService)
         {
             _decorated = decorated;
             _telemetryClientFactory = telemetryClientFactory;
             _shellSettings = shellSettings;
             _backgroundTasks = backgroundTasks;
             _clock = clock;
+            _siteService = siteService;
         }
 
 
@@ -42,6 +46,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services.BackgroundTaskTeleme
             var beginTime = _clock.UtcNow;
 
             _decorated.Sweep();
+
+            var settingsPart = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
+
+            if (!settingsPart.BackgroundTaskTrackingIsEnabled) return;
 
             var telemetryClient = _telemetryClientFactory.CreateTelemetryClientFromCurrentConfiguration();
 
