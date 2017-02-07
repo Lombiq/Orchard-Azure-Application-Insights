@@ -41,7 +41,7 @@
             @Html.EditorFor(m => m.BackgroundTaskTrackingIsEnabled)
             <label for="@Html.FieldIdFor(m => m.BackgroundTaskTrackingIsEnabled)" class="forcheckbox">@T("Enable background task tracking")</label>
             @Html.ValidationMessageFor(m => m.BackgroundTaskTrackingIsEnabled)
-            @Html.Hint(T("If enabled, the background task tracking will be enabled."))
+            @Html.Hint(T("If enabled, information about background task execution (including e.g. which background tasks are running and how long they took to be exectued) are sent to Application Insights. Disable to reduce the volume of telemetry data."))
         </li>
     </ol>
 </fieldset>
