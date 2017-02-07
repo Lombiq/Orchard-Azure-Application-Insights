@@ -21,7 +21,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         {
         }
 
-        
+
         private Assembly ResolveApplicationInsightsAssemblies(object sender, ResolveEventArgs args)
         {
             // These are here instead of adding assembly redirects to the Web.config. Edit them when necessary after 
@@ -37,6 +37,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                     return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
                 case "Microsoft.AI.Agent.Intercept":
                     return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Base.Callbacks).Assembly;
+                case "log4net":
+                    return Assembly.Load("log4net");
                 default:
                     return null;
             }
