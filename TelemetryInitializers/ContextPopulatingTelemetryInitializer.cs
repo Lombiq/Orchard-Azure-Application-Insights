@@ -30,8 +30,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
             {
                 telemetry.Context.User.UserAgent = userAgent;
             }
-
-            telemetry.Context.User.AuthenticatedUserId = workContext.CurrentUser?.Id.ToString();
+            
+            telemetry.Context.User.AuthenticatedUserId = workContext.GetAuthenticatedUserIdForRequest();
         }
     }
 }

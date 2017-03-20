@@ -18,15 +18,5 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         /// in the database.
         /// </summary>
         public const string DefaultInstrumentationKeyConfigurationKey = "Lombiq.Hosting.Azure.ApplicationInsights.DefaultInstrumentationKey";
-
-        /// <summary>
-        /// Configuration key for the identifier of the current request, used to correlate e.g. requests with traces.
-        /// </summary>
-        public const string RequestIdKey = "Lombiq.Hosting.Azure.ApplicationInsights.RequestId";
-
-        /// <summary>
-        /// Configuration key for the identifier of the telemetry property used to store the Orchard shell's name.
-        /// </summary>
-        public const string ShellNameKey = "Orchard.ShellName";
     }
 }

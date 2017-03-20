@@ -12,6 +12,7 @@ using Orchard.Exceptions;
 using Orchard.Logging;
 using Lombiq.Hosting.Azure.ApplicationInsights.Exceptions;
 using Orchard.Environment.Configuration;
+using System.Web;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
@@ -48,6 +49,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                             {
                                 var workContext = _wca.GetContext();
 
+                                // The authenticated user should be set here so ContextPopulatingTelemetryInitializer
+                                // can retrieve it. If it would try to get it directly it would cause a spiral of calls
+                                // when (SQL) dependency tracking is enabled, resulting in stack overflow.
+                                workContext.SetAuthenticatedUserIdForRequest();
+
                                 var requestTrackingIsEnabled = workContext.CurrentSite
                                     .As<AzureApplicationInsightsTelemetrySettingsPart>()
                                     .RequestTrackingIsEnabled;
@@ -73,13 +79,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
 
                                     requestTelemetry.Context.Operation.Id = requestTelemetry.Id;
-                                    requestTelemetry.Properties[Constants.ShellNameKey] = 
-                                        workContext.Resolve<ShellSettings>().Name;
+                                    requestTelemetry.SetShellName(workContext.Resolve<ShellSettings>());
 
                                     if (context.Environment.ContainsKey("System.Web.HttpContextBase"))
                                     {
                                         var httpContext = 
-                                            context.Environment["System.Web.HttpContextBase"] as System.Web.HttpContextBase;
+                                            context.Environment["System.Web.HttpContextBase"] as HttpContextBase;
                                         if (httpContext != null)
                                         {
                                             var routeDataValues = httpContext.Request.RequestContext.RouteData.Values;
@@ -92,7 +97,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                                                     routeDataValues["action"];
                                             }
 
-                                            httpContext.Items[Constants.RequestIdKey] = requestTelemetry.Context.Operation.Id;
+                                            httpContext.SetOperationIdForRequest(requestTelemetry.Context.Operation.Id);
                                         }
                                     }
 

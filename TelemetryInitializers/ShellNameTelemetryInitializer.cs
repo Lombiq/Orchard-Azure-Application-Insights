@@ -34,7 +34,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 
 
             // If already set, nothing to do.
-            if (telemetryWithProperties.Properties.ContainsKey(Constants.ShellNameKey)) return;
+            if (!string.IsNullOrEmpty(telemetryWithProperties.GetShellName())) return;
 
 
             // Below algorithm copied from OrchardLog4netLogger.
@@ -59,7 +59,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
                 return;
 
 
-            telemetryWithProperties.Properties[Constants.ShellNameKey] = shellContext.Settings.Name;
+            telemetryWithProperties.SetShellName(shellContext.Settings);
         }
     }
 }
