@@ -17,9 +17,7 @@ The module was created by [Lombiq](http://lombiq.com), one of the core developer
 
 You can configure the module, including setting the AI instrumentation key from the admin site, for each tenant. You can also set an application-wide instrumentation key to be used by all tenants (if the module is enabled) in the static configuration (i.e. Web.config, Azure Portal) with the key shown in the `Constants` class.
 
-<del>To collect detailed dependency data and server resource information you'll need to [install the AI Status Monitor](https://azure.microsoft.com/en-us/documentation/articles/app-insights-monitor-performance-live-website-now/) (for VMs and local development) or the Application Insights site extension for Azure Web Apps. Be aware that both tools will add DLLs to the app and create an ApplicationInsights.config file, but neither are needed. To fix this remove the config file and re-deploy (or locally: delete Orchard.Web/bin and App_Data/Dependencies and re-build) the app.</del>
-
-Using the AI site extension is currently not supported, the extension needs to be modified.
+Even without installing [the AI Status Monitor](https://azure.microsoft.com/en-us/documentation/articles/app-insights-monitor-performance-live-website-now/) (for VMs and local development) or the Application Insights site extension for Azure Web App Services you'll be able to see memory and CPU usage data.
 
 
 ## Extending the module with custom telemetry data
