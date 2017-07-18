@@ -16,6 +16,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
     {
         void SetupAppWideServices(
             TelemetryConfiguration telemetryConfiguration,
+            string apiKey,
             bool enableDependencyTracking,
             bool enableLogCollection);
     }
@@ -49,6 +50,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public void SetupAppWideServices(
             TelemetryConfiguration telemetryConfiguration,
+            string apiKey,
             bool enableDependencyTracking,
             bool enableLogCollection)
         {
@@ -75,6 +77,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                 var quickPulseProcessor = _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor();
                 var quickPulseModule = new QuickPulseTelemetryModule();
+                if (!string.IsNullOrEmpty(apiKey)) quickPulseModule.AuthenticationApiKey = apiKey;
                 quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);
                 telemetryModules.Add(quickPulseModule);
 

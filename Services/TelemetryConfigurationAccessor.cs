@@ -59,6 +59,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                         {
                             appWideSetupWork.Value.SetupAppWideServices(
                                 LoadConfiguration(),
+                                _telemetrySettingsAccessorWork.Value.GetCurrentSettings().ApiKey,
                                 part.ApplicationWideDependencyTrackingIsEnabled,
                                 part.ApplicationWideLogCollectionIsEnabled);
                         }

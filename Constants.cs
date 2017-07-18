@@ -14,9 +14,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         public const string DefaultLogAppenderName = "ai-appender";
 
         /// <summary>
-        /// Configuration key for the default instrumentation key. The default intstrumentation key is used if none is saved
-        /// in the database.
+        /// Configuration key for the default instrumentation key. The default instrumentation key is used if none is 
+        /// saved in the database.
         /// </summary>
         public const string DefaultInstrumentationKeyConfigurationKey = "Lombiq.Hosting.Azure.ApplicationInsights.DefaultInstrumentationKey";
+
+        /// <summary>
+        /// Configuration key for the default API key. The default API key is used if none is saved in the database.
+        /// </summary>
+        public const string DefaultApiKeyConfigurationKey = "Lombiq.Hosting.Azure.ApplicationInsights.DefaultApiKey";
     }
 }

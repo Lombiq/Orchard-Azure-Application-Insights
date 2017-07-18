@@ -29,11 +29,21 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public ITelemetrySettings GetCurrentSettings()
         {
-            var defaultInstrumentationKey = _appConfigurationAccessor.GetConfiguration(Constants.DefaultInstrumentationKeyConfigurationKey);
-            var settings = _siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>();
+            var defaultInstrumentationKey = _appConfigurationAccessor
+                .GetConfiguration(Constants.DefaultInstrumentationKeyConfigurationKey);
+            var defaultAPIKey = _appConfigurationAccessor
+                .GetConfiguration(Constants.DefaultApiKeyConfigurationKey);
+
+            var settings = new TelemetrySettings(_siteService.GetSiteSettings().As<AzureApplicationInsightsTelemetrySettingsPart>());
+
             if (!string.IsNullOrEmpty(defaultInstrumentationKey) && string.IsNullOrEmpty(settings.InstrumentationKey))
             {
-                return new TelemetrySettings(settings) { InstrumentationKey = defaultInstrumentationKey };
+                settings.InstrumentationKey = defaultInstrumentationKey;
+            }
+
+            if (!string.IsNullOrEmpty(defaultAPIKey) && string.IsNullOrEmpty(settings.ApiKey))
+            {
+                settings.ApiKey = defaultAPIKey;
             }
 
             return settings;
@@ -43,10 +53,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private class TelemetrySettings : ITelemetrySettings
         {
             public string InstrumentationKey { get; set; }
+            public string ApiKey { get; set; }
+
 
             public TelemetrySettings(ITelemetrySettings previousSettings)
             {
                 InstrumentationKey = previousSettings.InstrumentationKey;
+                ApiKey = previousSettings.ApiKey;
             }
         }
     }

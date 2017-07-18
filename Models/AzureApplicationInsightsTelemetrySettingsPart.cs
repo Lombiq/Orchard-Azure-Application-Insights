@@ -1,4 +1,5 @@
 ﻿using Orchard.ContentManagement;
+using Orchard.ContentManagement.Utilities;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
 {
@@ -8,6 +9,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
         {
             get { return this.Retrieve(x => x.InstrumentationKey); }
             set { this.Store(x => x.InstrumentationKey, value); }
+        }
+
+        private readonly LazyField<string> _apiKey = new LazyField<string>();
+        internal LazyField<string> ApiKeyField => _apiKey;
+        public string ApiKey
+        {
+            get { return _apiKey.Value; }
+            set { _apiKey.Value = value; }
         }
 
         public bool ApplicationWideLogCollectionIsEnabled
@@ -43,7 +52,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
 
         public string Stringify()
         {
-            return InstrumentationKey +
+            return 
+                InstrumentationKey +
+                ApiKey +
                 ApplicationWideLogCollectionIsEnabled +
                 ApplicationWideDependencyTrackingIsEnabled +
                 RequestTrackingIsEnabled +

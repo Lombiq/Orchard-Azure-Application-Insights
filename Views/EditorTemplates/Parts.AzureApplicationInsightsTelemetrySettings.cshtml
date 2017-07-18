@@ -13,6 +13,12 @@
         @if (WorkContext.Resolve<ShellSettings>().Name == ShellSettings.DefaultName)
         {
             <li>
+                @Html.LabelFor(m => m.ApiKey, T("API key"))
+                @Html.PasswordFor(m => m.ApiKey, new { @class = "text large" })
+                @Html.ValidationMessageFor(m => m.ApiKey)
+                @Html.Hint(T("The textual Api key used to set up a secure control channel with Azure. This is used in Live Metrics Stream filtering for example. You can get this key from the Azure Portal. <br>If you don't specify a key it will be attempted to be loaded from application settings."))
+            </li>
+            <li>
                 @Html.EditorFor(m => m.ApplicationWideLogCollectionIsEnabled)
                 <label for="@Html.FieldIdFor(m => m.ApplicationWideLogCollectionIsEnabled)" class="forcheckbox">@T("Enable application-wide collection of log entries")</label>
                 @Html.ValidationMessageFor(m => m.ApplicationWideLogCollectionIsEnabled)

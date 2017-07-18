@@ -27,6 +27,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         private readonly ISiteService _siteService;
         private readonly IAppWideSetup _appWideSetup;
         private readonly IPreviousLogEntriesCollector _previousLogEntriesCollector;
+        private readonly ITelemetrySettingsAccessor _telemetrySettingsAccessor;
 
 
         public AppWideSetupShellEventHandler(
@@ -34,13 +35,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             ITelemetryConfigurationAccessor telemetryConfigurationAccessor,
             ISiteService siteService,
             IAppWideSetup appWideSetup,
-            IPreviousLogEntriesCollector previousLogEntriesCollector)
+            IPreviousLogEntriesCollector previousLogEntriesCollector,
+            ITelemetrySettingsAccessor telemetrySettingsAccessor)
         {
             _shellSettings = shellSettings;
             _telemetryConfigurationAccessor = telemetryConfigurationAccessor;
             _siteService = siteService;
             _appWideSetup = appWideSetup;
             _previousLogEntriesCollector = previousLogEntriesCollector;
+            _telemetrySettingsAccessor = telemetrySettingsAccessor;
         }
 
 
@@ -57,6 +60,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             _appWideSetup.SetupAppWideServices(
                 currentConfiguration,
+                _telemetrySettingsAccessor.GetCurrentSettings().ApiKey,
                 settingsPart.ApplicationWideDependencyTrackingIsEnabled,
                 settingsPart.ApplicationWideLogCollectionIsEnabled);
 
