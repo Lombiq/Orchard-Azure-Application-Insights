@@ -23,7 +23,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryProcessors
 
         void ITelemetryProcessor.Process(ITelemetry item)
         {
-            base.Process(item);
+            Process(item);
             _appWideQuickPulseTelemetryProcessor.Process(item);
         }
     }
