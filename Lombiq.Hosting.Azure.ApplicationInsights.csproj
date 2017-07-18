@@ -149,12 +149,12 @@
     <Content Include="Module.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
+    <ProjectReference Include="$(ModulesRoot)..\..\..\Orchard\Orchard.Framework.csproj">
       <Project>{2D1D92BB-4555-4CBE-8D0E-63563D6CE4C6}</Project>
       <Name>Orchard.Framework</Name>
       <Private>false</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
+    <ProjectReference Include="$(ModulesRoot)..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
       <Private>false</Private>
@@ -162,6 +162,10 @@
     <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
       <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>
       <Name>Piedone.HelpfulLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="$(ModulesRoot)..\..\Modules\Orchard.Caching\Orchard.Caching.csproj">
+      <Project>{7528bf74-25c7-4abe-883a-443b4eec4776}</Project>
+      <Name>Orchard.Caching</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +262,33 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <!-- Orchard App Host (https://github.com/Lombiq/Orchard-Application-Host) compatibility start. Enabling the usage of a lib folder at a different location. -->
+  <ItemGroup>
+    <LibReferenceSearchPathFiles Include="..\..\Orchard\lib\**\*.dll">
+      <InProject>false</InProject>
+    </LibReferenceSearchPathFiles>
+    <NuGetReferenceSearchPathFiles Include="..\..\Orchard\src\packages\**\*.dll">
+      <InProject>false</InProject>
+    </NuGetReferenceSearchPathFiles>
+  </ItemGroup>
+  <Target Name="BeforeResolveReferences">
+    <RemoveDuplicates Inputs="@(LibReferenceSearchPathFiles->'%(RootDir)%(Directory)')">
+      <Output TaskParameter="Filtered" ItemName="LibReferenceSearchPath" />
+    </RemoveDuplicates>
+    <CreateProperty Value="@(LibReferenceSearchPath);$(AssemblySearchPaths)">
+      <Output TaskParameter="Value" PropertyName="AssemblySearchPaths" />
+    </CreateProperty>
+    <RemoveDuplicates Inputs="@(NuGetReferenceSearchPathFiles->'%(RootDir)%(Directory)')">
+      <Output TaskParameter="Filtered" ItemName="NuGetReferenceSearchPath" />
+    </RemoveDuplicates>
+    <CreateProperty Value="@(NuGetReferenceSearchPath);$(AssemblySearchPaths)">
+      <Output TaskParameter="Value" PropertyName="AssemblySearchPaths" />
+    </CreateProperty>
+  </Target>
+  <PropertyGroup Condition="Exists('..\..\Orchard\lib')">
+    <ModulesRoot>..\..\Orchard\src\Orchard.Web\Modules\Orchard.Alias\</ModulesRoot>
+  </PropertyGroup>
+  <!-- Orchard App Host (https://github.com/Lombiq/Orchard-Application-Host) compatibility end. -->
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
