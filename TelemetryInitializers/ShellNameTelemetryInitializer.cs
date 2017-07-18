@@ -6,6 +6,7 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Orchard.Environment;
+using Orchard.Mvc;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 {
@@ -19,7 +20,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
     {
         public IOrchardHostContainer HostContainer { get; set; }
 
-        
+
         public ShellNameTelemetryInitializer()
         {
             OrchardHostContainerRegistry.RegisterShim(this);
@@ -37,26 +38,21 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
             if (!string.IsNullOrEmpty(telemetryWithProperties.GetShellName())) return;
 
 
-            // Below algorithm copied from OrchardLog4netLogger.
-            var ctx = HttpContext.Current;
-            if (ctx == null)
-                return;
+            // Below algorithm is mostly copied from OrchardLog4netLogger but uses IHttpContextAccessor.
+            var httpContext = HostContainer.Resolve<IHttpContextAccessor>().Current();
+            if (httpContext == null) return;
 
             var runningShellTable = HostContainer.Resolve<IRunningShellTable>();
-            if (runningShellTable == null)
-                return;
+            if (runningShellTable == null) return;
 
-            var shellSettings = runningShellTable.Match(new HttpContextWrapper(ctx));
-            if (shellSettings == null)
-                return;
+            var shellSettings = runningShellTable.Match(httpContext);
+            if (shellSettings == null) return;
 
             var orchardHost = HostContainer.Resolve<IOrchardHost>();
-            if (orchardHost == null)
-                return;
+            if (orchardHost == null) return;
 
             var shellContext = orchardHost.GetShellContext(shellSettings);
-            if (shellContext == null || shellContext.Settings == null)
-                return;
+            if (shellContext == null || shellContext.Settings == null) return;
 
 
             telemetryWithProperties.SetShellName(shellContext.Settings);

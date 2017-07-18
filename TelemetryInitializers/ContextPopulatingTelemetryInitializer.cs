@@ -5,15 +5,26 @@ using System.Web;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using Orchard;
+using Orchard.Environment;
+using Orchard.Mvc;
 using Orchard.Services;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 {
-    public class ContextPopulatingTelemetryInitializer : ITelemetryInitializer
+    public class ContextPopulatingTelemetryInitializer : ITelemetryInitializer, IShim
     {
+        public IOrchardHostContainer HostContainer { get; set; }
+
+
+        public ContextPopulatingTelemetryInitializer()
+        {
+            OrchardHostContainerRegistry.RegisterShim(this);
+        }
+
+
         public void Initialize(ITelemetry telemetry)
         {
-            var request = HttpContext.Current?.Request;
+            var request = HostContainer.Resolve<IHttpContextAccessor>().Current()?.Request;
 
             if (request == null) return;
 
