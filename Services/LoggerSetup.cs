@@ -18,7 +18,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         /// </summary>
         /// <param name="appenderName">A name for the appender, for identification purposes.</param>
         /// <param name="instrumentationKey">The AI instrumentation key to use.</param>
-        /// <returns>The newly contsructed <see cref="ApplicationInsightsAppender"/>.</returns>
+        /// <returns>The newly constructed <see cref="ApplicationInsightsAppender"/>.</returns>
         ApplicationInsightsAppender SetupAiAppender(string appenderName, string instrumentationKey);
 
         /// <summary>
