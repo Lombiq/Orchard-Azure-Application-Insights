@@ -51,8 +51,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public TelemetryConfiguration CreateConfiguration(string instrumentationKey)
         {
-            TelemetryConfiguration.CreateDefault();
-
             var configuration = TelemetryConfiguration.CreateDefault();
             configuration.InstrumentationKey = instrumentationKey;
 
