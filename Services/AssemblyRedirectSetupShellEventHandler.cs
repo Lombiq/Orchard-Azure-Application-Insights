@@ -31,14 +31,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             switch (assemblyShortName)
             {
+                case "log4net":
+                    return Assembly.Load("log4net");
                 case "Microsoft.ApplicationInsights":
                     return typeof(Microsoft.ApplicationInsights.TelemetryClient).Assembly;
                 case "Microsoft.Diagnostics.Instrumentation.Extensions.Intercept":
                     return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.Decorator).Assembly;
                 case "Microsoft.AI.Agent.Intercept":
                     return typeof(Microsoft.Diagnostics.Instrumentation.Extensions.Base.Callbacks).Assembly;
-                case "log4net":
-                    return Assembly.Load("log4net");
+                case "System.Diagnostics.DiagnosticSource":
+                    return typeof(System.Diagnostics.Activity).Assembly;
                 default:
                     return null;
             }

@@ -31,6 +31,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
             set { this.Store(x => x.ApplicationWideDependencyTrackingIsEnabled, value); }
         }
 
+        public bool ApplicationWideDebugSnapshotCollectionIsEnabled
+        {
+            get { return this.Retrieve(x => x.ApplicationWideDebugSnapshotCollectionIsEnabled, true); }
+            set { this.Store(x => x.ApplicationWideDebugSnapshotCollectionIsEnabled, value); }
+        }
+
         public bool RequestTrackingIsEnabled
         {
             get { return this.Retrieve(x => x.RequestTrackingIsEnabled, true); }
@@ -57,6 +63,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Models
                 ApiKey +
                 ApplicationWideLogCollectionIsEnabled +
                 ApplicationWideDependencyTrackingIsEnabled +
+                ApplicationWideDebugSnapshotCollectionIsEnabled +
                 RequestTrackingIsEnabled +
                 ClientSideTrackingIsEnabled +
                 BackgroundTaskTrackingIsEnabled;

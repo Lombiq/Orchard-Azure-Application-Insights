@@ -25,6 +25,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +72,10 @@
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.ApplicationInsights.Log4NetAppender.2.2.0\lib\net45\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.SnapshotCollector, Version=1.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.ApplicationInsights.SnapshotCollector.1.0.10\lib\net45\Microsoft.ApplicationInsights.SnapshotCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -198,6 +204,7 @@
     <Compile Include="Services\AppWideSetup.cs" />
     <Compile Include="Services\BackgroundTaskTelemetry\BackgroundServiceDecorator.cs" />
     <Compile Include="Services\BackgroundTaskTelemetry\BackgroundServiceDecoratorModule.cs" />
+    <Compile Include="Services\IAppWideSetup.cs" />
     <Compile Include="Services\RequestTrackingMiddlewareProvider.cs" />
     <Compile Include="Services\PreviousLogEntriesCollector.cs" />
     <Compile Include="Services\TelemetryModulesHolder.cs" />
@@ -292,4 +299,11 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\..\..\packages\Microsoft.ApplicationInsights.SnapshotCollector.1.0.10\build\Microsoft.ApplicationInsights.SnapshotCollector.targets" Condition="Exists('..\..\..\packages\Microsoft.ApplicationInsights.SnapshotCollector.1.0.10\build\Microsoft.ApplicationInsights.SnapshotCollector.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.ApplicationInsights.SnapshotCollector.1.0.10\build\Microsoft.ApplicationInsights.SnapshotCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.ApplicationInsights.SnapshotCollector.1.0.10\build\Microsoft.ApplicationInsights.SnapshotCollector.targets'))" />
+  </Target>
 </Project>

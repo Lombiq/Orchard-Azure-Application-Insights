@@ -30,6 +30,12 @@
                 @Html.ValidationMessageFor(m => m.ApplicationWideDependencyTrackingIsEnabled)
                 @Html.Hint(T("If enabled, dependency tracking (e.g. how SQL queries or Blob storage operations perform) will be enabled for the whole application. It's advised not to enabled dependency tracking all the time as it sends a lot of telemetry data. <br>Note that since this is an application-wide configuration it's only available on the Default tenant. <br>WARNING: changing the state of this option will cause an application restart."))
             </li>
+            <li>
+                @Html.EditorFor(m => m.ApplicationWideDebugSnapshotCollectionIsEnabled)
+                <label for="@Html.FieldIdFor(m => m.ApplicationWideDebugSnapshotCollectionIsEnabled)" class="forcheckbox">@T("Enable application-wide collection of debug snapshots")</label>
+                @Html.ValidationMessageFor(m => m.ApplicationWideDebugSnapshotCollectionIsEnabled)
+                @Html.Hint(T("If enabled, debug snapshots will be collected for exceptions. For details see <a href=\"https://docs.microsoft.com/en-us/azure/application-insights/app-insights-snapshot-debugger\" target=\"_blank\">the official documentation</a>. <br>Note that since this is an application-wide configuration it's only available on the Default tenant."))
+            </li>
         }
         <li>
             @Html.EditorFor(m => m.RequestTrackingIsEnabled)

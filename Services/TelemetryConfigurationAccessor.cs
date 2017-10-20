@@ -57,11 +57,15 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                         if (shellSettings.Name == ShellSettings.DefaultName)
                         {
-                            appWideSetupWork.Value.SetupAppWideServices(
-                                LoadConfiguration(),
-                                _telemetrySettingsAccessorWork.Value.GetCurrentSettings().ApiKey,
-                                part.ApplicationWideDependencyTrackingIsEnabled,
-                                part.ApplicationWideLogCollectionIsEnabled);
+                        appWideSetupWork.Value.SetupAppWideServices(
+                            new AppWideServicesConfiguration
+                            {
+                                TelemetryConfiguration = LoadConfiguration(),
+                                ApiKey = _telemetrySettingsAccessorWork.Value.GetCurrentSettings().ApiKey,
+                                EnableDependencyTracking = part.ApplicationWideDependencyTrackingIsEnabled,
+                                EnableLogCollection = part.ApplicationWideLogCollectionIsEnabled,
+                                EnableDebugSnapshotCollection = part.ApplicationWideDebugSnapshotCollectionIsEnabled
+                            });
                         }
                     }
                 });

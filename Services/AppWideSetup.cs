@@ -8,20 +8,12 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using Microsoft.ApplicationInsights.SnapshotCollector;
 using Orchard;
+using Orchard.Validation;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
-    public interface IAppWideSetup : IDependency
-    {
-        void SetupAppWideServices(
-            TelemetryConfiguration telemetryConfiguration,
-            string apiKey,
-            bool enableDependencyTracking,
-            bool enableLogCollection);
-    }
-
-
     public class AppWideSetup : IAppWideSetup
     {
         private static bool _telemetryModulesInitialized = false;
@@ -48,23 +40,31 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         }
 
 
-        public void SetupAppWideServices(
-            TelemetryConfiguration telemetryConfiguration,
-            string apiKey,
-            bool enableDependencyTracking,
-            bool enableLogCollection)
+        public void SetupAppWideServices(IAppWideServicesConfiguration configuration)
         {
+            Argument.ThrowIfNull(configuration, nameof(configuration));
+
+            var telemetryConfiguration = configuration.TelemetryConfiguration;
             if (telemetryConfiguration == null) return;
 
             TelemetryConfiguration.Active.InstrumentationKey = telemetryConfiguration.InstrumentationKey;
             _telemetryConfigurationFactory.PopulateWithCommonConfiguration(TelemetryConfiguration.Active);
+
+            if (configuration.EnableDebugSnapshotCollection)
+            {
+                telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new SnapshotCollectorTelemetryProcessor(next));
+                telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
+
+                TelemetryConfiguration.Active.TelemetryProcessorChainBuilder.Use(next => new SnapshotCollectorTelemetryProcessor(next));
+                TelemetryConfiguration.Active.TelemetryProcessorChainBuilder.Build();
+            }
 
             // Telemetry modules can be only instantiated and initialized once per app domain.
             if (!_telemetryModulesInitialized)
             {
                 var telemetryModules = new List<ITelemetryModule>();
 
-                if (enableDependencyTracking)
+                if (configuration.EnableDependencyTracking)
                 {
                     telemetryModules.Add(new DependencyTrackingTelemetryModule());
                 }
@@ -77,7 +77,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                 var quickPulseProcessor = _appWideQuickPulseTelemetryProcessorAccessor.GetAppWideQuickPulseTelemetryProcessor();
                 var quickPulseModule = new QuickPulseTelemetryModule();
-                if (!string.IsNullOrEmpty(apiKey)) quickPulseModule.AuthenticationApiKey = apiKey;
+                if (!string.IsNullOrEmpty(configuration.ApiKey)) quickPulseModule.AuthenticationApiKey = configuration.ApiKey;
                 quickPulseModule.RegisterTelemetryProcessor(quickPulseProcessor);
                 telemetryModules.Add(quickPulseModule);
 
@@ -92,7 +92,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 _telemetryModulesInitialized = true;
             }
 
-            if (enableLogCollection)
+            if (configuration.EnableLogCollection)
             {
                 _loggerSetup.SetupAiAppender(Constants.DefaultLogAppenderName, telemetryConfiguration.InstrumentationKey);
             }
