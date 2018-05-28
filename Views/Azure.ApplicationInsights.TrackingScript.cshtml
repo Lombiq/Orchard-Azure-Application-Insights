@@ -12,7 +12,7 @@
 
     @{
         // Setting the operation ID for the client-side request tracking too. This way the server-side request will 
-        // be possible to correrlate to all subsequent client-side operations (if the page is cached it's OK because
+        // be possible to correlate to all subsequent client-side operations (if the page is cached it's OK because
         // that means that the same server-side operation correlates to multiple client-side ones).
         var requestId = WorkContext.HttpContext.GetOperationIdForRequest();
         if (requestId != null)
