@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.0.0-rc2-13929" />
