@@ -4,14 +4,60 @@
 
 ## About
 
-This [Orchard Core](https://www.orchardcore.net/) module enables easy integration of [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net/) telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source (like the *appsettings.json* file) as normally for AI, and collected data will start appearing in the Azure Portal.
-
-In a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants, just follow [the Orchard Core configuration docs](https://docs.orchardcore.net/en/dev/docs/reference/core/Configuration/).
+This [Orchard Core](https://www.orchardcore.net/) module enables easy integration of [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview) telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source (like the *appsettings.json* file) as normally for AI, and collected data will start appearing in the Azure Portal.
 
 
 ## Documentation
 
-Add detailed documentation here. If it's a lot of content then create documentation pages under the *Docs* folder and link pages here.
+### Basic configuration
+
+Configure the built-in AI options as detailed in the [AI docs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#using-applicationinsightsserviceoptions) in an ASP.NET Core configuration source like the *appsettings.json* file:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      ...
+    }
+  },
+  "OrchardCore": {
+    ...
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "your instrumentation key comes here"
+  }
+}
+
+```
+
+In a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants, just follow [the Orchard Core configuration docs](https://docs.orchardcore.net/en/dev/docs/reference/core/Configuration/).
+
+### Advanced configuration
+
+The module has its own configuration for further options. These need to come from an ASP.NET Core configuration source as well but on the contrary to the basic settings for built-in AI options these need to be put under the `OrchardCore` section, into `Lombiq_Hosting_Azure_ApplicationInsights`:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      ...
+    }
+  },
+  "OrchardCore": {
+    "Lombiq_Hosting_Azure_ApplicationInsights": {
+      "EnableSqlCommandTextInstrumentation":  false
+    }
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "your instrumentation key comes here"
+  }
+}
+
+```
+
+See the [`ApplicationInsightsOptions` class](Configuration/ApplicationInsightsOptions.cs) for all options.
 
 
 ## Contributing and support
