@@ -1,9 +1,7 @@
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights
@@ -32,10 +30,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             }
 
             //telemetryClient.TrackTrace("tracked trace");
-
-            var z = serviceProvider.GetServices<ILoggerProvider>();
-
-            z.Last().CreateLogger("Lombiq.Hosting.Azure.ApplicationInsights.TestMiddleware").LogError("test logger");
 
             return _next.Invoke(context);
         }
