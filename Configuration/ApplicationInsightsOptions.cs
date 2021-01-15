@@ -11,5 +11,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Configuration
         /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-dependencies#advanced-sql-tracking-to-get-full-sql-query"/>.
         /// </summary>
         public bool EnableSqlCommandTextInstrumentation { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to enable a middleware that'll produce log entries on every request,
+        /// as a test.
+        /// </summary>
+        public bool EnableLoggingTestMiddleware { get; set; }
     }
 }
