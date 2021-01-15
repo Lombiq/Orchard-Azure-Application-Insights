@@ -5,7 +5,7 @@ using OrchardCore.Modules;
 using System;
 using System.Threading.Tasks;
 
-namespace Lombiq.Hosting.Azure.ApplicationInsights
+namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     public class LoggingTestMiddleware
     {

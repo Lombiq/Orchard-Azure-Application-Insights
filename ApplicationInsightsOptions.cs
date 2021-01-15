@@ -1,4 +1,4 @@
-namespace Lombiq.Hosting.Azure.ApplicationInsights.Configuration
+namespace Lombiq.Hosting.Azure.ApplicationInsights
 {
     /// <summary>
     /// Further configuration options for the module.

@@ -1,6 +1,7 @@
-using Lombiq.Hosting.Azure.ApplicationInsights.Configuration;
+using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.Extensions.Options;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Modules;
+using OrchardCore.ResourceManagement;
 using System;
 using System.Linq;
 
@@ -34,6 +36,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
                 (module, serviceOptions) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
+
+            services.AddScoped<IResourceManifestProvider, ResourceManifest>();
+
+            services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
         }
 
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
