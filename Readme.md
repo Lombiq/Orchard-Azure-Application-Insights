@@ -70,7 +70,7 @@ See the [`ApplicationInsightsOptions` class](ApplicationInsightsOptions.cs) for 
 
 ### Using collected data
 
-All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore"` prefix.
+All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
 
 
 ## Contributing and support
