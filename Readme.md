@@ -6,6 +6,14 @@
 
 This [Orchard Core](https://www.orchardcore.net/) module enables easy integration of [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview) telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source (like the *appsettings.json* file) as normally for AI, and collected data will start appearing in the Azure Portal.
 
+What kind of data is collected from the telemetry and available for inspection in the Azure Portal?
+
+- All usual AI data, including e.g. server-side requests, client-side page views, exceptions and other log entries, dependency calls (like web requests, database queries).
+- Information on background task executions (as dependency operations).
+- All telemetry is enriched with Orchard-specific and general details like user ID, user name, shell (tenant) name, user agent, IP address.
+
+And all of this can be configured in depth. Extended configuration for built-in AI features is also available, like being able to turn SQL query command text collection on or off.
+
 Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/Helpful-Libraries/).
 
 
@@ -67,6 +75,8 @@ The module has its own configuration for further options. These need to come fro
 ```
 
 See the [`ApplicationInsightsOptions` class](ApplicationInsightsOptions.cs) for all options.
+
+Note that while telemetry from background tasks is collected in form of dependency operations it'll be collected even if `EnableDependencyTrackingTelemetryModule` is `false`.
 
 ### Using collected data
 
