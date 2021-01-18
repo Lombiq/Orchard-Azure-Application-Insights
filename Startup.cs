@@ -1,5 +1,6 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -36,6 +37,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
                 (module, serviceOptions) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
+
+            services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
+                (module, serviceOptions) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
 
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
 
