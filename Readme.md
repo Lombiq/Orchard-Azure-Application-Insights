@@ -66,7 +66,11 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-See the [`ApplicationInsightsOptions` class](Configuration/ApplicationInsightsOptions.cs) for all options.
+See the [`ApplicationInsightsOptions` class](ApplicationInsightsOptions.cs) for all options.
+
+### Using collected data
+
+All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore"` prefix.
 
 
 ## Contributing and support
