@@ -44,9 +44,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
                 (module, serviceOptions) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
 
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
-
+            services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
-
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
         }
 
