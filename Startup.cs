@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.Extensions.Options;
+using OrchardCore.BackgroundTasks;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Modules;
 using OrchardCore.ResourceManagement;
@@ -47,6 +48,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
+
+            if (options.EnableBackgroundTaskTelemetryCollection)
+            {
+                services.Decorate<IBackgroundTask, BackgroundTaskTelemetryDecorator>();
+            }
         }
 
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

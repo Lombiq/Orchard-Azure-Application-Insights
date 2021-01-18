@@ -23,6 +23,7 @@
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-13929" />
+    <PackageReference Include="Scrutor" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>

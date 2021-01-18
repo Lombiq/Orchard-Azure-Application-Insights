@@ -48,5 +48,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
         /// </summary>
         public bool EnableIpAddressCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to collect telemetry about Orchard background tasks.
+        /// </summary>
+        public bool EnableBackgroundTaskTelemetryCollection { get; set; } = true;
     }
 }
