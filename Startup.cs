@@ -49,6 +49,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
+            services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
 
             if (options.EnableBackgroundTaskTelemetryCollection)
             {
@@ -70,10 +71,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
                         options.EnableHeartbeat = false;
                         options.EnableQuickPulseMetricStream = false;
                     });
-            }
-            else if (options.EnableClientSideTracking)
-            {
-                services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
             }
         }
 
