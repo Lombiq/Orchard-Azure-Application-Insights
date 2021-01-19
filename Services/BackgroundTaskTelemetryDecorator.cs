@@ -26,7 +26,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             // background tasks, see:
             // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#long-running-background-tasks.
             using var operation = telemetryClient.StartOperation<DependencyTelemetry>(_decorated.GetType().FullName);
-            operation.Telemetry.Type = "Background";
+            operation.Telemetry.Type = "BackgroundTask";
 
             try
             {
