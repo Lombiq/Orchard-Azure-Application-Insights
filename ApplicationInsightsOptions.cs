@@ -53,5 +53,16 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         /// Gets or sets a value indicating whether to collect telemetry about Orchard background tasks.
         /// </summary>
         public bool EnableBackgroundTaskTelemetryCollection { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to inject the client-side AI tracking script.
+        /// </summary>
+        public bool EnableClientSideTracking { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will
+        /// still show up in the Debug window.
+        /// </summary>
+        public bool EnableOfflineOperation { get; set; }
     }
 }

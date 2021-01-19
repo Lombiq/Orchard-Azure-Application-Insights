@@ -1,5 +1,7 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
@@ -47,11 +49,31 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
-            services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
 
             if (options.EnableBackgroundTaskTelemetryCollection)
             {
                 services.Decorate<IBackgroundTask, BackgroundTaskTelemetryDecorator>();
+            }
+
+            if (options.EnableOfflineOperation)
+            {
+                foreach (var descriptor in services.Where(descriptor => descriptor.ServiceType == typeof(ITelemetryChannel)).ToArray())
+                {
+                    services.Remove(descriptor);
+                }
+
+                services.AddSingleton<ITelemetryChannel, NullTelemetryChannel>();
+                services.Configure<ApplicationInsightsServiceOptions>(
+                    options =>
+                    {
+                        options.EnableAppServicesHeartbeatTelemetryModule = false;
+                        options.EnableHeartbeat = false;
+                        options.EnableQuickPulseMetricStream = false;
+                    });
+            }
+            else if (options.EnableClientSideTracking)
+            {
+                services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
             }
         }
 
