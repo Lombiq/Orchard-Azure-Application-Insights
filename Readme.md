@@ -28,7 +28,7 @@ Configure the built-in AI options as detailed in the [AI docs](https://docs.micr
   "Logging": {
     "LogLevel": {
       "Default": "Warning",
-      ...
+      //...
     },
     "ApplicationInsights": {
       "LogLevel": {
@@ -37,7 +37,7 @@ Configure the built-in AI options as detailed in the [AI docs](https://docs.micr
     }
   },
   "OrchardCore": {
-    ...
+    //...
   },
   "ApplicationInsights": {
     "InstrumentationKey": "your instrumentation key comes here"
@@ -59,7 +59,7 @@ The module has its own configuration for further options. These need to come fro
   "Logging": {
     "LogLevel": {
       "Default": "Debug",
-      ...
+      //...
     }
   },
   "OrchardCore": {
