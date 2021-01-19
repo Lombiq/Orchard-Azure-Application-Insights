@@ -23,7 +23,7 @@ Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/He
 
 Configure the built-in AI options as detailed in the [AI docs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#using-applicationinsightsserviceoptions) in an ASP.NET Core configuration source like the *appsettings.json* file like below. Do note that contrary to the standard AI configuration all log entries will be send to AI by default. If you want to restrict that to just warnings, for example, you also have to add a corresponding `LogLevel` as demonstrated.
 
-```json
+```json5
 {
   "Logging": {
     "LogLevel": {
@@ -54,7 +54,7 @@ When using the full CMS approach of Orchard Core (i.e. not decoupled or headless
 
 The module has its own configuration for further options. These need to come from an ASP.NET Core configuration source as well but on the contrary to the basic settings for built-in AI options these need to be put under the `OrchardCore` section, into `Lombiq_Hosting_Azure_ApplicationInsights`:
 
-```json
+```json5
 {
   "Logging": {
     "LogLevel": {
