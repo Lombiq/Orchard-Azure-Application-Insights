@@ -14,7 +14,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
         /// <summary>
         /// Gets or sets a value indicating whether to enable a middleware that'll produce log entries on requests
-        /// containing the "logtest" query string parameter (i.e. "?logtest" or "&logtest" being there in the URL), as
+        /// containing the "logtest" query string parameter (i.e. "?logtest" or "&amp;logtest" being there in the URL), as
         /// a test.
         /// </summary>
         public bool EnableLoggingTestMiddleware { get; set; }
