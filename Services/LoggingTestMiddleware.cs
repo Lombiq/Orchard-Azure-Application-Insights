@@ -19,6 +19,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             TelemetryClient telemetryClient,
             IClock clock)
         {
+            if (!context.Request.Query.ContainsKey("logtest"))
+            {
+                return _next.Invoke(context);
+            }
+
             logger.LogTrace("This is a trace at {0} UTC.", clock.UtcNow);
             logger.LogDebug("This is a debug message {0} UTC.", clock.UtcNow);
             logger.LogInformation("This is an info message {0} UTC.", clock.UtcNow);

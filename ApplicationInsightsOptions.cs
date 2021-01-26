@@ -13,8 +13,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         public bool EnableSqlCommandTextInstrumentation { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether to enable a middleware that'll produce log entries on every request,
-        /// as a test.
+        /// Gets or sets a value indicating whether to enable a middleware that'll produce log entries on requests
+        /// containing the "logtest" query string parameter (i.e. "?logtest" or "&amp;logtest" being there in the URL), as
+        /// a test.
         /// </summary>
         public bool EnableLoggingTestMiddleware { get; set; }
 
