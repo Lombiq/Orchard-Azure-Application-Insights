@@ -24,6 +24,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             if (context.IsNotFullViewRendering())
             {
                 await next();
+                return;
             }
 
             if (_applicationInsightsOptions.Value.EnableClientSideTracking)
