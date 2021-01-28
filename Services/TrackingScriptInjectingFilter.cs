@@ -47,7 +47,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 var correlationScript = new HtmlString(
                     $@"<script>
                         appInsights.queue.push(function () {{
-                            appInsights.properties.context.telemetryTrace.traceID = '{operationId}';
+                            appInsights.context.telemetryTrace.traceID = '{operationId}';
                         }});
                     </script>");
                 _resourceManager.RegisterHeadScript(correlationScript);
