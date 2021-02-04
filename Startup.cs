@@ -54,6 +54,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             if (options.EnableLoggingTestBackgroundTask)
             {
                 services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
+                services.AddSingleton<BackgroundTaskTelemetryLoggerProvider>();
             }
 
             if (options.EnableOfflineOperation)
@@ -94,10 +95,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             if (options.EnableBackgroundTaskTelemetryCollection)
             {
-                // Will automatically be disposed.
-#pragma warning disable CA2000 // Dispose objects before losing scope
-                loggerFactory.AddProvider(new BackgroundTaskTelemetryLoggerProvider(serviceProvider));
-#pragma warning restore CA2000 // Dispose objects before losing scope
+                loggerFactory.AddProvider(serviceProvider.GetRequiredService<BackgroundTaskTelemetryLoggerProvider>());
             }
         }
     }

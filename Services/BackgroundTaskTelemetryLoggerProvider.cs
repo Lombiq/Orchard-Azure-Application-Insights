@@ -30,6 +30,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         private readonly IServiceProvider _serviceProvider;
 
+        private BackgroundTaskTelemetryLogger _logger;
+
         public BackgroundTaskTelemetryLoggerProvider(IServiceProvider serviceProvider) =>
             _serviceProvider = serviceProvider;
 
@@ -40,15 +42,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
                 return _nullLogger;
             }
 
-            return new BackgroundTaskTelemetryLogger(_serviceProvider.GetRequiredService<TelemetryClient>());
+            return _logger ??= new BackgroundTaskTelemetryLogger(_serviceProvider.GetRequiredService<TelemetryClient>());
         }
 
-        public void Dispose()
-        {
-            // Nothing to dispose.
-        }
+        public void Dispose() => _logger?.Dispose();
 
-        private class BackgroundTaskTelemetryLogger : ILogger
+        private sealed class BackgroundTaskTelemetryLogger : ILogger, IDisposable
         {
             private readonly ConcurrentDictionary<string, IOperationHolder<DependencyTelemetry>> _operations = new();
 
@@ -57,7 +56,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             public BackgroundTaskTelemetryLogger(TelemetryClient telemetryClient) => _telemetryClient = telemetryClient;
 
             public IDisposable BeginScope<TState>(TState state) => null;
-
             public bool IsEnabled(LogLevel logLevel) => true;
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -101,6 +99,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
                     operation.Dispose();
                 }
+            }
+
+            public void Dispose()
+            {
+                foreach (var operation in _operations) operation.Value.Dispose();
             }
         }
 
