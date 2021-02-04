@@ -57,8 +57,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
         /// <summary>
         /// Gets or sets a value indicating whether to enable a background task that'll produce log entries every
-        /// minute. Will only work if <see cref="EnableBackgroundTaskTelemetryCollection"/> is also <see
-        /// langword="true" />.
+        /// minute. Entries will only show up in AI if <see cref="EnableBackgroundTaskTelemetryCollection"/> is also
+        /// <see langword="true" />.
         /// </summary>
         public bool EnableLoggingTestBackgroundTask { get; set; }
 

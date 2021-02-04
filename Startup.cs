@@ -54,6 +54,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             if (options.EnableLoggingTestBackgroundTask)
             {
                 services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
+            }
+
+            if (options.EnableBackgroundTaskTelemetryCollection)
+            {
                 services.AddSingleton<BackgroundTaskTelemetryLoggerProvider>();
             }
 
