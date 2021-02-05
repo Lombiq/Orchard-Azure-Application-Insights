@@ -45,13 +45,18 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             return _logger ??= new BackgroundTaskTelemetryLogger(_serviceProvider.GetRequiredService<TelemetryClient>());
         }
 
-        public void Dispose() => _logger?.Dispose();
+        public void Dispose()
+        {
+            _logger?.Dispose();
+            _logger = null;
+        }
 
         private sealed class BackgroundTaskTelemetryLogger : ILogger, IDisposable
         {
             private readonly ConcurrentDictionary<string, IOperationHolder<DependencyTelemetry>> _operations = new();
-
             private readonly TelemetryClient _telemetryClient;
+
+            private bool _isDisposed;
 
             public BackgroundTaskTelemetryLogger(TelemetryClient telemetryClient) => _telemetryClient = telemetryClient;
 
@@ -60,6 +65,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
+                // Somehow the logger instance can remain even if the IServiceProvider and thus the ILoggerProvider and
+                // everything else is disposed, like when restarting a shell. So we need to return if this is a zombie
+                // instance (the next app restart or deployment will get rid of it).
+                if (_isDisposed) return;
+
                 if (state is not IEnumerable<KeyValuePair<string, object>> backgroundState) return;
 
                 string GetTaskName() => backgroundState.Single(parameter => parameter.Key == "TaskName").Value.ToString();
@@ -103,7 +113,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
             public void Dispose()
             {
+                if (_isDisposed) return;
+
                 foreach (var operation in _operations) operation.Value.Dispose();
+
+                _isDisposed = true;
             }
         }
 
