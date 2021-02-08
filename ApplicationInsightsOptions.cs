@@ -56,6 +56,13 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
         public bool EnableBackgroundTaskTelemetryCollection { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether to enable a background task that'll produce log entries every
+        /// minute. Entries will only show up in AI if <see cref="EnableBackgroundTaskTelemetryCollection"/> is also
+        /// <see langword="true" />.
+        /// </summary>
+        public bool EnableLoggingTestBackgroundTask { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to inject the client-side AI tracking script.
         /// </summary>
         public bool EnableClientSideTracking { get; set; } = true;

@@ -18,7 +18,17 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 
         public void Initialize(ITelemetry telemetry)
         {
-            var httpContext = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+            HttpContext httpContext;
+
+            try
+            {
+                httpContext = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+            }
+            catch (ObjectDisposedException)
+            {
+                // This happens during a shell restart like when enabling/disabling features.
+                return;
+            }
 
             if (httpContext == null || telemetry is not RequestTelemetry requestTelemetry) return;
 

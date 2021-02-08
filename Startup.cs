@@ -51,9 +51,14 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
 
+            if (options.EnableLoggingTestBackgroundTask)
+            {
+                services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
+            }
+
             if (options.EnableBackgroundTaskTelemetryCollection)
             {
-                services.Decorate<IBackgroundTask, BackgroundTaskTelemetryDecorator>();
+                services.AddSingleton<BackgroundTaskTelemetryLoggerProvider>();
             }
 
             if (options.EnableOfflineOperation)
@@ -76,20 +81,26 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
         public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
         {
-            if (serviceProvider.GetService<IOptions<ApplicationInsightsOptions>>().Value.EnableLoggingTestMiddleware)
-            {
-                app.UseMiddleware<LoggingTestMiddleware>();
-            }
+            var options = serviceProvider.GetService<IOptions<ApplicationInsightsOptions>>().Value;
+
+            if (options.EnableLoggingTestMiddleware) app.UseMiddleware<LoggingTestMiddleware>();
+
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
             // For some reason the AI logger provider needs to be re-registered here otherwise no logging will happen.
             var aiProvider = serviceProvider.GetServices<ILoggerProvider>().Single(provider => provider is ApplicationInsightsLoggerProvider);
-            serviceProvider.GetService<ILoggerFactory>().AddProvider(aiProvider);
+            loggerFactory.AddProvider(aiProvider);
             // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging()
             // in ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The
             // default
             //// { ProviderName: 'Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider', CategoryName: '', LogLevel: 'Warning', Filter: ''}
             // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
             // no other option than add default configuration in appsettings or similar.
+
+            if (options.EnableBackgroundTaskTelemetryCollection)
+            {
+                loggerFactory.AddProvider(serviceProvider.GetRequiredService<BackgroundTaskTelemetryLoggerProvider>());
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Lombiq.Hosting.Azure.ApplicationInsights.Helpers;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -16,30 +17,22 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
         public Task InvokeAsync(
             HttpContext context,
             ILogger<LoggingTestMiddleware> logger,
-            TelemetryClient telemetryClient,
-            IClock clock)
+            IClock clock,
+            TelemetryClient telemetryClient)
         {
             if (!context.Request.Query.ContainsKey("logtest"))
             {
                 return _next.Invoke(context);
             }
 
-            logger.LogTrace("This is a trace at {0} UTC.", clock.UtcNow);
-            logger.LogDebug("This is a debug message {0} UTC.", clock.UtcNow);
-            logger.LogInformation("This is an info message {0} UTC.", clock.UtcNow);
-            logger.LogWarning("This is a warning {0} UTC.", clock.UtcNow);
-            logger.LogError("This is an error {0} UTC.", clock.UtcNow);
-
             try
             {
-                throw new InvalidOperationException("Oh no, something bad happened.");
+                LoggingTestHelper.LogTestMessagesAndThrow(logger, clock, telemetryClient);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "An exception happened {0} UTC.", clock.UtcNow);
             }
-
-            telemetryClient.TrackTrace("Explicitly tracked trace.");
 
             return _next.Invoke(context);
         }
