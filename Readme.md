@@ -21,7 +21,7 @@ Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/He
 
 ### Setup and basic configuration
 
-Configure the built-in AI options as detailed in the [AI docs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#using-applicationinsightsserviceoptions) in an ASP.NET Core configuration source like the *appsettings.json* file like below. Do note that contrary to the standard AI configuration all log entries will be send to AI by default. If you want to restrict that to just warnings, for example, you also have to add a corresponding `LogLevel` as demonstrated.
+Configure the built-in AI options as detailed in the [AI docs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#using-applicationinsightsserviceoptions) in an ASP.NET Core configuration source like the *appsettings.json* file like below. Do note that contrary to the standard AI configuration all log entries will be sent to AI by default. If you want to restrict that to just warnings, for example, you also have to add a corresponding `LogLevel` as demonstrated.
 
 ```json5
 {
