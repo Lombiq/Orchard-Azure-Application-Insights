@@ -1,52 +1,86 @@
-# [Hosting - Azure Application Insights](https://github.com/Lombiq/Orchard-Azure-Application-Insights)
+# Lombiq Hosting - Azure Application Insights
 
 
 
 ## About
 
-This [Orchard CMS](http://orchardproject.net/) module enables easy integration of [Azure Application Insights](http://azure.microsoft.com/en-us/documentation/articles/app-insights-start-monitoring-app-health-usage/) telemetry into Orchard. Just install the module, configure the instrumentation key from the admin and collected data will start appearing in Application Insights. The module is tenant-aware, so in a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants. This is also available on all sites of [DotNest, the Orchard CMS as a Service](https://dotnest.com/).
+This [Orchard Core](https://www.orchardcore.net/) module enables easy integration of [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview) telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source (like the *appsettings.json* file) as normally for AI, and collected data will start appearing in the Azure Portal.
 
-Warning: this module is only compatible with the Orchard 1.9+.
+What kind of data is collected from the telemetry and available for inspection in the Azure Portal?
 
-Note that the module depends on the [Helpful Libraries module](https://github.com/Lombiq/Helpful-Libraries) so you should have that installed as well.
+- All usual AI data, including e.g. server-side requests, client-side page views, exceptions and other log entries, dependency calls (like web requests, database queries).
+- Information on background task executions (as dependency operations).
+- All telemetry is enriched with Orchard-specific and general details like user ID, user name, shell (tenant) name, user agent, IP address.
 
-Hosting - Azure Application Insights is part of the [Hosting Suite](https://dotnest.com/knowledge-base/topics/lombiq-hosting-suite), which is a complete Orchard DevOps technology suite for building and maintaining scalable Orchard applications.
+And all of this can be configured in depth. Extended configuration for built-in AI features is also available, like being able to turn SQL query command text collection on or off.
 
-The module was created by [Lombiq](http://lombiq.com), one of the core developers of Orchard itself.
-
-
-## Configuration
-
-You can configure the module, including setting the AI instrumentation key from the admin site, for each tenant. You can also set an application-wide instrumentation key to be used by all tenants (if the module is enabled) in the static configuration (i.e. Web.config, Azure Portal) with the key shown in the `Constants` class.
-
-Even without installing [the AI Status Monitor](https://azure.microsoft.com/en-us/documentation/articles/app-insights-monitor-performance-live-website-now/) (for VMs and local development) or the Application Insights site extension for Azure Web App Services you'll be able to see memory and CPU usage data.
+Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/Helpful-Libraries/).
 
 
-## Extending the module with custom telemetry data
+## Documentation
 
-You can send custom events (i.e. totally new events like a user action happening) through a `TelemetryClient` object (you can see examples for this in the [official AI documentation](https://azure.microsoft.com/en-us/documentation/articles/app-insights-api-custom-events-metrics/)). You can create such an object for the current configuration (i.e. what is also used to send request telemetry) through 
-`ITelemetryClientFactory.CreateTelemetryClientFromCurrentConfiguration(`).
+### Setup and basic configuration
 
-You can also hook into the default behaviour of the module and e.g. extend what is send during request tracking by implementing the module's event handlers, see the 
-`Events` folder/namespace. Particularly you can implement `IRequestTrackingEventHandler` to add custom data to the request telemetry e.g. by adding custom properties to the `Properties` dictionary. Furthermore you can implement `ITelemetryConfigurationEventHandler` to alter the configuration used by any telemetry-sending operation like adding your own `ITelemetryInitializers` to the `TelemetryInitializers` collection.
+Configure the built-in AI options as detailed in the [AI docs](https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#using-applicationinsightsserviceoptions) in an ASP.NET Core configuration source like the *appsettings.json* file like below. Do note that contrary to the standard AI configuration all log entries will be send to AI by default. If you want to restrict that to just warnings, for example, you also have to add a corresponding `LogLevel` as demonstrated.
 
+```json5
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning",
+      //...
+    },
+    "ApplicationInsights": {
+      "LogLevel": {
+        "Default": "Warning"
+      }
+    }
+  },
+  "OrchardCore": {
+    //...
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "your instrumentation key comes here"
+  }
+}
 
-## Note on assembly binding errors when using dynamic compilation
+```
 
-Note that when you modify this one or a dependent project in the Orchard solution and then refresh a page without doing a manual rebuild (i.e. letting Orchard's dynamic compilation do the job) you can get the following error:
+In a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants, just follow [the Orchard Core configuration docs](https://docs.orchardcore.net/en/dev/docs/reference/core/Configuration/).
 
-> Could not load file or assembly 'Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.11.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference.
+When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can reference and require it as `"Lombiq.Hosting.Azure.ApplicationInsights.TrackingScript"`. 
 
-This is because on the fly assembly redirection (see below) doesn't work for some reason in such cases. To solve the issue simply restart the website (from IIS or by restarting IIS Express) after doing a manual build.
+### Advanced configuration
 
+The module has its own configuration for further options. These need to come from an ASP.NET Core configuration source as well but on the contrary to the basic settings for built-in AI options these need to be put under the `OrchardCore` section, into `Lombiq_Hosting_Azure_ApplicationInsights`:
 
-## Updating AI libraries
+```json5
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      //...
+    }
+  },
+  "OrchardCore": {
+    "Lombiq_Hosting_Azure_ApplicationInsights": {
+      "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
+    }
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "your instrumentation key comes here"
+  }
+}
 
-When assembly binding redirects are changed make sure to also edit `AssemblyRedirectSetupShellEventHandler` that mimicks such redirects instead of relying on the Web.config.
+```
 
-Note that since there is a 260 characters limit on paths on Windows, all unused library folders and files should be removed and folders shortened.
+See the [`ApplicationInsightsOptions` class](ApplicationInsightsOptions.cs) for all options and details. We recommend configuring at least `QuickPulseTelemetryModuleAuthenticationApiKey`.
 
-After updating you can check for breaking changes between the old and new assembly versions with [BitDiffer](http://www.bitwidgets.com/).
+Note that while telemetry from background tasks is collected in form of dependency operations it'll be collected even if `EnableDependencyTrackingTelemetryModule` is `false`.
+
+### Using collected data
+
+All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
 
 
 ## Contributing and support
