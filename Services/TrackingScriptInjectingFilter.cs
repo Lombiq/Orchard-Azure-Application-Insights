@@ -1,6 +1,8 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.Constants;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
-            if (context.IsNotFullViewRendering() || !_applicationInsightsOptions.Value.EnableClientSideTracking)
+            if (context.Result is not ViewResult and not PageResult || !_applicationInsightsOptions.Value.EnableClientSideTracking)
             {
                 await next();
                 return;
