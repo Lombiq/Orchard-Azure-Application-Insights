@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 using System.Threading.Tasks;
+
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
 {
     public class TrackingScriptInjectingFilter : IAsyncResultFilter
