@@ -48,7 +48,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
-            services.AddScoped<IResourceManifestProvider, ResourceManifest>();
+            services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
 
             if (options.EnableLoggingTestBackgroundTask)
@@ -58,7 +58,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             if (options.EnableBackgroundTaskTelemetryCollection)
             {
-                services.AddSingleton<BackgroundTaskTelemetryLoggerProvider>();
+                services.AddScoped<IBackgroundTaskEventHandler, BackgroundTaskTelemetryEventHandler>();
             }
 
             if (options.EnableOfflineOperation)
@@ -96,11 +96,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             //// { ProviderName: 'Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider', CategoryName: '', LogLevel: 'Warning', Filter: ''}
             // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
             // no other option than add default configuration in appsettings or similar.
-
-            if (options.EnableBackgroundTaskTelemetryCollection)
-            {
-                loggerFactory.AddProvider(serviceProvider.GetRequiredService<BackgroundTaskTelemetryLoggerProvider>());
-            }
         }
     }
 }

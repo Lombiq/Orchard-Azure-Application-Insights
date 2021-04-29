@@ -1,20 +1,24 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.Constants;
 using Microsoft.ApplicationInsights.AspNetCore;
+using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights
 {
-    public class ResourceManifest : IResourceManifestProvider
+    public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
     {
         private readonly JavaScriptSnippet _javaScriptSnippet;
 
-        public ResourceManifest(JavaScriptSnippet javaScriptSnippet) => _javaScriptSnippet = javaScriptSnippet;
+        public ResourceManagementOptionsConfiguration(JavaScriptSnippet javaScriptSnippet) =>
+            _javaScriptSnippet = javaScriptSnippet;
 
-        public void BuildManifests(IResourceManifestBuilder builder)
+        public void Configure(ResourceManagementOptions options)
         {
-            var manifest = builder.Add();
+            var manifest = new ResourceManifest();
 
             manifest.DefineScript(ResourceNames.TrackingScript).SetInnerContent(_javaScriptSnippet.ScriptBody);
+
+            options.ResourceManifests.Add(manifest);
         }
     }
 }
