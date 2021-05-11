@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using OrchardCore.BackgroundTasks;
 using OrchardCore.Environment.Shell.Configuration;
 using OrchardCore.Modules;
-using OrchardCore.ResourceManagement;
 using System;
 using System.Linq;
 
@@ -48,7 +47,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
-            services.AddScoped<IResourceManifestProvider, ResourceManifest>();
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
             services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
