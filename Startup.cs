@@ -50,6 +50,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
             services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
+            services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
             if (options.EnableLoggingTestBackgroundTask)
             {
