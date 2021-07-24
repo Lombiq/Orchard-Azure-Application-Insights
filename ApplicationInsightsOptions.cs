@@ -28,7 +28,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
 
         /// <summary>
         /// Gets or sets a value indicating whether to collect authenticated user's user name, if available, on every
-        /// request. Note that the user agent might be sensitive personally identifiable information (PII); see the
+        /// request. Note that the user name might be sensitive personally identifiable information (PII); see the
         /// official documentation on handling PII: <see
         /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
         /// </summary>
