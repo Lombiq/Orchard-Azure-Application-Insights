@@ -92,7 +92,12 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging()
             // in ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The
             // default
-            //// { ProviderName: 'Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider', CategoryName: '', LogLevel: 'Warning', Filter: ''}
+            ////{
+            ////    "ProviderName": "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider",
+            ////    "CategoryName": "",
+            ////    "LogLevel": "Warning",
+            ////    "Filter": ""
+            ////}
             // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
             // no other option than add default configuration in appsettings or similar.
 
