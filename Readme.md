@@ -16,6 +16,8 @@ And all of this can be configured in depth. Extended configuration for built-in 
 
 Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/Helpful-Libraries/).
 
+Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
+
 
 ## Documentation
 
