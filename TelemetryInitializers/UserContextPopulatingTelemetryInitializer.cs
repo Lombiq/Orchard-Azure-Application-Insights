@@ -1,7 +1,6 @@
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -18,17 +17,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 
         public void Initialize(ITelemetry telemetry)
         {
-            HttpContext httpContext;
-
-            try
-            {
-                httpContext = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            }
-            catch (ObjectDisposedException)
-            {
-                // This happens during a shell restart like when enabling/disabling features.
-                return;
-            }
+            var httpContext = _serviceProvider.GetHttpContextSafely();
 
             if (httpContext == null || telemetry is not RequestTelemetry requestTelemetry) return;
 
