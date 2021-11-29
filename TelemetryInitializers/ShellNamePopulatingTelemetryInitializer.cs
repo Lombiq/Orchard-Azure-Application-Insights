@@ -23,8 +23,6 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
             {
                 var httpRequest = httpContext.Request;
 
-                // The Match() call can be simplified once this is fixed:
-                // https://github.com/OrchardCMS/OrchardCore/pull/10779.
                 var shellName = _serviceProvider
                     .GetService<IRunningShellTable>()
                     ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, true)
