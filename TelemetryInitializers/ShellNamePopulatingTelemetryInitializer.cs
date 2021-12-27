@@ -25,7 +25,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
 
                 var shellName = _serviceProvider
                     .GetService<IRunningShellTable>()
-                    ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, true)
+                    ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, fallbackToDefault: true)
                     ?.Name;
 
                 if (!string.IsNullOrEmpty(shellName))
