@@ -40,10 +40,10 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights
             services.Configure<ApplicationInsightsOptions>(configSection);
 
             services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
-                (module, serviceOptions) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
+                (module, _) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
 
             services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
-                (module, serviceOptions) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
+                (module, _) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
 
             services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
