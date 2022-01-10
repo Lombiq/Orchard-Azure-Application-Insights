@@ -1,4 +1,4 @@
-# Lombiq Hosting - Azure Application Insights
+# Lombiq Hosting - Azure Application Insights for Orchard Core
 
 
 
