@@ -42,11 +42,11 @@
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(NuGetBuild)' != 'True'">
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(NuGetBuild)' == 'True'">
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
     <PackageReference Include="Lombiq.HelpfulLibraries" Version="0.0.21" />
   </ItemGroup>
 
