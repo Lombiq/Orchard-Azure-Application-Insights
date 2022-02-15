@@ -6,7 +6,24 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**;Tests\**</DefaultItemExcludes>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Title>Lombiq Hosting - Azure Application Insights for Orchard Core</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2015, Lombiq Technologies Ltd.</Copyright>
+    <Description>Lombiq Hosting - Azure Application Insights for Orchard Core: This Orchard Core module enables easy integration of Azure Application Insights telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source, and collected data will start appearing in the Azure Portal. See the project website for detailed documentation.</Description>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;Azure;ApplicationInsights;Analytics;Telemetry;Monitoring;LombiqHostingSuite</PackageTags>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</PackageProjectUrl>
+    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+  </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Remove="node_modules\**" />
     <None Remove="Tests\**" />
@@ -25,8 +42,12 @@
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.HelpfulLibraries" Version="0.0.21" />
   </ItemGroup>
 
 </Project>
