@@ -34,12 +34,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.2.2" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.2.2" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.2.2" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.2.2" />
+    <!-- Needed because of version difference, see https://github.com/Lombiq/Orchard-Azure-Application-Insights/issues/27 -->
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
