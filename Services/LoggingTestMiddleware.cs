@@ -31,7 +31,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "An exception happened {0} UTC.", clock.UtcNow);
+                logger.LogError(ex, "An exception happened {DateTime} UTC.", clock.UtcNow);
             }
 
             return _next.Invoke(context);

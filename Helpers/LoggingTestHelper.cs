@@ -12,11 +12,11 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Helpers
             IClock clock,
             TelemetryClient telemetryClient)
         {
-            logger.LogTrace("This is a trace at {0} UTC.", clock.UtcNow);
-            logger.LogDebug("This is a debug message {0} UTC.", clock.UtcNow);
-            logger.LogInformation("This is an info message {0} UTC.", clock.UtcNow);
-            logger.LogWarning("This is a warning {0} UTC.", clock.UtcNow);
-            logger.LogError("This is an error {0} UTC.", clock.UtcNow);
+            logger.LogTrace("This is a trace at {DateTime} UTC.", clock.UtcNow);
+            logger.LogDebug("This is a debug message {DateTime} UTC.", clock.UtcNow);
+            logger.LogInformation("This is an info message {DateTime} UTC.", clock.UtcNow);
+            logger.LogWarning("This is a warning {DateTime} UTC.", clock.UtcNow);
+            logger.LogError("This is an error {DateTime} UTC.", clock.UtcNow);
 
             telemetryClient.TrackTrace("Explicitly tracked trace.");
 
