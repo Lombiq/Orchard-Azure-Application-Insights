@@ -6,47 +6,46 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Lombiq.Hosting.Azure.ApplicationInsights.Services
+namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
+
+internal class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEventHandler
 {
-    internal class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEventHandler
+    private readonly TelemetryClient _telemetryClient;
+
+    private IOperationHolder<DependencyTelemetry> _operation;
+    private Activity _activity;
+
+    public BackgroundTaskTelemetryEventHandler(TelemetryClient telemetryClient) => _telemetryClient = telemetryClient;
+
+    public Task ExecutingAsync(BackgroundTaskEventContext context, CancellationToken cancellationToken)
     {
-        private readonly TelemetryClient _telemetryClient;
+        // Tried with a custom operation too, see c13dfdc47543d8635572be1f2ce1191dba06469b, but it remained
+        // "unconfigured", i.e. lacking the instrumentation key in the Context, and never getting sent to Azure.
+        // Note that while the operation is DependencyTelemetry it'll be collected even if
+        // EnableDependencyTrackingTelemetryModule is false. Also, this is the recommended way of tracking
+        // background tasks, see:
+        // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#long-running-background-tasks.
+        var operation = _telemetryClient.StartOperation<DependencyTelemetry>(context.Name);
+        operation.Telemetry.Type = "BackgroundTask";
 
-        private IOperationHolder<DependencyTelemetry> _operation;
-        private Activity _activity;
+        _operation = operation;
+        _activity = Activity.Current;
 
-        public BackgroundTaskTelemetryEventHandler(TelemetryClient telemetryClient) => _telemetryClient = telemetryClient;
+        return Task.CompletedTask;
+    }
 
-        public Task ExecutingAsync(BackgroundTaskEventContext context, CancellationToken cancellationToken)
+    public Task ExecutedAsync(BackgroundTaskEventContext context, CancellationToken cancellationToken)
+    {
+        if (_activity != null)
         {
-            // Tried with a custom operation too, see c13dfdc47543d8635572be1f2ce1191dba06469b, but it remained
-            // "unconfigured", i.e. lacking the instrumentation key in the Context, and never getting sent to Azure.
-            // Note that while the operation is DependencyTelemetry it'll be collected even if
-            // EnableDependencyTrackingTelemetryModule is false. Also, this is the recommended way of tracking
-            // background tasks, see:
-            // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#long-running-background-tasks.
-            var operation = _telemetryClient.StartOperation<DependencyTelemetry>(context.Name);
-            operation.Telemetry.Type = "BackgroundTask";
-
-            _operation = operation;
-            _activity = Activity.Current;
-
-            return Task.CompletedTask;
+            // Due to async context switches the original Activity is lost and Activity.Current would be null here.
+            // Thus, we need to set it explicitly.
+            // Such operations aren't necessarily properly supported by AI, see:
+            // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#parallel-operations-processing-and-tracking
+            Activity.Current = _activity;
+            _operation?.Dispose();
         }
 
-        public Task ExecutedAsync(BackgroundTaskEventContext context, CancellationToken cancellationToken)
-        {
-            if (_activity != null)
-            {
-                // Due to async context switches the original Activity is lost and Activity.Current would be null here.
-                // Thus, we need to set it explicitly.
-                // Such operations aren't necessarily properly supported by AI, see:
-                // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#parallel-operations-processing-and-tracking
-                Activity.Current = _activity;
-                _operation?.Dispose();
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

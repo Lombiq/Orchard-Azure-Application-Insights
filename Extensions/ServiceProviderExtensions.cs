@@ -1,21 +1,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace System
+namespace System;
+
+internal static class ServiceProviderExtensions
 {
-    internal static class ServiceProviderExtensions
+    public static HttpContext GetHttpContextSafely(this IServiceProvider serviceProvider)
     {
-        public static HttpContext GetHttpContextSafely(this IServiceProvider serviceProvider)
+        try
         {
-            try
-            {
-                return serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            }
-            catch (ObjectDisposedException)
-            {
-                // This happens during a shell restart like when enabling/disabling features.
-                return null;
-            }
+            return serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+        }
+        catch (ObjectDisposedException)
+        {
+            // This happens during a shell restart like when enabling/disabling features.
+            return null;
         }
     }
 }

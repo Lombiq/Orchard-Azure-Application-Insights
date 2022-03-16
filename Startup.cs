@@ -19,87 +19,86 @@ using OrchardCore.Modules;
 using System;
 using System.Linq;
 
-namespace Lombiq.Hosting.Azure.ApplicationInsights
+namespace Lombiq.Hosting.Azure.ApplicationInsights;
+
+public class Startup : StartupBase
 {
-    public class Startup : StartupBase
+    private readonly IShellConfiguration _shellConfiguration;
+
+    public Startup(IShellConfiguration shellConfiguration) =>
+        _shellConfiguration = shellConfiguration;
+
+    public override void ConfigureServices(IServiceCollection services)
     {
-        private readonly IShellConfiguration _shellConfiguration;
+        services.AddApplicationInsightsTelemetry(_shellConfiguration);
 
-        public Startup(IShellConfiguration shellConfiguration) =>
-            _shellConfiguration = shellConfiguration;
+        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use
+        // an injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
+        var options = new ApplicationInsightsOptions();
+        var configSection = _shellConfiguration.GetSection("Lombiq_Hosting_Azure_ApplicationInsights");
+        configSection.Bind(options);
+        services.Configure<ApplicationInsightsOptions>(configSection);
 
-        public override void ConfigureServices(IServiceCollection services)
+        services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
+            (module, _) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
+
+        services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
+            (module, _) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
+
+        services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
+        services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
+        services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
+        services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
+
+        if (options.EnableLoggingTestBackgroundTask)
         {
-            services.AddApplicationInsightsTelemetry(_shellConfiguration);
+            services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
+        }
 
-            // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use
-            // an injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
-            var options = new ApplicationInsightsOptions();
-            var configSection = _shellConfiguration.GetSection("Lombiq_Hosting_Azure_ApplicationInsights");
-            configSection.Bind(options);
-            services.Configure<ApplicationInsightsOptions>(configSection);
+        if (options.EnableBackgroundTaskTelemetryCollection)
+        {
+            services.AddScoped<IBackgroundTaskEventHandler, BackgroundTaskTelemetryEventHandler>();
+        }
 
-            services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
-                (module, _) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
-
-            services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
-                (module, _) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
-
-            services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
-            services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
-            services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
-            services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
-
-            if (options.EnableLoggingTestBackgroundTask)
+        if (options.EnableOfflineOperation)
+        {
+            foreach (var descriptor in services.Where(descriptor => descriptor.ServiceType == typeof(ITelemetryChannel)).ToArray())
             {
-                services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
+                services.Remove(descriptor);
             }
 
-            if (options.EnableBackgroundTaskTelemetryCollection)
-            {
-                services.AddScoped<IBackgroundTaskEventHandler, BackgroundTaskTelemetryEventHandler>();
-            }
-
-            if (options.EnableOfflineOperation)
-            {
-                foreach (var descriptor in services.Where(descriptor => descriptor.ServiceType == typeof(ITelemetryChannel)).ToArray())
+            services.AddSingleton<ITelemetryChannel, NullTelemetryChannel>();
+            services.Configure<ApplicationInsightsServiceOptions>(
+                options =>
                 {
-                    services.Remove(descriptor);
-                }
-
-                services.AddSingleton<ITelemetryChannel, NullTelemetryChannel>();
-                services.Configure<ApplicationInsightsServiceOptions>(
-                    options =>
-                    {
-                        options.EnableAppServicesHeartbeatTelemetryModule = false;
-                        options.EnableHeartbeat = false;
-                        options.EnableQuickPulseMetricStream = false;
-                    });
-            }
+                    options.EnableAppServicesHeartbeatTelemetryModule = false;
+                    options.EnableHeartbeat = false;
+                    options.EnableQuickPulseMetricStream = false;
+                });
         }
+    }
 
-        public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
-        {
-            var options = serviceProvider.GetService<IOptions<ApplicationInsightsOptions>>().Value;
+    public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
+    {
+        var options = serviceProvider.GetService<IOptions<ApplicationInsightsOptions>>().Value;
 
-            if (options.EnableLoggingTestMiddleware) app.UseMiddleware<LoggingTestMiddleware>();
+        if (options.EnableLoggingTestMiddleware) app.UseMiddleware<LoggingTestMiddleware>();
 
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+        var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-            // For some reason the AI logger provider needs to be re-registered here otherwise no logging will happen.
-            var aiProvider = serviceProvider.GetServices<ILoggerProvider>().Single(provider => provider is ApplicationInsightsLoggerProvider);
-            loggerFactory.AddProvider(aiProvider);
-            // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging()
-            // in ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The
-            // default
-            ////{
-            ////    "ProviderName": "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider",
-            ////    "CategoryName": "",
-            ////    "LogLevel": "Warning",
-            ////    "Filter": ""
-            ////}
-            // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
-            // no other option than add default configuration in appsettings or similar.
-        }
+        // For some reason the AI logger provider needs to be re-registered here otherwise no logging will happen.
+        var aiProvider = serviceProvider.GetServices<ILoggerProvider>().Single(provider => provider is ApplicationInsightsLoggerProvider);
+        loggerFactory.AddProvider(aiProvider);
+        // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging()
+        // in ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The
+        // default
+        ////{
+        ////    "ProviderName": "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider",
+        ////    "CategoryName": "",
+        ////    "LogLevel": "Warning",
+        ////    "Filter": ""
+        ////}
+        // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
+        // no other option than add default configuration in appsettings or similar.
     }
 }

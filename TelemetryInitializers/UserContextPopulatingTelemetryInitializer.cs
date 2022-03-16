@@ -6,46 +6,45 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Security.Claims;
 
-namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
+namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
+
+internal class UserContextPopulatingTelemetryInitializer : ITelemetryInitializer
 {
-    internal class UserContextPopulatingTelemetryInitializer : ITelemetryInitializer
+    private readonly IServiceProvider _serviceProvider;
+
+    public UserContextPopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
+        _serviceProvider = serviceProvider;
+
+    public void Initialize(ITelemetry telemetry)
     {
-        private readonly IServiceProvider _serviceProvider;
+        var httpContext = _serviceProvider.GetHttpContextSafely();
 
-        public UserContextPopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
-            _serviceProvider = serviceProvider;
+        if (httpContext == null || telemetry is not RequestTelemetry requestTelemetry) return;
 
-        public void Initialize(ITelemetry telemetry)
+        var options = _serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value;
+
+        var user = httpContext.User;
+        var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!string.IsNullOrEmpty(userId))
         {
-            var httpContext = _serviceProvider.GetHttpContextSafely();
+            requestTelemetry.TryAddProperty("UserId", userId);
+        }
 
-            if (httpContext == null || telemetry is not RequestTelemetry requestTelemetry) return;
+        if (options.EnableUserNameCollection && !string.IsNullOrEmpty(user?.Identity?.Name))
+        {
+            requestTelemetry.TryAddProperty("UserName", user.Identity.Name);
+        }
 
-            var options = _serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value;
+        if (options.EnableUserAgentCollection && string.IsNullOrEmpty(requestTelemetry.Context.User.UserAgent))
+        {
+            // While there is requestTelemetry.Context.User.UserAgent that's not displayed on the Azure Portal.
+            requestTelemetry.TryAddProperty("UserAgent", httpContext.Request.Headers["User-Agent"]);
+        }
 
-            var user = httpContext.User;
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!string.IsNullOrEmpty(userId))
-            {
-                requestTelemetry.TryAddProperty("UserId", userId);
-            }
-
-            if (options.EnableUserNameCollection && !string.IsNullOrEmpty(user?.Identity?.Name))
-            {
-                requestTelemetry.TryAddProperty("UserName", user.Identity.Name);
-            }
-
-            if (options.EnableUserAgentCollection && string.IsNullOrEmpty(requestTelemetry.Context.User.UserAgent))
-            {
-                // While there is requestTelemetry.Context.User.UserAgent that's not displayed on the Azure Portal.
-                requestTelemetry.TryAddProperty("UserAgent", httpContext.Request.Headers["User-Agent"]);
-            }
-
-            if (options.EnableIpAddressCollection)
-            {
-                requestTelemetry.TryAddProperty("ClientIP", telemetry.Context.Location.Ip);
-            }
+        if (options.EnableIpAddressCollection)
+        {
+            requestTelemetry.TryAddProperty("ClientIP", telemetry.Context.Location.Ip);
         }
     }
 }
