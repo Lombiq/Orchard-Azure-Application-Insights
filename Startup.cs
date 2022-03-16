@@ -32,8 +32,8 @@ public class Startup : StartupBase
     {
         services.AddApplicationInsightsTelemetry(_shellConfiguration);
 
-        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use
-        // an injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
+        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
+        // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
         var options = new ApplicationInsightsOptions();
         var configSection = _shellConfiguration.GetSection("Lombiq_Hosting_Azure_ApplicationInsights");
         configSection.Bind(options);
@@ -89,16 +89,15 @@ public class Startup : StartupBase
         // For some reason the AI logger provider needs to be re-registered here otherwise no logging will happen.
         var aiProvider = serviceProvider.GetServices<ILoggerProvider>().Single(provider => provider is ApplicationInsightsLoggerProvider);
         loggerFactory.AddProvider(aiProvider);
-        // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging()
-        // in ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The
-        // default
+        // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging() in
+        // ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The default
         ////{
         ////    "ProviderName": "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider",
         ////    "CategoryName": "",
         ////    "LogLevel": "Warning",
         ////    "Filter": ""
         ////}
-        // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's
-        // no other option than add default configuration in appsettings or similar.
+        // rule added by AddApplicationInsightsTelemetry() is there too but it doesn't take any effect. So, there's no
+        // other option than add default configuration in appsettings or similar.
     }
 }

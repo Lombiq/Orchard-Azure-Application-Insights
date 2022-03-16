@@ -14,39 +14,37 @@ public class ApplicationInsightsOptions
 
     /// <summary>
     /// Gets or sets a value indicating whether to enable a middleware that'll produce log entries on requests
-    /// containing the "logtest" query string parameter (i.e. "?logtest" or "&amp;logtest" being there in the URL), as
-    /// a test.
+    /// containing the "logtest" query string parameter (i.e. "?logtest" or "&amp;logtest" being there in the URL), as a
+    /// test.
     /// </summary>
     public bool EnableLoggingTestMiddleware { get; set; }
 
     /// <summary>
-    /// Gets or sets the API key to authenticate the controls channel for Quick Pulse (Live Metrics Stream). See
-    /// the documentation for more info: <see
+    /// Gets or sets the API key to authenticate the controls channel for Quick Pulse (Live Metrics Stream). See the
+    /// documentation for more info: <see
     /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel"/>.
     /// </summary>
     public string QuickPulseTelemetryModuleAuthenticationApiKey { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to collect authenticated user's user name, if available, on every
-    /// request. Note that the user name might be sensitive personally identifiable information (PII); see the
-    /// official documentation on handling PII: <see
+    /// request. Note that the user name might be sensitive personally identifiable information (PII); see the official
+    /// documentation on handling PII: <see
     /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
     /// </summary>
     public bool EnableUserNameCollection { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether to collect the browser user agent on every request. Note that the
-    /// user agent might be sensitive personally identifiable information (PII); see the official documentation on
-    /// handling PII: <see
-    /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
+    /// Gets or sets a value indicating whether to collect the browser user agent on every request. Note that the user
+    /// agent might be sensitive personally identifiable information (PII); see the official documentation on handling
+    /// PII: <see href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
     /// </summary>
     public bool EnableUserAgentCollection { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to collect the client IP address on every request. Note that the IP
-    /// address might be sensitive personally identifiable information (PII); see the official documentation on
-    /// handling PII: <see
-    /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
+    /// address might be sensitive personally identifiable information (PII); see the official documentation on handling
+    /// PII: <see href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/personal-data-mgmt"/>.
     /// </summary>
     public bool EnableIpAddressCollection { get; set; }
 
@@ -56,9 +54,9 @@ public class ApplicationInsightsOptions
     public bool EnableBackgroundTaskTelemetryCollection { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to enable a background task that'll produce log entries every
-    /// minute. Entries will only show up in AI if <see cref="EnableBackgroundTaskTelemetryCollection"/> is also
-    /// <see langword="true" />.
+    /// Gets or sets a value indicating whether to enable a background task that'll produce log entries every minute.
+    /// Entries will only show up in AI if <see cref="EnableBackgroundTaskTelemetryCollection"/> is also <see
+    /// langword="true"/>.
     /// </summary>
     public bool EnableLoggingTestBackgroundTask { get; set; }
 
@@ -68,8 +66,8 @@ public class ApplicationInsightsOptions
     public bool EnableClientSideTracking { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will
-    /// still show up in the Debug window.
+    /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will still
+    /// show up in the Debug window.
     /// </summary>
     public bool EnableOfflineOperation { get; set; }
 }

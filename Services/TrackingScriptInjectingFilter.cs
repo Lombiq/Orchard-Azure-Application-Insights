@@ -53,8 +53,8 @@ public class TrackingScriptInjectingFilter : IAsyncResultFilter
             }
         }
 
-        // In the else branch we could delete the cookie that allows client-side tracking.
-        // These provide a solution to handle the following cases:
+        // In the else branch we could delete the cookie that allows client-side tracking. These provide a solution to
+        // handle the following cases:
         // - The configuration of ITrackingConsentFeature changes after this module is enabled. (e.g. with
         //   Lombiq.Privacy: https://github.com/Lombiq/Orchard-Privacy)
         // - A browser is used by multiple users and not all of them have accepted the privacy policy.

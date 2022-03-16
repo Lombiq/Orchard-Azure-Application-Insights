@@ -10,8 +10,8 @@ public class TrackingScriptFactory : ITrackingScriptFactory
     public TrackingScriptFactory(JavaScriptSnippet javaScriptSnippet) =>
         _javaScriptSnippet = javaScriptSnippet;
 
-    // The operation ID is NOT available in the injectable TelemetryClient, which will be basically empty. This
-    // is somehow by design. See e.g.:
+    // The operation ID is NOT available in the injectable TelemetryClient, which will be basically empty. This is
+    // somehow by design. See e.g.:
     // https://stackoverflow.com/questions/39149815/when-can-i-get-an-application-insights-operation-id
     public HtmlString CreateJavaScriptTrackingScript() => new(
         $@"<script>
