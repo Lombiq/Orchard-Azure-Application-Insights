@@ -5,33 +5,32 @@ using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Environment.Shell;
 using System;
 
-namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers
+namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
+
+internal class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
 {
-    internal class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
+    private readonly IServiceProvider _serviceProvider;
+
+    public ShellNamePopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
+        _serviceProvider = serviceProvider;
+
+    public void Initialize(ITelemetry telemetry)
     {
-        private readonly IServiceProvider _serviceProvider;
+        if (telemetry is not ISupportProperties supportProperties) return;
 
-        public ShellNamePopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
-            _serviceProvider = serviceProvider;
-
-        public void Initialize(ITelemetry telemetry)
+        var httpContext = _serviceProvider.GetHttpContextSafely();
+        if (httpContext != null)
         {
-            if (telemetry is not ISupportProperties supportProperties) return;
+            var httpRequest = httpContext.Request;
 
-            var httpContext = _serviceProvider.GetHttpContextSafely();
-            if (httpContext != null)
+            var shellName = _serviceProvider
+                .GetService<IRunningShellTable>()
+                ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, fallbackToDefault: true)
+                ?.Name;
+
+            if (!string.IsNullOrEmpty(shellName))
             {
-                var httpRequest = httpContext.Request;
-
-                var shellName = _serviceProvider
-                    .GetService<IRunningShellTable>()
-                    ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, fallbackToDefault: true)
-                    ?.Name;
-
-                if (!string.IsNullOrEmpty(shellName))
-                {
-                    supportProperties.TryAddProperty("ShellName", shellName);
-                }
+                supportProperties.TryAddProperty("ShellName", shellName);
             }
         }
     }
