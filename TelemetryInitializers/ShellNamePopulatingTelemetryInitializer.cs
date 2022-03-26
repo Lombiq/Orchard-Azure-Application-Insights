@@ -25,7 +25,7 @@ internal class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
 
             var shellName = _serviceProvider
                 .GetService<IRunningShellTable>()
-                ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path, fallbackToDefault: true)
+                ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path)
                 ?.Name;
 
             if (!string.IsNullOrEmpty(shellName))
