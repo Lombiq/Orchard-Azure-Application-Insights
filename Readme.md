@@ -1,9 +1,6 @@
 # Lombiq Hosting - Azure Application Insights for Orchard Core
 
-
-
 [![Lombiq.Hosting.Azure.ApplicationInsights NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights?label=Lombiq.Hosting.Azure.ApplicationInsights)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights/)
-
 
 ## About
 
@@ -20,7 +17,6 @@ And all of this can be configured in depth. Extended configuration for built-in 
 Note that the module depends on [Helpful Libraries](https://github.com/Lombiq/Helpful-Libraries/).
 
 Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
-
 
 ## Documentation
 
@@ -53,7 +49,7 @@ Configure the built-in AI options as detailed in the [AI docs](https://docs.micr
 
 In a multi-tenant setup you can configure different instrumentation keys to collect request tracking and client-side tracking data on different tenants, just follow [the Orchard Core configuration docs](https://docs.orchardcore.net/en/latest/docs/reference/core/Configuration/).
 
-When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can create it with `ITrackingScriptFactory`. 
+When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can create it with `ITrackingScriptFactory`.
 
 ### Advanced configuration
 
@@ -86,7 +82,6 @@ Note that while telemetry from background tasks is collected in form of dependen
 ### Using collected data
 
 All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
-
 
 ## Contributing and support
 
