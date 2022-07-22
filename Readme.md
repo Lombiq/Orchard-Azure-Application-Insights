@@ -8,7 +8,7 @@ This [Orchard Core](https://orchardcore.net/) module enables easy integration of
 
 What kind of data is collected from the telemetry and available for inspection in the Azure Portal?
 
-- All usual AI data, including e.g. server-side requests, client-side page views, exceptions and other log entries, dependency calls (like web requests, database queries).
+- All usual AI data, including e.g. server-side requests, client-side page views, exceptions and other log entries, dependency calls (like web requests and database queries).
 - Information on background task executions (as dependency operations).
 - All telemetry is enriched with Orchard-specific and general details like user ID, user name, shell (tenant) name, user agent, IP address.
 
