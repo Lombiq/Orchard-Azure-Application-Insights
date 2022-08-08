@@ -4,6 +4,6 @@ namespace Microsoft.ApplicationInsights.DataContracts;
 
 public static class SupportPropertiesExtensions
 {
-    public static void TryAddProperty(this ISupportProperties supportProperties, string key, string value) =>
+    public static bool TryAddProperty(this ISupportProperties supportProperties, string key, string value) =>
         supportProperties.Properties.TryAdd("OrchardCore." + key, value);
 }
