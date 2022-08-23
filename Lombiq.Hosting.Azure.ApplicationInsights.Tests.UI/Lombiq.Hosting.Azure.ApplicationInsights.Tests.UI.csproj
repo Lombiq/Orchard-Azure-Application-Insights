@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Lombiq Hosting - Azure Application Insights for Orchard Core - UI Test Extensions</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2015, Lombiq Technologies Ltd.</Copyright>
+    <Description>Extension methods that test various features in Lombiq Hosting - Azure Application Insights for Orchard Core, with the help of Lombiq UI Testing Toolbox for Orchard Core. See the project website for detailed documentation.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;ApplicationInsights;Analytics;Telemetry;Monitoring;LombiqHostingSuite;Shouldly;xUnit;UITesting;Testing</PackageTags>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights/blob/dev/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/Readme.md</PackageProjectUrl>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="License.md" Pack="true" PackagePath="" />
+    <None Include="Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
+    <ProjectReference Include="..\..\..\..\test\Lombiq.UITestingToolbox\Lombiq.Tests.UI\Lombiq.Tests.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.Tests.UI" Version="3.4.0" />
+  </ItemGroup>
+
+</Project>
