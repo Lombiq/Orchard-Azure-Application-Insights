@@ -19,9 +19,9 @@ public static class TestCaseUITestContextExtensions
         {
             throw new InvalidOperationException(
                 "Testing Application Insights tracking during offline operation only works if you switch the module " +
-                "into offline mode by calling " +
-                "OrchardCoreUITestExecutorConfigurationExtensions.EnableApplicationInsightsOfflineOperation before " +
-                "the app starts.");
+                "into offline mode by calling " + nameof(OrchardCoreUITestExecutorConfigurationExtensions) + "." +
+                nameof(OrchardCoreUITestExecutorConfigurationExtensions.EnableApplicationInsightsOfflineOperation) +
+                " before the app starts.");
         }
 
         var appInsightsExist = context.ExecuteScript("return window.appInsights === 'enabled'") as bool?;
