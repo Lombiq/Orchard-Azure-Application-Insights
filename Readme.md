@@ -1,6 +1,7 @@
 # Lombiq Hosting - Azure Application Insights for Orchard Core
 
 [![Lombiq.Hosting.Azure.ApplicationInsights NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights?label=Lombiq.Hosting.Azure.ApplicationInsights)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights/)
+[![Lombiq.Hosting.Azure.ApplicationInsights.Test.UI NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights.Test.UI?label=Lombiq.Hosting.Azure.ApplicationInsights.Test.UI)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights.Test.UI/)
 
 ## About
 
@@ -82,6 +83,10 @@ Note that while telemetry from background tasks is collected in form of dependen
 ### Using collected data
 
 All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
+
+## UI testing
+
+The [`Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI` project](Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/Readme.md) contains UI test extension methods that you can call from your own test project. Check it out for details.
 
 ## Contributing and support
 
