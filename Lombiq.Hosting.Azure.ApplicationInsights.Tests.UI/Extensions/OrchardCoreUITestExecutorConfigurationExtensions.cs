@@ -20,7 +20,9 @@ public static class OrchardCoreUITestExecutorConfigurationExtensions
             (_, argumentsBuilder) =>
             {
                 argumentsBuilder
-                    .AddValue("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation", "true");
+                    .AddWithValue(
+                        "OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation",
+                        "true");
 
                 return Task.CompletedTask;
             };
