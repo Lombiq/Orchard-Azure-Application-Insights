@@ -1,7 +1,6 @@
 # Lombiq Hosting - Azure Application Insights for Orchard Core
 
-[![Lombiq.Hosting.Azure.ApplicationInsights NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights?label=Lombiq.Hosting.Azure.ApplicationInsights)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights/)
-[![Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI?label=Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/)
+[![Lombiq.Hosting.Azure.ApplicationInsights NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights?label=Lombiq.Hosting.Azure.ApplicationInsights)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights/) [![Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI?label=Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI)](https://www.nuget.org/packages/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/)
 
 ## About
 
