@@ -75,7 +75,7 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-See the [`ApplicationInsightsOptions` class](ApplicationInsightsOptions.cs) for all options and details. We recommend configuring at least `QuickPulseTelemetryModuleAuthenticationApiKey`.
+See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details. We recommend configuring at least `QuickPulseTelemetryModuleAuthenticationApiKey`.
 
 Note that while telemetry from background tasks is collected in form of dependency operations it'll be collected even if `EnableDependencyTrackingTelemetryModule` is `false`.
 
