@@ -23,7 +23,7 @@
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Remove="node_modules\**" />
     <None Remove="Tests\**" />
@@ -35,11 +35,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.5.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="5.1.1" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="5.1.2" />
   </ItemGroup>
 
 </Project>
