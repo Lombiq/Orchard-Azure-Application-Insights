@@ -7,7 +7,7 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 
-internal class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
+internal sealed class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
 {
     private readonly IServiceProvider _serviceProvider;
 
