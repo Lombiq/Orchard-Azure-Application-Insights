@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 
-internal class UserContextPopulatingTelemetryInitializer : ITelemetryInitializer
+internal sealed class UserContextPopulatingTelemetryInitializer : ITelemetryInitializer
 {
     private readonly IServiceProvider _serviceProvider;
 
