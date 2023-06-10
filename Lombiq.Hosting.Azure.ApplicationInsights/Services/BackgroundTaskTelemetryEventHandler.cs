@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-internal class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEventHandler
+internal sealed class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEventHandler
 {
     private readonly TelemetryClient _telemetryClient;
 
