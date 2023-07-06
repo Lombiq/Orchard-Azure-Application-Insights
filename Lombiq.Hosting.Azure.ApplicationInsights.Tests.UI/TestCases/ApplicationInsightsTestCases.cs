@@ -3,6 +3,7 @@ using Lombiq.Tests.UI;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using Shouldly;
+using System;
 using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI.TestCases;
@@ -10,7 +11,9 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI.TestCases;
 public static class ApplicationInsightsTestCases
 {
     public static Task ApplicationInsightsTrackingInOfflineOperationShouldWorkAsync(
-        ExecuteTestAfterSetupAsync executeTestAfterSetupAsync, Browser browser) =>
+        ExecuteTestAfterSetupAsync executeTestAfterSetupAsync,
+        Browser browser,
+        Func<OrchardCoreUITestExecutorConfiguration, Task> changeConfigurationAsync = null) =>
         executeTestAfterSetupAsync(
             async context =>
             {
@@ -25,8 +28,10 @@ public static class ApplicationInsightsTestCases
                 appInsightsExist.ShouldBe(expected: true, "The Application Insights module is not working or is not in offline mode.");
             },
             browser,
-            configuration =>
+            async configuration =>
             {
+                if (changeConfigurationAsync != null) await changeConfigurationAsync(configuration);
+
                 configuration.OrchardCoreConfiguration.BeforeAppStart +=
                     (_, argumentsBuilder) =>
                     {
@@ -37,7 +42,5 @@ public static class ApplicationInsightsTestCases
 
                         return Task.CompletedTask;
                     };
-
-                return Task.CompletedTask;
             });
 }
