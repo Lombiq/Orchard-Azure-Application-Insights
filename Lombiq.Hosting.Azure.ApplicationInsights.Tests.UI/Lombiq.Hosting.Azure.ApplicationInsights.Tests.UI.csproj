@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.Tests.UI" Version="7.1.3-alpha.0.osoe-682" />
-    <PackageReference Include="Lombiq.Privacy.Tests.UI" Version="6.0.3-alpha.0.osoe-628" />
+    <PackageReference Include="Lombiq.Tests.UI" Version="7.1.3-alpha.2.osoe-682" />
+    <PackageReference Include="Lombiq.Privacy.Tests.UI" Version="6.0.3-alpha.2.osoe-628" />
   </ItemGroup>
 
 </Project>
