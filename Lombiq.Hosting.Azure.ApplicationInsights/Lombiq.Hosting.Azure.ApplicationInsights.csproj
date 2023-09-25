@@ -35,11 +35,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.7.0" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.7.0" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.7.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.7.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.7.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="420.69.0" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="420.69.0" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="420.69.0" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="420.69.0" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="420.69.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
