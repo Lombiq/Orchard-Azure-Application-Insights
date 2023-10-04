@@ -31,6 +31,7 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddApplicationInsightsTelemetry(_shellConfiguration);
+        services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
         // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
         // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
