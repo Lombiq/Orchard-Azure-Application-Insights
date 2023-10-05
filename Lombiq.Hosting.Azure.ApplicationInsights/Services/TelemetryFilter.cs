@@ -30,6 +30,8 @@ public class TelemetryFilter : ITelemetryProcessor
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return true;
 
-        return !_errors.Contains(dependency.Properties["Error"]) && !_errors.Contains(dependency.Properties["Exception"]);
+        dependency.Properties.TryGetValue("Error", out var error);
+        dependency.Properties.TryGetValue("Exception", out var exception);
+        return !_errors.Contains(error) && !_errors.Contains(exception);
     }
 }
