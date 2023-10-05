@@ -20,12 +20,12 @@ public class TelemetryFilter : ITelemetryProcessor
 
     public void Process(ITelemetry item)
     {
-        if (!OKtoSend(item)) { return; }
+        if (!ShouldSend(item)) { return; }
 
         _next.Process(item);
     }
 
-    private bool OKtoSend(ITelemetry item)
+    private bool ShouldSend(ITelemetry item)
     {
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return true;
