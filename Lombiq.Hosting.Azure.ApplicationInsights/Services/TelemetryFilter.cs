@@ -1,8 +1,8 @@
 ﻿using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using System;
 using System.Collections.Generic;
-using YesSql.Services;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
@@ -31,11 +31,11 @@ public class TelemetryFilter : ITelemetryProcessor
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return true;
 
-        dependency.Properties.TryGetValue("Error", out var error);
+        dependency.Properties.TryGetValue("Error", out var dependencyError);
         dependency.Properties.TryGetValue("Exception", out var exception);
         dependency.Properties.TryGetValue("OrchardCore.ShellName", out var shellName);
-        var shouldSend = !(error.IsIn(Errors) ||
-            exception.IsIn(Errors) ||
+        var shouldSend = !(Errors.Exists(error => dependencyError?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
+            Errors.Exists(error => exception?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
             exception?.Contains(GetTenantSqlErrorMessage(shellName)) == true);
 
         return shouldSend;
