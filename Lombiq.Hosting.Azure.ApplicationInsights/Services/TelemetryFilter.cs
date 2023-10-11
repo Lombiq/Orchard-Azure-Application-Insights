@@ -11,7 +11,6 @@ public class TelemetryFilter : ITelemetryProcessor
     private static readonly List<string> Errors = new()
     {
         "Azure.RequestFailedException: The specified container already exists.",
-        "The specified blob does not exist.",
         "Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Shells_Identifiers' in the database.",
     };
 
@@ -34,9 +33,20 @@ public class TelemetryFilter : ITelemetryProcessor
         dependency.Properties.TryGetValue("Error", out var dependencyError);
         dependency.Properties.TryGetValue("Exception", out var exception);
         dependency.Properties.TryGetValue("OrchardCore.ShellName", out var shellName);
-        var shouldSend = !(Errors.Exists(error => dependencyError?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
+        var hasError = Errors.Exists(error => dependencyError?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
             Errors.Exists(error => exception?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
-            exception?.Contains(GetTenantSqlErrorMessage(shellName)) == true);
+            exception?.Contains(GetTenantSqlErrorMessage(shellName)) == true;
+        var shouldSend = !hasError;
+
+        if (!shouldSend)
+        {
+            return false;
+        }
+
+        dependency.Properties.TryGetValue("OrchardCore.DataProtectionContainerName", out var dataProtectionContainerName);
+        dependency.Properties.TryGetValue("OrchardCore.MediaBlobStorageContainerName", out var mediaBlobStorageContainerName);
+        shouldSend = !(dependency.Name == "PUT " + dataProtectionContainerName ||
+            dependency.Name == "PUT " + mediaBlobStorageContainerName);
 
         return shouldSend;
     }
