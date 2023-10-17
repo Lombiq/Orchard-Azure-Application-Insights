@@ -36,17 +36,17 @@ public class AzureCheckExistsInitializer : ITelemetryInitializer
             .GetValue<string>("OrchardCore_DataProtection_Azure:ConnectionString");
 
         var dataProtectionContainerName = shellConfiguration
-            .GetValue("OrchardCore_DataProtection_Azure:ContainerName", "dataprotection");
+            .GetValue("OrchardCore_DataProtection_Azure:ContainerName", "dataprotection"); // #spell-check-ignore-line
 
         if (dataProtectionConnectionString.Contains("UseDevelopmentStorage=true"))
         {
-            dataProtectionContainerName = "/devstoreaccount1/" + dataProtectionContainerName;
+            dataProtectionContainerName = "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
         }
 
         var mediaBlobStorageContainerName = mediaBlobStorageOptions.ContainerName;
         if (mediaBlobStorageOptions.ConnectionString.Contains("UseDevelopmentStorage=true"))
         {
-            mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName;
+            mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
         }
 
         dependencyTelemetry.TryAddProperty("DataProtectionContainerName", dataProtectionContainerName);
