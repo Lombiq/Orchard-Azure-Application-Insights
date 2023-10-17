@@ -10,6 +10,9 @@ public class TelemetryFilter : ITelemetryProcessor
 {
     private static readonly List<string> Errors = new()
     {
+        // Using this generic error message to filter because it is not possible to filter only those cases where it is
+        // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
+        // Blob Media container is always checked on each tenant activation.
         "Azure.RequestFailedException: The specified container already exists.",
         "Microsoft.Data.SqlClient.SqlException (0x80131904): There is already an object named 'Shells_Identifiers' in the database.",
     };
