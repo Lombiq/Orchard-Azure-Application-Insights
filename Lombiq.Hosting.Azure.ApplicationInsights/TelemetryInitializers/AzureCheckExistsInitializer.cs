@@ -14,8 +14,7 @@ public class AzureCheckExistsInitializer : ITelemetryInitializer
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public AzureCheckExistsInitializer(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
+    public AzureCheckExistsInitializer(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
     public void Initialize(ITelemetry telemetry)
     {
