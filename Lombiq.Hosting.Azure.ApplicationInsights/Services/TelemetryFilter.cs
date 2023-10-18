@@ -36,8 +36,8 @@ public class TelemetryFilter : ITelemetryProcessor
         dependency.Properties.TryGetValue("Error", out var dependencyError);
         dependency.Properties.TryGetValue("Exception", out var exception);
         dependency.Properties.TryGetValue("OrchardCore.ShellName", out var shellName);
-        var hasError = Errors.Exists(error => dependencyError?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
-            Errors.Exists(error => exception?.StartsWith(error, StringComparison.OrdinalIgnoreCase) == true) ||
+        var hasError = Errors.Exists(error => dependencyError?.StartsWithOrdinalIgnoreCase(error) == true) ||
+            Errors.Exists(error => exception?.StartsWithOrdinalIgnoreCase(error) == true) ||
             exception?.Contains(GetTenantSqlErrorMessage(shellName)) == true;
         var shouldSend = !hasError;
 
