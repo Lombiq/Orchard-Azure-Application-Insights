@@ -8,7 +8,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
 public class TelemetryFilter : ITelemetryProcessor
 {
-    private static readonly List<string> Errors = new()
+    private static readonly List<string> ExpectedErrors = new()
     {
         // Using this generic error message to filter because it is not possible to filter only those cases where it is
         // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
@@ -33,11 +33,11 @@ public class TelemetryFilter : ITelemetryProcessor
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return true;
 
-        dependency.Properties.TryGetValue("Error", out var dependencyError);
+        dependency.Properties.TryGetValue("Error", out var error);
         dependency.Properties.TryGetValue("Exception", out var exception);
         dependency.Properties.TryGetValue("OrchardCore.ShellName", out var shellName);
-        var hasError = Errors.Exists(error => dependencyError?.StartsWithOrdinalIgnoreCase(error) == true) ||
-            Errors.Exists(error => exception?.StartsWithOrdinalIgnoreCase(error) == true) ||
+        var hasError = ExpectedErrors.Exists(expectedError => error?.StartsWithOrdinalIgnoreCase(expectedError) == true) ||
+            ExpectedErrors.Exists(expectedError => exception?.StartsWithOrdinalIgnoreCase(expectedError) == true) ||
             exception?.Contains(GetTenantSqlErrorMessage(shellName)) == true;
         var shouldSend = !hasError;
 
