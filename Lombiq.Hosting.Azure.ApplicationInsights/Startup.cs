@@ -48,7 +48,6 @@ public class Startup : StartupBase
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
-        services.AddSingleton<ITelemetryInitializer, AzureCheckExistsInitializer>();
         services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 

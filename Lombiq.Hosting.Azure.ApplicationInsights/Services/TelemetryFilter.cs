@@ -34,21 +34,15 @@ public class TelemetryFilter : ITelemetryProcessor
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return false;
 
-        dependency.Properties.TryGetValue("Error", out var error);
-        dependency.Properties.TryGetValue("Exception", out var exception);
-
-        var hasError = _expectedErrorsAsRegexPattern.Exists(expectedError => error?.RegexIsMatch(expectedError) == true) ||
-            _expectedErrorsAsRegexPattern.Exists(expectedError => exception?.RegexIsMatch(expectedError) == true);
-
-        if (hasError)
+        if (dependency.ResultCode == "409" && dependency.Name == "BlobContainerClient.Create")
         {
             return true;
         }
 
-        dependency.Properties.TryGetValue("OrchardCore.DataProtectionContainerName", out var dataProtectionContainerName);
-        dependency.Properties.TryGetValue("OrchardCore.MediaBlobStorageContainerName", out var mediaBlobStorageContainerName);
+        dependency.Properties.TryGetValue("Error", out var error);
+        dependency.Properties.TryGetValue("Exception", out var exception);
 
-        return dependency.Name == "PUT " + dataProtectionContainerName ||
-            dependency.Name == "PUT " + mediaBlobStorageContainerName;
+        return _expectedErrorsAsRegexPattern.Exists(expectedError => error?.RegexIsMatch(expectedError) == true) ||
+            _expectedErrorsAsRegexPattern.Exists(expectedError => exception?.RegexIsMatch(expectedError) == true);
     }
 }
