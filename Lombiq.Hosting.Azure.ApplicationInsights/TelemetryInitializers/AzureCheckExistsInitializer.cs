@@ -18,12 +18,9 @@ public class AzureCheckExistsInitializer : ITelemetryInitializer
 
     public void Initialize(ITelemetry telemetry)
     {
-        if (telemetry is not DependencyTelemetry dependencyTelemetry || dependencyTelemetry.Success == true)
-        {
-            return;
-        }
-
-        if (dependencyTelemetry.ResultCode != "409" && dependencyTelemetry.Name != "BlobContainerClient.Create")
+        if (telemetry is not DependencyTelemetry dependencyTelemetry ||
+            dependencyTelemetry.Success == true ||
+            (dependencyTelemetry.ResultCode != "409" && dependencyTelemetry.Name != "BlobContainerClient.Create"))
         {
             return;
         }
