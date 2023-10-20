@@ -82,9 +82,12 @@ public class TelemetryFilter : ITelemetryProcessor
             return true;
         }
 
-        var mediaBlobStorageOptions = _serviceProvider.GetRequiredService<IOptions<MediaBlobStorageOptions>>().Value;
-        var mediaBlobStorageContainerName = mediaBlobStorageOptions.ContainerName;
-        if (mediaBlobStorageOptions.ConnectionString.Contains("UseDevelopmentStorage=true"))
+        // MediaBlobStorageOptions won't be initiated, so directly checking the config.
+        var mediaBlobStorageConnectionString = shellConfiguration
+            .GetValue<string>("OrchardCore_Media_Azure:ConnectionString");
+        var mediaBlobStorageContainerName = shellConfiguration
+            .GetValue<string>("OrchardCore_Media_Azure:ContainerName");
+        if (mediaBlobStorageConnectionString.Contains("UseDevelopmentStorage=true"))
         {
             mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
         }
