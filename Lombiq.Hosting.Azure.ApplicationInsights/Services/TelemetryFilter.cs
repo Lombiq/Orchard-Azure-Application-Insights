@@ -1,4 +1,4 @@
-﻿using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
@@ -18,10 +18,10 @@ public class TelemetryFilter : ITelemetryProcessor
         // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
         // Blob Media container is always checked on each tenant activation in OrchardCore
         // MediaBlobContainerTenantEvents class.
-        new(@"Azure\.RequestFailedException: The specified container already exists\.", RegexOptions.None, TimeSpan.FromSeconds(1)),
+        new(@"Azure\.RequestFailedException: The specified container already exists\.", RegexOptions.Compiled, TimeSpan.FromSeconds(1)),
         new(
             @"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
-            RegexOptions.None,
+            RegexOptions.Compiled,
             TimeSpan.FromSeconds(1)),
     };
 
