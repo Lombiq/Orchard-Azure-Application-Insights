@@ -1,26 +1,40 @@
 ﻿using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using OrchardCore.Environment.Shell.Configuration;
+using OrchardCore.Media.Azure;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
 public class TelemetryFilter : ITelemetryProcessor
 {
-    private static readonly List<string> _expectedErrorsAsRegexPattern = new()
+    private static readonly List<Regex> _expectedErrors = new()
     {
         // Using this generic error message to filter because it is not possible to filter only those cases where it is
         // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
         // Blob Media container is always checked on each tenant activation in OrchardCore
         // MediaBlobContainerTenantEvents class.
-        @"Azure\.RequestFailedException: The specified container already exists\.",
-        @"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
+        new(@"Azure\.RequestFailedException: The specified container already exists\.", RegexOptions.None, TimeSpan.FromSeconds(1)),
+        new(
+            @"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
+            RegexOptions.None,
+            TimeSpan.FromSeconds(1)),
     };
 
     private readonly ITelemetryProcessor _next;
+    private readonly IServiceProvider _serviceProvider;
 
-    public TelemetryFilter(ITelemetryProcessor next) => _next = next;
+    public TelemetryFilter(ITelemetryProcessor next, IServiceProvider serviceProvider)
+    {
+        _next = next;
+        _serviceProvider = serviceProvider;
+    }
 
     public void Process(ITelemetry item)
     {
@@ -29,20 +43,52 @@ public class TelemetryFilter : ITelemetryProcessor
         _next.Process(item);
     }
 
-    private static bool ShouldNotSend(ITelemetry item)
+    private bool ShouldNotSend(ITelemetry item)
     {
         var dependency = item as DependencyTelemetry;
         if (dependency is not { Success: false }) return false;
 
-        if (dependency.ResultCode == "409" && dependency.Name == "BlobContainerClient.Create")
+        dependency.Properties.TryGetValue("Error", out var error);
+        dependency.Properties.TryGetValue("Exception", out var exception);
+
+        var shouldNotSend = _expectedErrors.Exists(expectedError => error != null && expectedError.IsMatch(error)) ||
+            _expectedErrors.Exists(expectedError => exception != null && expectedError.IsMatch(exception));
+
+        if (shouldNotSend)
         {
             return true;
         }
 
-        dependency.Properties.TryGetValue("Error", out var error);
-        dependency.Properties.TryGetValue("Exception", out var exception);
+        // We are looking for 409 response code, which can indicate a container already exists error.
+        if (dependency.ResultCode != "409")
+        {
+            return false;
+        }
 
-        return _expectedErrorsAsRegexPattern.Exists(expectedError => error?.RegexIsMatch(expectedError) == true) ||
-            _expectedErrorsAsRegexPattern.Exists(expectedError => exception?.RegexIsMatch(expectedError) == true);
+        var shellConfiguration = _serviceProvider.GetRequiredService<IShellConfiguration>();
+        var dataProtectionConnectionString = shellConfiguration
+            .GetValue<string>("OrchardCore_DataProtection_Azure:ConnectionString");
+
+        var dataProtectionContainerName = shellConfiguration
+            .GetValue("OrchardCore_DataProtection_Azure:ContainerName", "dataprotection"); // #spell-check-ignore-line
+
+        if (dataProtectionConnectionString.Contains("UseDevelopmentStorage=true"))
+        {
+            dataProtectionContainerName = "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
+        }
+
+        if (dependency.Name == "PUT " + dataProtectionContainerName)
+        {
+            return true;
+        }
+
+        var mediaBlobStorageOptions = _serviceProvider.GetRequiredService<IOptions<MediaBlobStorageOptions>>().Value;
+        var mediaBlobStorageContainerName = mediaBlobStorageOptions.ContainerName;
+        if (mediaBlobStorageOptions.ConnectionString.Contains("UseDevelopmentStorage=true"))
+        {
+            mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
+        }
+
+        return dependency.Name == "PUT " + mediaBlobStorageContainerName;
     }
 }
