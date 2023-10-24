@@ -75,7 +75,8 @@ public class TelemetryFilter : ITelemetryProcessor
             dataProtectionContainerName = "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
         }
 
-        if (dependency.Name == "PUT " + dataProtectionContainerName)
+        // Name property value could be different depending on the environment, so using the Data property instead.
+        if (dependency.Data.Contains(dataProtectionContainerName))
         {
             return true;
         }
@@ -90,6 +91,7 @@ public class TelemetryFilter : ITelemetryProcessor
             mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
         }
 
-        return dependency.Name == "PUT " + mediaBlobStorageContainerName;
+        // Name property value could be different depending on the environment, so using the Data property instead.
+        return dependency.Data.Contains(mediaBlobStorageContainerName);
     }
 }
