@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.ApplicationInsights;
 using Microsoft.Extensions.Options;
 using OrchardCore.BackgroundTasks;
 using OrchardCore.Environment.Shell.Configuration;
@@ -30,7 +28,6 @@ public class Startup : StartupBase
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddApplicationInsightsTelemetry(_shellConfiguration);
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
         // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
@@ -84,12 +81,6 @@ public class Startup : StartupBase
         var options = serviceProvider.GetService<IOptions<ApplicationInsightsOptions>>().Value;
 
         if (options.EnableLoggingTestMiddleware) app.UseMiddleware<LoggingTestMiddleware>();
-
-        var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-
-        // For some reason the AI logger provider needs to be re-registered here otherwise no logging will happen.
-        var aiProvider = serviceProvider.GetServices<ILoggerProvider>().Single(provider => provider is ApplicationInsightsLoggerProvider);
-        loggerFactory.AddProvider(aiProvider);
         // There seems to be no way to apply a default filtering to this from code. Going via services.AddLogging() in
         // ConfigureServices() doesn't work, neither there. The rules get saved but are never applied. The default
         ////{
