@@ -8,6 +8,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
 using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,7 @@ public static class ApplicationInsightsInitializerExtensions
         // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
         // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
         var options = new ApplicationInsightsOptions();
-        var configSection = configurationManager.GetSection("Lombiq_Hosting_Azure_ApplicationInsights");
+        var configSection = configurationManager.GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         configSection.Bind(options);
         services.Configure<ApplicationInsightsOptions>(configSection);
 
@@ -39,6 +40,7 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
+        services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
         if (options.EnableOfflineOperation)

@@ -1,6 +1,5 @@
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -19,8 +18,6 @@ public class Startup : StartupBase
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
-
         if (_applicationInsightsOptions.EnableLoggingTestBackgroundTask)
         {
             services.AddSingleton<IBackgroundTask, LoggingTestBackgroundTask>();
