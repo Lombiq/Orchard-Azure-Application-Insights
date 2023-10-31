@@ -17,7 +17,7 @@ public static class ApplicationInsightsInitializerExtensions
     /// <summary>
     /// Use this extension method to initialize Application Insights. Should be used in the application Program.cs file.
     /// </summary>
-    public static IServiceCollection InitializeApplicationInsightsTelemetry(
+    public static IServiceCollection AddOrchardCoreApplicationInsightsTelemetry(
         this IServiceCollection services,
         ConfigurationManager configurationManager)
     {
