@@ -39,7 +39,6 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
-        services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
         if (options.EnableOfflineOperation)
