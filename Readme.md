@@ -58,7 +58,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddApplicationInsightsTelemetry(configuration)
+builder.Services.AddOrchardCoreApplicationInsightsTelemetry(configuration)
 ```
 
 When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can create it with `ITrackingScriptFactory`.
