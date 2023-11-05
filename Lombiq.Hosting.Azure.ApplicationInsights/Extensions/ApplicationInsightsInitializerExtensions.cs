@@ -21,7 +21,9 @@ public static class ApplicationInsightsInitializerExtensions
         ConfigurationManager configurationManager)
     {
         var connectionString = configurationManager.GetValue<string>("ApplicationInsights:ConnectionString");
-        if (string.IsNullOrEmpty(connectionString))
+        var enableOfflineOperation = configurationManager
+            .GetValue<bool>("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation");
+        if (string.IsNullOrEmpty(connectionString) && !enableOfflineOperation)
         {
             return services;
         }

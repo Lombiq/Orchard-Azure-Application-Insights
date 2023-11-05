@@ -26,7 +26,8 @@ public class Startup : StartupBase
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        if (string.IsNullOrEmpty(_applicationInsightsServiceOptions.ConnectionString))
+        if (string.IsNullOrEmpty(_applicationInsightsServiceOptions.ConnectionString) &&
+            !_applicationInsightsOptions.EnableOfflineOperation)
         {
             return;
         }
