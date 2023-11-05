@@ -20,6 +20,12 @@ public static class ApplicationInsightsInitializerExtensions
         this IServiceCollection services,
         ConfigurationManager configurationManager)
     {
+        var connectionString = configurationManager.GetValue<string>("ApplicationInsights:ConnectionString");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            return services;
+        }
+
         services.AddApplicationInsightsTelemetry(configurationManager);
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
