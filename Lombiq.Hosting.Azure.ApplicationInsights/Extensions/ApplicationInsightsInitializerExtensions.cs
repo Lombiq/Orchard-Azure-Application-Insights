@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ApplicationInsightsInitializerExtensions
 {
     /// <summary>
-    /// Use this extension method to initialize Application Insights. Should be used in the application Program.cs file.
+    /// Initializes Application Insights for Orchard Core. Should be used in the application Program.cs file.
     /// </summary>
     public static IServiceCollection AddOrchardCoreApplicationInsightsTelemetry(
         this IServiceCollection services,
