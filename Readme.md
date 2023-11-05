@@ -51,7 +51,7 @@ Configure the built-in AI options as detailed in the [AI docs](https://docs.micr
 
 ```
 
-Add the AI services to the service collection in your Web project's Program.cs file:
+Add the AI services to the service collection in your Web project's _Program.cs_ file:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
