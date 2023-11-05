@@ -59,6 +59,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddOrchardCoreApplicationInsightsTelemetry(configuration).AddOrchardCms();
+```
 
 Note that due to how the Application Insights .NET SDK works, telemetry can only be collected for the whole app at once; collecting telemetry separately for each tenant is not supported.
 
