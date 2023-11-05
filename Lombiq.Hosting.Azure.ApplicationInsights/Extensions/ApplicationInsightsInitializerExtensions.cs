@@ -18,7 +18,7 @@ public static class ApplicationInsightsInitializerExtensions
     /// </summary>
     public static IServiceCollection AddOrchardCoreApplicationInsightsTelemetry(
         this IServiceCollection services,
-        ConfigurationManager configurationManager)
+        IConfiguration configurationManager)
     {
         var connectionString = configurationManager.GetValue<string>("ApplicationInsights:ConnectionString");
         var enableOfflineOperation = configurationManager
