@@ -8,6 +8,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using ApplicationInsightsFeatureIds = Lombiq.Hosting.Azure.ApplicationInsights.Constants.FeatureIds;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -16,8 +17,9 @@ public static class ApplicationInsightsInitializerExtensions
     /// <summary>
     /// Initializes Application Insights for Orchard Core. Should be used in the application Program.cs file.
     /// </summary>
-    public static IServiceCollection AddOrchardCoreApplicationInsightsTelemetry(
-        this IServiceCollection services,
+    public static OrchardCoreBuilder AddOrchardCoreApplicationInsightsTelemetry(
+        this OrchardCoreBuilder builder,
+        IServiceCollection services,
         IConfiguration configurationManager)
     {
         var connectionString = configurationManager.GetValue<string>("ApplicationInsights:ConnectionString");
@@ -25,7 +27,7 @@ public static class ApplicationInsightsInitializerExtensions
             .GetValue<bool>("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation");
         if (string.IsNullOrEmpty(connectionString) && !enableOfflineOperation)
         {
-            return services;
+            return builder;
         }
 
         services.AddApplicationInsightsTelemetry(configurationManager);
@@ -65,6 +67,8 @@ public static class ApplicationInsightsInitializerExtensions
                 });
         }
 
-        return services;
+        builder.AddTenantFeatures(ApplicationInsightsFeatureIds.Default);
+
+        return builder;
     }
 }
