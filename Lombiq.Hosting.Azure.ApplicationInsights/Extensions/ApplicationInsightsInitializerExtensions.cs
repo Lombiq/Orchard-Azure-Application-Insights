@@ -22,10 +22,21 @@ public static class ApplicationInsightsInitializerExtensions
         IServiceCollection services,
         IConfiguration configurationManager)
     {
-        var connectionString = configurationManager.GetValue<string>("ApplicationInsights:ConnectionString");
-        var enableOfflineOperation = configurationManager
-            .GetValue<bool>("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation");
-        if (string.IsNullOrEmpty(connectionString) && !enableOfflineOperation)
+        var applicationInsightsServiceOptions = new ApplicationInsightsServiceOptions();
+        var applicationInsightsServiceConfigSection = configurationManager.GetSection("ApplicationInsights");
+        applicationInsightsServiceConfigSection.Bind(applicationInsightsServiceOptions);
+
+        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
+        // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
+        var applicationInsightsOptions = new ApplicationInsightsOptions();
+        var applicationInsightsConfigSection = configurationManager.GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
+        applicationInsightsConfigSection.Bind(applicationInsightsOptions);
+
+        if (string.IsNullOrEmpty(applicationInsightsServiceOptions.ConnectionString) &&
+#pragma warning disable CS0618 // Type or member is obsolete
+            string.IsNullOrEmpty(applicationInsightsServiceOptions.InstrumentationKey) &&
+#pragma warning restore CS0618 // Type or member is obsolete
+            !applicationInsightsOptions.EnableOfflineOperation)
         {
             return builder;
         }
@@ -33,24 +44,19 @@ public static class ApplicationInsightsInitializerExtensions
         services.AddApplicationInsightsTelemetry(configurationManager);
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
-        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
-        // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
-        var options = new ApplicationInsightsOptions();
-        var configSection = configurationManager.GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
-        configSection.Bind(options);
-        services.Configure<ApplicationInsightsOptions>(configSection);
+        services.Configure<ApplicationInsightsOptions>(applicationInsightsConfigSection);
 
         services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
-            (module, _) => module.EnableSqlCommandTextInstrumentation = options.EnableSqlCommandTextInstrumentation);
+            (module, _) => module.EnableSqlCommandTextInstrumentation = applicationInsightsOptions.EnableSqlCommandTextInstrumentation);
 
         services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
-            (module, _) => module.AuthenticationApiKey = options.QuickPulseTelemetryModuleAuthenticationApiKey);
+            (module, _) => module.AuthenticationApiKey = applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey);
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
-        if (options.EnableOfflineOperation)
+        if (applicationInsightsOptions.EnableOfflineOperation)
         {
             foreach (var descriptor in services.Where(descriptor => descriptor.ServiceType == typeof(ITelemetryChannel)).ToArray())
             {
