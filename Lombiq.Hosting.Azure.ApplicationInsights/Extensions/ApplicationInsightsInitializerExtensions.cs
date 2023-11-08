@@ -19,7 +19,6 @@ public static class ApplicationInsightsInitializerExtensions
     /// </summary>
     public static OrchardCoreBuilder AddOrchardCoreApplicationInsightsTelemetry(
         this OrchardCoreBuilder builder,
-        IServiceCollection services,
         IConfiguration configurationManager)
     {
         var applicationInsightsServiceOptions = new ApplicationInsightsServiceOptions();
@@ -41,6 +40,7 @@ public static class ApplicationInsightsInitializerExtensions
             return builder;
         }
 
+        var services = builder.ApplicationServices;
         services.AddApplicationInsightsTelemetry(configurationManager);
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 

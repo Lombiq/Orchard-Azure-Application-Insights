@@ -61,7 +61,7 @@ var configuration = builder.Configuration;
 builder.Services
     .AddOrchardCms(orchardCoreBuilder =>
     {
-        orchardCoreBuilder.AddOrchardCoreApplicationInsightsTelemetry(builder.Services, configuration);
+        orchardCoreBuilder.AddOrchardCoreApplicationInsightsTelemetry(configuration);
     });
 ```
 
