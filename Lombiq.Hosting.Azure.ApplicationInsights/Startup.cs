@@ -27,6 +27,9 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         if (string.IsNullOrEmpty(_applicationInsightsServiceOptions.ConnectionString) &&
+#pragma warning disable CS0618 // Type or member is obsolete
+            string.IsNullOrEmpty(_applicationInsightsServiceOptions.InstrumentationKey) &&
+#pragma warning restore CS0618 // Type or member is obsolete
             !_applicationInsightsOptions.EnableOfflineOperation)
         {
             return;

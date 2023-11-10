@@ -7,6 +7,7 @@ using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using ApplicationInsightsFeatureIds = Lombiq.Hosting.Azure.ApplicationInsights.Constants.FeatureIds;
 
@@ -21,27 +22,37 @@ public static class ApplicationInsightsInitializerExtensions
         this OrchardCoreBuilder builder,
         IConfiguration configurationManager)
     {
-        var applicationInsightsServiceOptions = new ApplicationInsightsServiceOptions();
-        var applicationInsightsServiceConfigSection = configurationManager.GetSection("ApplicationInsights");
-        applicationInsightsServiceConfigSection.Bind(applicationInsightsServiceOptions);
+        var services = builder.ApplicationServices;
+        services.AddApplicationInsightsTelemetry(configurationManager);
 
-        // Since the below AI configuration needs to happen during app startup in ConfigureServices() we can't use an
-        // injected IOptions<T> here but need to directly bind to ApplicationInsightsOptions.
+        // Create a temporary ServiceProvider to configure ApplicationInsightsServiceOptions.
+        using var serviceProvider = services.BuildServiceProvider();
+        var applicationInsightsServiceOptions = serviceProvider
+            .GetService<IOptions<ApplicationInsightsServiceOptions>>()?.Value;
+
         var applicationInsightsOptions = new ApplicationInsightsOptions();
-        var applicationInsightsConfigSection = configurationManager.GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
+        var applicationInsightsConfigSection = configurationManager
+            .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
 
-        if (string.IsNullOrEmpty(applicationInsightsServiceOptions.ConnectionString) &&
+        if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete
-            string.IsNullOrEmpty(applicationInsightsServiceOptions.InstrumentationKey) &&
+            string.IsNullOrEmpty(applicationInsightsServiceOptions?.InstrumentationKey) &&
 #pragma warning restore CS0618 // Type or member is obsolete
             !applicationInsightsOptions.EnableOfflineOperation)
         {
+            // Removing ITelemetryModules from the service collection is necessary because otherwise the modules will be
+            // used, even if there is no ConnectionString or InstrumentationKey added.
+            var descriptorsToDelete = services.Where(descriptor => descriptor.ServiceType == typeof(ITelemetryModule)).ToArray();
+
+            foreach (var descriptor in descriptorsToDelete)
+            {
+                services.Remove(descriptor);
+            }
+
             return builder;
         }
 
-        var services = builder.ApplicationServices;
-        services.AddApplicationInsightsTelemetry(configurationManager);
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
         services.Configure<ApplicationInsightsOptions>(applicationInsightsConfigSection);
