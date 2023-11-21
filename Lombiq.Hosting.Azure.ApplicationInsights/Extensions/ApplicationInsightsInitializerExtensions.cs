@@ -65,6 +65,7 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
+        services.AddSingleton<ITelemetryInitializer, IgnoreFailureInitializer>();
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
         if (applicationInsightsOptions.EnableOfflineOperation)
