@@ -1,3 +1,6 @@
+using System;
+using System.Text.RegularExpressions;
+
 namespace Lombiq.Hosting.Azure.ApplicationInsights;
 
 /// <summary>
@@ -70,4 +73,16 @@ public class ApplicationInsightsOptions
     /// show up in the Debug window.
     /// </summary>
     public bool EnableOfflineOperation { get; set; }
+
+    public string IgnoreFailureRegexCode
+    {
+        get => IgnoreFailureRegex.ToString();
+        set => IgnoreFailureRegex = new Regex(
+            value,
+            RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
+    }
+
+
+    public Regex IgnoreFailureRegex { get; private set; }
 }
