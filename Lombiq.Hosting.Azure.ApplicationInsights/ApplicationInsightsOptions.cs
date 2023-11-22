@@ -74,7 +74,11 @@ public class ApplicationInsightsOptions
     /// </summary>
     public bool EnableOfflineOperation { get; set; }
 
-    public string IgnoreFailureRegexCode
+    /// <summary>
+    /// Gets or sets <see cref="IgnoreFailureRegex"/>. Sets <see cref="IgnoreFailureRegex"/> by compiling the given
+    /// string into a regular expression.
+    /// </summary>
+    public string IgnoreFailureEscapedRegex
     {
         get => IgnoreFailureRegex.ToString();
         set => IgnoreFailureRegex = new Regex(
@@ -83,6 +87,10 @@ public class ApplicationInsightsOptions
             TimeSpan.FromSeconds(1));
     }
 
-
+    /// <summary>
+    /// Gets a regular expression that will be used to set telemetry to success if it matches. This is useful if
+    /// you have a lot of 404s or other errors that you don't want to see as failures in Application Insights.
+    /// You can set it by setting <see cref="IgnoreFailureEscapedRegex"/> instead.
+    /// </summary>
     public Regex IgnoreFailureRegex { get; private set; }
 }
