@@ -53,7 +53,7 @@ public static class ApplicationInsightsInitializerExtensions
             return builder;
         }
 
-        // services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
+        services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
 
         services.Configure<ApplicationInsightsOptions>(applicationInsightsConfigSection);
 
