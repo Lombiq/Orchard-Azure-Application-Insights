@@ -12,7 +12,7 @@ public static class ApplicationInsightsTestCases
 {
     public static Task ApplicationInsightsTrackingInOfflineOperationShouldWorkAsync(
         ExecuteTestAfterSetupAsync executeTestAfterSetupAsync,
-        Browser browser,
+        Browser browser = default,
         Func<OrchardCoreUITestExecutorConfiguration, Task> changeConfigurationAsync = null) =>
         executeTestAfterSetupAsync(
             async context =>
