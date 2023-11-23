@@ -17,8 +17,6 @@ public static class ApplicationInsightsTestCases
         executeTestAfterSetupAsync(
             async context =>
             {
-                await context.EnableFeatureDirectlyAsync("Lombiq.Hosting.Azure.ApplicationInsights");
-
                 await context.EnablePrivacyConsentBannerFeatureAndAcceptPrivacyConsentAsync();
 
                 var appInsightsExist = context.ExecuteScript("return window.appInsights === 'enabled'") as bool?;
