@@ -80,7 +80,7 @@ public class ApplicationInsightsOptions
     /// </summary>
     public string IgnoreFailureEscapedRegex
     {
-        get => IgnoreFailureRegex.ToString();
+        get => IgnoreFailureRegex?.ToString();
         set => IgnoreFailureRegex = new Regex(
             value,
             RegexOptions.Compiled,
