@@ -90,5 +90,5 @@ public class ApplicationInsightsOptions
     /// <see cref="DependencyTelemetry.Data"/> or <see cref="RequestTelemetry.Url"/>. This is useful if
     /// you have a lot of 404s or other errors that you don't want to see as failures in Application Insights.
     /// </summary>
-    public Regex IgnoreFailureRegex { get; private set; }
+    public Regex IgnoreFailureRegex { get; set; }
 }
