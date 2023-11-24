@@ -7,7 +7,7 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 
-public class IgnoreFailureInitializer : ITelemetryInitializer
+public class IgnoreFailureTelemetryInitializer : ITelemetryInitializer
 {
     private readonly IServiceProvider _serviceProvider;
 
