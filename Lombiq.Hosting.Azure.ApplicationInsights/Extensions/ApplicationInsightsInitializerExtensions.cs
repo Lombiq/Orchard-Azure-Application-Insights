@@ -65,6 +65,7 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
+        services.AddSingleton<ITelemetryInitializer, IgnoreFailureTelemetryInitializer>();
         services.AddScoped<ITrackingScriptFactory, TrackingScriptFactory>();
 
         if (applicationInsightsOptions.EnableOfflineOperation)
@@ -86,6 +87,16 @@ public static class ApplicationInsightsInitializerExtensions
 
         builder.AddTenantFeatures(ApplicationInsightsFeatureIds.Default);
 
+        return builder;
+    }
+
+    /// <summary>
+    /// Adds an Application Insights Telemetry Processor into the <c>ApplicationServices</c> service collection.
+    /// </summary>
+    public static OrchardCoreBuilder AddApplicationInsightsTelemetryProcessor<T>(this OrchardCoreBuilder builder)
+        where T : ITelemetryProcessor
+    {
+        builder.ApplicationServices.AddApplicationInsightsTelemetryProcessor<T>();
         return builder;
     }
 }
