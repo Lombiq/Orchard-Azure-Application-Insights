@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.DataContracts;
 using System;
 using System.Text.RegularExpressions;
 
@@ -77,16 +78,17 @@ public class ApplicationInsightsOptions
     /// <summary>
     /// Gets or sets <see cref="IgnoreFailureRegex"/> by compiling the given string into a regular expression.
     /// </summary>
-    public string IgnoreFailureEscapedRegex
+    /// <example>You should use a regex pattern like "(?:\\/favicon.ico$)|(?:\\/media\\/)".</example>
+    public string IgnoreFailureRegexPattern
     {
         get => IgnoreFailureRegex?.ToString();
         set => IgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     }
 
     /// <summary>
-    /// Gets a regular expression that will be used to set telemetry to success if it matches. This is useful if
+    /// Gets or sets a regular expression that will be used to set telemetry to success if it matches
+    /// <see cref="DependencyTelemetry.Data"/> or <see cref="RequestTelemetry.Url"/>. This is useful if
     /// you have a lot of 404s or other errors that you don't want to see as failures in Application Insights.
-    /// You can set it by setting <see cref="IgnoreFailureEscapedRegex"/> instead.
     /// </summary>
     public Regex IgnoreFailureRegex { get; private set; }
 }

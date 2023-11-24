@@ -22,14 +22,14 @@ public static class TelemetryExtensions
 
     /// <summary>
     /// Returns <see langword="true"/> if the <see cref="DependencyTelemetry"/> should be set as an ignored failure.
-    /// Returns false otherwise.
+    /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this DependencyTelemetry dependencyTelemetry, IServiceProvider serviceProvider) =>
         ShouldSetAsIgnoredFailure(dependencyTelemetry.ResultCode, dependencyTelemetry.Data, serviceProvider);
 
     /// <summary>
     /// Returns <see langword="true"/> if the <see cref="RequestTelemetry"/> should be set as an ignored failure.
-    /// Returns false otherwise.
+    /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this RequestTelemetry requestTelemetry, IServiceProvider serviceProvider) =>
         ShouldSetAsIgnoredFailure(requestTelemetry.ResponseCode, requestTelemetry.Url.ToString(), serviceProvider);
