@@ -9,8 +9,8 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
 public static class TelemetryExtensions
 {
     /// <summary>
-    /// Sets the telemetry as an ignored failure. This means that it'll be marked as a success and a custom property
-    /// will be added to it so that it can be filtered out in the portal.
+    /// Sets the telemetry as an ignored failure. This means that it'll be marked as a success and the "IgnoredFailure"
+    /// custom property will be added to it so that it can be filtered out in the portal.
     /// </summary>
     public static void SetAsIgnoredFailure(this OperationTelemetry operationTelemetry)
     {
