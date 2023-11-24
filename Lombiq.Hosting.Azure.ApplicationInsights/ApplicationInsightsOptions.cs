@@ -75,8 +75,7 @@ public class ApplicationInsightsOptions
     public bool EnableOfflineOperation { get; set; }
 
     /// <summary>
-    /// Gets or sets <see cref="IgnoreFailureRegex"/>. Sets <see cref="IgnoreFailureRegex"/> by compiling the given
-    /// string into a regular expression.
+    /// Gets or sets <see cref="IgnoreFailureRegex"/> by compiling the given string into a regular expression.
     /// </summary>
     public string IgnoreFailureEscapedRegex
     {
