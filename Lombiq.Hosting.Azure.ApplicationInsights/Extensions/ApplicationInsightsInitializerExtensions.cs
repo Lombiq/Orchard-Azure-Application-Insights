@@ -91,7 +91,7 @@ public static class ApplicationInsightsInitializerExtensions
     }
 
     /// <summary>
-    /// Use this to add a telemetry initializer during application startup in Program.cs.
+    /// Adds an Application Insights Telemetry Processor into the <c>ApplicationServices</c> service collection.
     /// </summary>
     public static OrchardCoreBuilder AddApplicationInsightsTelemetryProcessor<T>(this OrchardCoreBuilder builder)
         where T : ITelemetryProcessor
