@@ -81,10 +81,7 @@ public class ApplicationInsightsOptions
     public string IgnoreFailureEscapedRegex
     {
         get => IgnoreFailureRegex?.ToString();
-        set => IgnoreFailureRegex = new Regex(
-            value,
-            RegexOptions.Compiled,
-            TimeSpan.FromSeconds(1));
+        set => IgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     }
 
     /// <summary>
