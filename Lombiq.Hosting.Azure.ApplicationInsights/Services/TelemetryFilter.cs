@@ -1,9 +1,9 @@
+using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Environment.Shell.Configuration;
+using OrchardCore.Environment.Shell;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -36,62 +36,67 @@ public class TelemetryFilter : ITelemetryProcessor
 
     public void Process(ITelemetry item)
     {
-        if (ShouldNotSend(item)) { return; }
+        GetDependencyTelemetryFailureToIgnore(item)?.SetAsIgnoredFailure();
 
         _next.Process(item);
     }
 
-    private bool ShouldNotSend(ITelemetry item)
+    private DependencyTelemetry GetDependencyTelemetryFailureToIgnore(ITelemetry item)
     {
         var dependency = item as DependencyTelemetry;
-        if (dependency is not { Success: false }) return false;
+        if (dependency is not { Success: false }) return null;
 
         dependency.Properties.TryGetValue("Error", out var error);
         dependency.Properties.TryGetValue("Exception", out var exception);
 
-        var shouldNotSend = _expectedErrors.Exists(expectedError => error != null && expectedError.IsMatch(error)) ||
+        var shouldSetAsIgnoredFailure =
+            _expectedErrors.Exists(expectedError => error != null && expectedError.IsMatch(error)) ||
             _expectedErrors.Exists(expectedError => exception != null && expectedError.IsMatch(exception));
 
-        if (shouldNotSend)
+        if (shouldSetAsIgnoredFailure)
         {
-            return true;
+            return dependency;
         }
 
         // We are looking for 409 response code, which can indicate a container already exists error.
         if (dependency.ResultCode != "409")
         {
-            return false;
+            return null;
         }
 
-        var shellConfiguration = _serviceProvider.GetRequiredService<IShellConfiguration>();
-        var dataProtectionConnectionString = shellConfiguration
-            .GetValue<string>("OrchardCore_DataProtection_Azure:ConnectionString");
+        var shellHost = _serviceProvider.GetRequiredService<IShellHost>();
+        dependency.Properties.TryGetValue("OrchardCore.ShellName", out var shellName);
+        shellHost.TryGetSettings(shellName, out var shellSettings);
+        var dataProtectionConnectionString = shellSettings["OrchardCore_DataProtection_Azure:ConnectionString"];
 
-        var dataProtectionContainerName = shellConfiguration
-            .GetValue("OrchardCore_DataProtection_Azure:ContainerName", "dataprotection"); // #spell-check-ignore-line
+        var dataProtectionContainerName = shellSettings["OrchardCore_DataProtection_Azure:ContainerName"];
+        if (string.IsNullOrEmpty(dataProtectionContainerName))
+        {
+            dataProtectionContainerName = "dataprotection"; // #spell-check-ignore-line
+        }
 
         if (dataProtectionConnectionString.Contains("UseDevelopmentStorage=true"))
         {
-            dataProtectionContainerName = "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
+            dataProtectionContainerName =
+                "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
         }
 
         // Name property value could be different depending on the environment, so using the Data property instead.
         if (dependency.Data.Contains(dataProtectionContainerName))
         {
-            return true;
+            return dependency;
         }
 
         // MediaBlobStorageOptions won't be initiated, so directly checking the config.
-        var mediaBlobStorageConnectionString = shellConfiguration
-            .GetValue<string>("OrchardCore_Media_Azure:ConnectionString");
-        var mediaBlobStorageContainerName = shellConfiguration
-            .GetValue<string>("OrchardCore_Media_Azure:ContainerName");
+        var mediaBlobStorageConnectionString = shellSettings["OrchardCore_Media_Azure:ConnectionString"];
+        var mediaBlobStorageContainerName = shellSettings["OrchardCore_Media_Azure:ContainerName"];
         if (mediaBlobStorageConnectionString.Contains("UseDevelopmentStorage=true"))
         {
-            mediaBlobStorageContainerName = "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
+            mediaBlobStorageContainerName =
+                "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
         }
 
         // Name property value could be different depending on the environment, so using the Data property instead.
-        return dependency.Data.Contains(mediaBlobStorageContainerName);
+        return dependency.Data.Contains(mediaBlobStorageContainerName) ? dependency : null;
     }
 }

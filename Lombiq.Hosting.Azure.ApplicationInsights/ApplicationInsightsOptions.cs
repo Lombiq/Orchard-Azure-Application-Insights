@@ -1,3 +1,7 @@
+using Microsoft.ApplicationInsights.DataContracts;
+using System;
+using System.Text.RegularExpressions;
+
 namespace Lombiq.Hosting.Azure.ApplicationInsights;
 
 /// <summary>
@@ -70,4 +74,21 @@ public class ApplicationInsightsOptions
     /// show up in the Debug window.
     /// </summary>
     public bool EnableOfflineOperation { get; set; }
+
+    /// <summary>
+    /// Gets or sets <see cref="IgnoreFailureRegex"/> by compiling the given string into a regular expression.
+    /// </summary>
+    /// <example>You should use a regex pattern like "(?:\\/favicon.ico$)|(?:\\/media\\/)".</example>
+    public string IgnoreFailureRegexPattern
+    {
+        get => IgnoreFailureRegex?.ToString();
+        set => IgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    }
+
+    /// <summary>
+    /// Gets or sets a regular expression that will be used to set telemetry to success if it matches
+    /// <see cref="DependencyTelemetry.Data"/> or <see cref="RequestTelemetry.Url"/>. This is useful if
+    /// you have a lot of 404s or other errors that you don't want to see as failures in Application Insights.
+    /// </summary>
+    public Regex IgnoreFailureRegex { get; set; }
 }
