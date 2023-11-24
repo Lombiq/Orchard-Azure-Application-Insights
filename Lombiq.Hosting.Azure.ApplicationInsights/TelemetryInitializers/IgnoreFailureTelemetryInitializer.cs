@@ -11,7 +11,7 @@ public class IgnoreFailureTelemetryInitializer : ITelemetryInitializer
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public IgnoreFailureInitializer(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
+    public IgnoreFailureTelemetryInitializer(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
     public void Initialize(ITelemetry telemetry)
     {
