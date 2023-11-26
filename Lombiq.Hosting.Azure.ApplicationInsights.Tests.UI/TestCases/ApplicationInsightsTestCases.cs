@@ -12,19 +12,17 @@ public static class ApplicationInsightsTestCases
 {
     public static Task ApplicationInsightsTrackingInOfflineOperationShouldWorkAsync(
         ExecuteTestAfterSetupAsync executeTestAfterSetupAsync,
-        Browser browser,
+        Browser browser = default,
         Func<OrchardCoreUITestExecutorConfiguration, Task> changeConfigurationAsync = null) =>
         executeTestAfterSetupAsync(
             async context =>
             {
-                await context.EnableFeatureDirectlyAsync("Lombiq.Hosting.Azure.ApplicationInsights");
-
                 await context.EnablePrivacyConsentBannerFeatureAndAcceptPrivacyConsentAsync();
 
                 var appInsightsExist = context.ExecuteScript("return window.appInsights === 'enabled'") as bool?;
 
-                // Our custom message helps debugging, otherwise from the test output you could only tell that a value should be
-                // true but is false which is less than helpful.
+                // Our custom message helps debugging, otherwise from the test output you could only tell that a value
+                // should be true but is false which is less than helpful.
                 appInsightsExist.ShouldBe(expected: true, "The Application Insights module is not working or is not in offline mode.");
             },
             browser,
