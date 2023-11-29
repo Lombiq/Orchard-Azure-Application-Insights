@@ -26,6 +26,7 @@ public class IgnoreFailureTelemetryInitializer : ITelemetryInitializer
         }
 
         if (operationTelemetry is DependencyTelemetry dependencyTelemetry &&
+            dependencyTelemetry.Type != "Azure blob" &&
             dependencyTelemetry.ShouldSetAsIgnoredFailure(_serviceProvider))
         {
             dependencyTelemetry.SetAsIgnoredFailure();
