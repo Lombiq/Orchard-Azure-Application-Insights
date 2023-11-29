@@ -6,6 +6,9 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
+/// <summary>
+/// Azure Blob Storage 404s are logged in a parent-child relationship, so we need to ignore the parents also.
+/// </summary>
 public class AzureBlobTelemetryFilter : ITelemetryProcessor
 {
     private readonly ITelemetryProcessor _next;
