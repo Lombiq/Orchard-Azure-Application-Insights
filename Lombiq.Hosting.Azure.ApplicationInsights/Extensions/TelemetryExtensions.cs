@@ -25,7 +25,7 @@ public static class TelemetryExtensions
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this DependencyTelemetry dependencyTelemetry, IServiceProvider serviceProvider) =>
-        IsResult400(dependencyTelemetry.ResultCode) &&
+        IsResult4xx(dependencyTelemetry.ResultCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
             .DependencyIgnoreFailureRegex
             ?.IsMatch(dependencyTelemetry.Data) == true;
@@ -35,7 +35,7 @@ public static class TelemetryExtensions
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this RequestTelemetry requestTelemetry, IServiceProvider serviceProvider) =>
-        IsResult400(requestTelemetry.ResponseCode) &&
+        IsResult4xx(requestTelemetry.ResponseCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
             .RequestIgnoreFailureRegex
             ?.IsMatch(requestTelemetry.Url.ToString()) == true;
