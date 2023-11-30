@@ -40,7 +40,7 @@ public static class TelemetryExtensions
             .RequestIgnoreFailureRegex
             ?.IsMatch(requestTelemetry.Url.ToString()) == true;
 
-    private static bool IsResult400(string code) =>
+    private static bool IsResult4xx(string code) =>
         int.TryParse(code, out var resultCode) &&
         resultCode is >= 400 and < 500;
 }
