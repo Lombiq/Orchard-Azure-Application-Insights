@@ -76,19 +76,43 @@ public class ApplicationInsightsOptions
     public bool EnableOfflineOperation { get; set; }
 
     /// <summary>
-    /// Gets or sets <see cref="IgnoreFailureRegex"/> by compiling the given string into a regular expression.
+    /// Gets or sets <see cref="RequestIgnoreFailureRegex"/> by compiling the given string into a regular expression.
+    /// This will be used for <see cref="RequestTelemetry"/> types.
     /// </summary>
-    /// <example>You should use a regex pattern like "(?:\\/favicon.ico$)|(?:\\/media\\/)".</example>
-    public string IgnoreFailureRegexPattern
+    /// <example>
+    /// You should use a regex pattern like "(?:\\/favicon.ico$)|(?:\\.well-known)". Use non-capturing groups to improve
+    /// performance.
+    /// </example>
+    public string RequestIgnoreFailureRegexPattern
     {
-        get => IgnoreFailureRegex?.ToString();
-        set => IgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        get => RequestIgnoreFailureRegex?.ToString();
+        set => RequestIgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     }
 
     /// <summary>
     /// Gets or sets a regular expression that will be used to set telemetry to success if it matches
-    /// <see cref="DependencyTelemetry.Data"/> or <see cref="RequestTelemetry.Url"/>. This is useful if
-    /// you have a lot of 404s or other errors that you don't want to see as failures in Application Insights.
+    /// <see cref="RequestTelemetry.Url"/>. This is useful if you have a lot of 404s or other errors that you don't want
+    /// to see as failures in Application Insights. This will be used for <see cref="RequestTelemetry"/> types.
     /// </summary>
-    public Regex IgnoreFailureRegex { get; set; }
+    public Regex RequestIgnoreFailureRegex { get; set; }
+
+    /// <summary>
+    /// Gets or sets <see cref="DependencyIgnoreFailureRegex"/> by compiling the given string into a regular expression.
+    /// This will be used for <see cref="DependencyTelemetry"/> types.
+    /// </summary>
+    /// <example>
+    /// You should use a regex pattern like "\\/media\\/".
+    /// </example>
+    public string DependencyIgnoreFailureRegexPattern
+    {
+        get => DependencyIgnoreFailureRegex?.ToString();
+        set => DependencyIgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    }
+
+    /// <summary>
+    /// Gets or sets a regular expression that will be used to set telemetry to success if it matches
+    /// <see cref="DependencyTelemetry.Data"/>. This is useful if you have a lot of 404s or other errors that you don't
+    /// want to see as failures in Application Insights. This will be used for <see cref="DependencyTelemetry"/> types.
+    /// </summary>
+    public Regex DependencyIgnoreFailureRegex { get; set; }
 }

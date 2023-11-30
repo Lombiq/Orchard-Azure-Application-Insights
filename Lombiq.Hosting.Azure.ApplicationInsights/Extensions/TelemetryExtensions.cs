@@ -25,19 +25,25 @@ public static class TelemetryExtensions
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this DependencyTelemetry dependencyTelemetry, IServiceProvider serviceProvider) =>
-        ShouldSetAsIgnoredFailure(dependencyTelemetry.ResultCode, dependencyTelemetry.Data, serviceProvider);
+        IsResult4xx(dependencyTelemetry.ResultCode) &&
+        serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
+            .DependencyIgnoreFailureRegex
+            ?.IsMatch(dependencyTelemetry.Data) == true;
 
     /// <summary>
     /// Returns <see langword="true"/> if the <see cref="RequestTelemetry"/> should be set as an ignored failure.
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this RequestTelemetry requestTelemetry, IServiceProvider serviceProvider) =>
-        ShouldSetAsIgnoredFailure(requestTelemetry.ResponseCode, requestTelemetry.Url.ToString(), serviceProvider);
-
-    private static bool ShouldSetAsIgnoredFailure(string code, string data, IServiceProvider serviceProvider) =>
-        int.TryParse(code, out var resultCode) &&
-        resultCode is >= 400 and < 500 &&
+        IsResult4xx(requestTelemetry.ResponseCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
-            .IgnoreFailureRegex
-            .IsMatch(data);
+            .RequestIgnoreFailureRegex
+            ?.IsMatch(requestTelemetry.Url.ToString()) == true;
+
+    // Making an exception here because 4xx describes it better.
+#pragma warning disable S100 // Methods and properties should be named in PascalCase
+    private static bool IsResult4xx(string code) =>
+#pragma warning restore S100 // Methods and properties should be named in PascalCase
+        int.TryParse(code, out var resultCode) &&
+        resultCode is >= 400 and < 500;
 }

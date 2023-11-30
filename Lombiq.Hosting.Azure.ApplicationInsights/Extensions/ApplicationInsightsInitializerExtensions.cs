@@ -54,6 +54,7 @@ public static class ApplicationInsightsInitializerExtensions
         }
 
         services.AddApplicationInsightsTelemetryProcessor<TelemetryFilter>();
+        services.AddApplicationInsightsTelemetryProcessor<AzureBlobTelemetryFilter>();
 
         services.Configure<ApplicationInsightsOptions>(applicationInsightsConfigSection);
 
