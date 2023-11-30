@@ -28,7 +28,7 @@ public static class TelemetryExtensions
         IsResult400(dependencyTelemetry.ResultCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
             .DependencyIgnoreFailureRegex
-            .IsMatch(dependencyTelemetry.Data);
+            ?.IsMatch(dependencyTelemetry.Data) == true;
 
     /// <summary>
     /// Returns <see langword="true"/> if the <see cref="RequestTelemetry"/> should be set as an ignored failure.
@@ -38,7 +38,7 @@ public static class TelemetryExtensions
         IsResult400(requestTelemetry.ResponseCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
             .RequestIgnoreFailureRegex
-            .IsMatch(requestTelemetry.Url.ToString());
+            ?.IsMatch(requestTelemetry.Url.ToString()) == true;
 
     private static bool IsResult400(string code) =>
         int.TryParse(code, out var resultCode) &&
