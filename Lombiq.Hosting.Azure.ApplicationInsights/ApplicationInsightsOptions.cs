@@ -102,8 +102,8 @@ public class ApplicationInsightsOptions
     /// <example>You should use a regex pattern like "(?:\\/media\\/)".</example>
     public string DependencyIgnoreFailureRegexPattern
     {
-        get => RequestIgnoreFailureRegex?.ToString();
-        set => RequestIgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        get => DependencyIgnoreFailureRegex?.ToString();
+        set => DependencyIgnoreFailureRegex = new Regex(value, RegexOptions.Compiled, TimeSpan.FromSeconds(1));
     }
 
     /// <summary>
