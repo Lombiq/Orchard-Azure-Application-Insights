@@ -25,19 +25,22 @@ public static class TelemetryExtensions
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this DependencyTelemetry dependencyTelemetry, IServiceProvider serviceProvider) =>
-        ShouldSetAsIgnoredFailure(dependencyTelemetry.ResultCode, dependencyTelemetry.Data, serviceProvider);
+        IsResult400(dependencyTelemetry.ResultCode) &&
+        serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
+            .DependencyIgnoreFailureRegex
+            .IsMatch(dependencyTelemetry.Data);
 
     /// <summary>
     /// Returns <see langword="true"/> if the <see cref="RequestTelemetry"/> should be set as an ignored failure.
     /// Returns <see langword="false"/> otherwise.
     /// </summary>
     public static bool ShouldSetAsIgnoredFailure(this RequestTelemetry requestTelemetry, IServiceProvider serviceProvider) =>
-        ShouldSetAsIgnoredFailure(requestTelemetry.ResponseCode, requestTelemetry.Url.ToString(), serviceProvider);
-
-    private static bool ShouldSetAsIgnoredFailure(string code, string data, IServiceProvider serviceProvider) =>
-        int.TryParse(code, out var resultCode) &&
-        resultCode is >= 400 and < 500 &&
+        IsResult400(requestTelemetry.ResponseCode) &&
         serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value
-            .IgnoreFailureRegex
-            .IsMatch(data);
+            .RequestIgnoreFailureRegex
+            .IsMatch(requestTelemetry.Url.ToString());
+
+    private static bool IsResult400(string code) =>
+        int.TryParse(code, out var resultCode) &&
+        resultCode is >= 400 and < 500;
 }
