@@ -40,7 +40,9 @@ public static class TelemetryExtensions
             .RequestIgnoreFailureRegex
             ?.IsMatch(requestTelemetry.Url.ToString()) == true;
 
+ #pragma warning disable S100 // Making an exception here.
     private static bool IsResult4xx(string code) =>
+ #pragma warning restore S100
         int.TryParse(code, out var resultCode) &&
         resultCode is >= 400 and < 500;
 }
