@@ -101,7 +101,7 @@ public class ApplicationInsightsOptions
     /// This will be used for <see cref="DependencyTelemetry"/> types.
     /// </summary>
     /// <example>
-    /// You should use a regex pattern like "(?:\\/media\\/)". Use non-capturing groups to improve performance.
+    /// You should use a regex pattern like "\\/media\\/".
     /// </example>
     public string DependencyIgnoreFailureRegexPattern
     {
