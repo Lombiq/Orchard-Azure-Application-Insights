@@ -12,6 +12,9 @@ internal static class LoggingTestHelper
         IClock clock,
         TelemetryClient telemetryClient)
     {
+        // Note that these will only show up among the AI telemetry if the log level is configured appropriately. E.g. under the app's configuration
+        // you'll need to have Logging:ApplicationInsights:LogLevel:LoggingTestMiddleware with "Trace" for the trace log message to show up (or
+        // "Debug" for the debug log message, etc.; these are subsequent levels).
         logger.LogTrace("This is a trace at {DateTime} UTC.", clock.UtcNow);
         logger.LogDebug("This is a debug message {DateTime} UTC.", clock.UtcNow);
         logger.LogInformation("This is an info message {DateTime} UTC.", clock.UtcNow);
