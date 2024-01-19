@@ -11,9 +11,7 @@ internal sealed class NullTelemetryChannel : ITelemetryChannel
     public bool? DeveloperMode { get; set; }
     public string EndpointAddress { get; set; }
 
-#pragma warning disable S1186 // Methods should not be empty
     public void Dispose() { }
     public void Flush() { }
     public void Send(ITelemetry item) { }
-#pragma warning restore S1186 // Methods should not be empty
 }
