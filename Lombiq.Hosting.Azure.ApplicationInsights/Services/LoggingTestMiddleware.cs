@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-public class LoggingTestMiddleware
+public class LoggingTestMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public LoggingTestMiddleware(RequestDelegate next) => _next = next;
-
     public Task InvokeAsync(
         HttpContext context,
         ILogger<LoggingTestMiddleware> logger,
@@ -22,7 +18,7 @@ public class LoggingTestMiddleware
     {
         if (!context.Request.Query.ContainsKey("logtest"))
         {
-            return _next.Invoke(context);
+            return next.Invoke(context);
         }
 
         try
@@ -34,6 +30,6 @@ public class LoggingTestMiddleware
             logger.LogError(ex, "An exception happened {DateTime} UTC.", clock.UtcNow);
         }
 
-        return _next.Invoke(context);
+        return next.Invoke(context);
     }
 }

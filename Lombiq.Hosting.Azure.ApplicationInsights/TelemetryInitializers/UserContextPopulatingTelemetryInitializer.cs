@@ -8,20 +8,15 @@ using System.Security.Claims;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 
-internal sealed class UserContextPopulatingTelemetryInitializer : ITelemetryInitializer
+internal sealed class UserContextPopulatingTelemetryInitializer(IServiceProvider serviceProvider) : ITelemetryInitializer
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public UserContextPopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     public void Initialize(ITelemetry telemetry)
     {
-        var httpContext = _serviceProvider.GetHttpContextSafely();
+        var httpContext = serviceProvider.GetHttpContextSafely();
 
         if (httpContext == null || telemetry is not RequestTelemetry requestTelemetry) return;
 
-        var options = _serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value;
 
         var user = httpContext.User;
         var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
