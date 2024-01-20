@@ -11,18 +11,12 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights;
 
-public class Startup : StartupBase
+public class Startup(
+    IOptions<ApplicationInsightsOptions> applicationInsightsOptions,
+    IOptions<ApplicationInsightsServiceOptions> applicationInsightsServiceOptions) : StartupBase
 {
-    private readonly ApplicationInsightsOptions _applicationInsightsOptions;
-    private readonly ApplicationInsightsServiceOptions _applicationInsightsServiceOptions;
-
-    public Startup(
-        IOptions<ApplicationInsightsOptions> applicationInsightsOptions,
-        IOptions<ApplicationInsightsServiceOptions> applicationInsightsServiceOptions)
-    {
-        _applicationInsightsOptions = applicationInsightsOptions.Value;
-        _applicationInsightsServiceOptions = applicationInsightsServiceOptions.Value;
-    }
+    private readonly ApplicationInsightsOptions _applicationInsightsOptions = applicationInsightsOptions.Value;
+    private readonly ApplicationInsightsServiceOptions _applicationInsightsServiceOptions = applicationInsightsServiceOptions.Value;
 
     public override void ConfigureServices(IServiceCollection services)
     {

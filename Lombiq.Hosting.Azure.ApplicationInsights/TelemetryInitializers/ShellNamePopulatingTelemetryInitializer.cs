@@ -7,23 +7,18 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 
-internal sealed class ShellNamePopulatingTelemetryInitializer : ITelemetryInitializer
+internal sealed class ShellNamePopulatingTelemetryInitializer(IServiceProvider serviceProvider) : ITelemetryInitializer
 {
-    private readonly IServiceProvider _serviceProvider;
-
-    public ShellNamePopulatingTelemetryInitializer(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     public void Initialize(ITelemetry telemetry)
     {
         if (telemetry is not ISupportProperties supportProperties) return;
 
-        var httpContext = _serviceProvider.GetHttpContextSafely();
+        var httpContext = serviceProvider.GetHttpContextSafely();
         if (httpContext != null)
         {
             var httpRequest = httpContext.Request;
 
-            var shellName = _serviceProvider
+            var shellName = serviceProvider
                 .GetService<IRunningShellTable>()
                 ?.Match(httpRequest.Host, httpRequest.PathBase + httpRequest.Path)
                 ?.Name;
