@@ -1,4 +1,4 @@
-﻿using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
+using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -25,7 +25,7 @@ public class AzureBlobTelemetryFilter : ITelemetryProcessor
     {
         SetAsIgnoredFailureWhenNeeded(item);
 
-        next.Process(item);
+        _next.Process(item);
     }
 
     private void SetAsIgnoredFailureWhenNeeded(ITelemetry item)
@@ -33,7 +33,7 @@ public class AzureBlobTelemetryFilter : ITelemetryProcessor
         if (item is not DependencyTelemetry { Success: false } dependency) return;
 
         if (dependency.ResultCode == "404" && dependency.Type == "Azure blob" &&
-            dependency.ShouldSetAsIgnoredFailure(serviceProvider))
+            dependency.ShouldSetAsIgnoredFailure(_serviceProvider))
         {
             _parentId = dependency.Context.Operation.ParentId;
             dependency.SetAsIgnoredFailure();
