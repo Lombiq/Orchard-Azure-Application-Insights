@@ -8,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-internal sealed class BackgroundTaskTelemetryEventHandler(TelemetryClient telemetryClient) : IBackgroundTaskEventHandler
+internal sealed class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEventHandler
 {
+    private readonly TelemetryClient _telemetryClient;
+
     private IOperationHolder<DependencyTelemetry> _operation;
     private Activity _activity;
+
+    public BackgroundTaskTelemetryEventHandler(TelemetryClient telemetryClient) => _telemetryClient = telemetryClient;
 
     public Task ExecutingAsync(BackgroundTaskEventContext context, CancellationToken cancellationToken)
     {
@@ -21,7 +25,7 @@ internal sealed class BackgroundTaskTelemetryEventHandler(TelemetryClient teleme
         // EnableDependencyTrackingTelemetryModule is false. Also, this is the recommended way of tracking background
         // tasks, see:
         // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#long-running-background-tasks.
-        var operation = telemetryClient.StartOperation<DependencyTelemetry>(context.Name);
+        var operation = _telemetryClient.StartOperation<DependencyTelemetry>(context.Name);
         operation.Telemetry.Type = "BackgroundTask";
 
         _operation = operation;

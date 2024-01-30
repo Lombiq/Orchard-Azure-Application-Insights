@@ -1,4 +1,4 @@
-using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
+﻿using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -9,9 +9,17 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 /// <summary>
 /// Azure Blob Storage 404s are logged in a parent-child relationship, so we need to ignore the parents also.
 /// </summary>
-public class AzureBlobTelemetryFilter(ITelemetryProcessor next, IServiceProvider serviceProvider) : ITelemetryProcessor
+public class AzureBlobTelemetryFilter : ITelemetryProcessor
 {
+    private readonly ITelemetryProcessor _next;
+    private readonly IServiceProvider _serviceProvider;
     private string _parentId;
+
+    public AzureBlobTelemetryFilter(ITelemetryProcessor next, IServiceProvider serviceProvider)
+    {
+        _next = next;
+        _serviceProvider = serviceProvider;
+    }
 
     public void Process(ITelemetry item)
     {

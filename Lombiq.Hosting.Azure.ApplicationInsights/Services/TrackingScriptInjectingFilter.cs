@@ -8,35 +8,48 @@ using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-public class TrackingScriptInjectingFilter(
-    IResourceManager resourceManager,
-    IOptions<ApplicationInsightsOptions> applicationInsightsOptions,
-    ITrackingScriptFactory trackingScriptFactory,
-    IHttpContextAccessor hca) : IAsyncResultFilter
+public class TrackingScriptInjectingFilter : IAsyncResultFilter
 {
+    private readonly IResourceManager _resourceManager;
+    private readonly IOptions<ApplicationInsightsOptions> _applicationInsightsOptions;
+    private readonly ITrackingScriptFactory _trackingScriptFactory;
+    private readonly IHttpContextAccessor _hca;
+
+    public TrackingScriptInjectingFilter(
+        IResourceManager resourceManager,
+        IOptions<ApplicationInsightsOptions> applicationInsightsOptions,
+        ITrackingScriptFactory trackingScriptFactory,
+        IHttpContextAccessor hca)
+    {
+        _resourceManager = resourceManager;
+        _applicationInsightsOptions = applicationInsightsOptions;
+        _trackingScriptFactory = trackingScriptFactory;
+        _hca = hca;
+    }
+
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
-        if (context.IsNotFullViewRendering() || !applicationInsightsOptions.Value.EnableClientSideTracking)
+        if (context.IsNotFullViewRendering() || !_applicationInsightsOptions.Value.EnableClientSideTracking)
         {
             await next();
             return;
         }
 
-        var trackingConsentFeature = hca.HttpContext.Features.Get<ITrackingConsentFeature>();
+        var trackingConsentFeature = _hca.HttpContext.Features.Get<ITrackingConsentFeature>();
 
         if (trackingConsentFeature is null || trackingConsentFeature.CanTrack)
         {
-            if (applicationInsightsOptions.Value.EnableOfflineOperation)
+            if (_applicationInsightsOptions.Value.EnableOfflineOperation)
             {
                 var offlineScript = new HtmlString(
                     $@"<script>
                         appInsights = 'enabled';
                     </script>");
-                resourceManager.RegisterHeadScript(offlineScript);
+                _resourceManager.RegisterHeadScript(offlineScript);
             }
             else
             {
-                resourceManager.RegisterHeadScript(trackingScriptFactory.CreateJavaScriptTrackingScript());
+                _resourceManager.RegisterHeadScript(_trackingScriptFactory.CreateJavaScriptTrackingScript());
             }
         }
 
