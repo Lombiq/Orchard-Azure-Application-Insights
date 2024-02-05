@@ -98,12 +98,12 @@ public partial class TelemetryFilter : ITelemetryProcessor
     // Blob Media container is always checked on each tenant activation in OrchardCore
     // MediaBlobContainerTenantEvents class.
     [GeneratedRegex(@"Azure\.RequestFailedException: The specified container already exists\.",
-        RegexOptions.IgnoreCase,
+        RegexOptions.None,
         matchTimeoutMilliseconds: 1000)]
     private static partial Regex AzureRequestFailedRegex();
 
     [GeneratedRegex(@"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
-            RegexOptions.IgnoreCase,
-            matchTimeoutMilliseconds: 1000)]
+        RegexOptions.None,
+        matchTimeoutMilliseconds: 1000)]
     private static partial Regex ObjectAlreadyExistsRegex();
 }
