@@ -14,7 +14,7 @@ public partial class TelemetryFilter : ITelemetryProcessor
 {
     private static readonly List<Regex> _expectedErrors =
     [
-        RequestFailedRegex(),
+        AzureRequestFailedRegex(),
         ObjectAlreadyExistsRegex(),
     ];
 
