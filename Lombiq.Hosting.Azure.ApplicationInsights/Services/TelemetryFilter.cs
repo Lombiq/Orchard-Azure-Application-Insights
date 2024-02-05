@@ -14,10 +14,6 @@ public partial class TelemetryFilter : ITelemetryProcessor
 {
     private static readonly List<Regex> _expectedErrors =
     [
-        // Using this generic error message to filter because it is not possible to filter only those cases where it is
-        // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
-        // Blob Media container is always checked on each tenant activation in OrchardCore
-        // MediaBlobContainerTenantEvents class.
         RequestFailedRegex(),
         ObjectAlreadyExistsRegex(),
     ];
@@ -97,13 +93,17 @@ public partial class TelemetryFilter : ITelemetryProcessor
         return dependency.Data.Contains(mediaBlobStorageContainerName) ? dependency : null;
     }
 
+    // Using this generic error message to filter because it is not possible to filter only those cases where it is
+    // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
+    // Blob Media container is always checked on each tenant activation in OrchardCore
+    // MediaBlobContainerTenantEvents class.
     [GeneratedRegex(@"Azure\.RequestFailedException: The specified container already exists\.",
-        RegexOptions.Compiled,
+        RegexOptions.IgnoreCase,
         matchTimeoutMilliseconds: 1000)]
     private static partial Regex RequestFailedRegex();
 
     [GeneratedRegex(@"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
-            RegexOptions.Compiled,
+            RegexOptions.IgnoreCase,
             matchTimeoutMilliseconds: 1000)]
     private static partial Regex ObjectAlreadyExistsRegex();
 }
