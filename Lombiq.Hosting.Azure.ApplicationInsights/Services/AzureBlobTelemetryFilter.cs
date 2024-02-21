@@ -1,4 +1,4 @@
-﻿using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
+using Lombiq.Hosting.Azure.ApplicationInsights.Extensions;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;

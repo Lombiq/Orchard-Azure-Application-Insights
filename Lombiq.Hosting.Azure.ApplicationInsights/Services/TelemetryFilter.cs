@@ -10,20 +10,13 @@ using System.Text.RegularExpressions;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-public class TelemetryFilter : ITelemetryProcessor
+public partial class TelemetryFilter : ITelemetryProcessor
 {
-    private static readonly List<Regex> _expectedErrors = new()
-    {
-        // Using this generic error message to filter because it is not possible to filter only those cases where it is
-        // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
-        // Blob Media container is always checked on each tenant activation in OrchardCore
-        // MediaBlobContainerTenantEvents class.
-        new(@"Azure\.RequestFailedException: The specified container already exists\.", RegexOptions.Compiled, TimeSpan.FromSeconds(1)),
-        new(
-            @"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
-            RegexOptions.Compiled,
-            TimeSpan.FromSeconds(1)),
-    };
+    private static readonly List<Regex> _expectedErrors =
+    [
+        AzureRequestFailedRegex(),
+        ObjectAlreadyExistsRegex(),
+    ];
 
     private readonly ITelemetryProcessor _next;
     private readonly IServiceProvider _serviceProvider;
@@ -99,4 +92,18 @@ public class TelemetryFilter : ITelemetryProcessor
         // Name property value could be different depending on the environment, so using the Data property instead.
         return dependency.Data.Contains(mediaBlobStorageContainerName) ? dependency : null;
     }
+
+    // Using this generic error message to filter because it is not possible to filter only those cases where it is
+    // meant to happen to throw this error. Also setting CreateContainer to false won't solve this issue, because
+    // Blob Media container is always checked on each tenant activation in OrchardCore
+    // MediaBlobContainerTenantEvents class.
+    [GeneratedRegex(@"Azure\.RequestFailedException: The specified container already exists\.",
+        RegexOptions.None,
+        matchTimeoutMilliseconds: 1000)]
+    private static partial Regex AzureRequestFailedRegex();
+
+    [GeneratedRegex(@"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
+        RegexOptions.None,
+        matchTimeoutMilliseconds: 1000)]
+    private static partial Regex ObjectAlreadyExistsRegex();
 }

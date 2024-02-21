@@ -39,7 +39,7 @@ internal sealed class UserContextPopulatingTelemetryInitializer : ITelemetryInit
         if (options.EnableUserAgentCollection && string.IsNullOrEmpty(requestTelemetry.Context.User.UserAgent))
         {
             // While there is requestTelemetry.Context.User.UserAgent that's not displayed on the Azure Portal.
-            requestTelemetry.TryAddProperty("UserAgent", httpContext.Request.Headers["User-Agent"]);
+            requestTelemetry.TryAddProperty("UserAgent", httpContext.Request.Headers.UserAgent);
         }
 
         if (options.EnableIpAddressCollection)
