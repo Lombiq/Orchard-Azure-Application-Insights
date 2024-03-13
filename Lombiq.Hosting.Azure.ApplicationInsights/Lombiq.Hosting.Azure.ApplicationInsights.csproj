@@ -35,12 +35,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="OrchardCore.Media.Azure" Version="1.9.0-preview-18086" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.9.0-preview-18086" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.9.0-preview-18086" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.9.0-preview-18086" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.9.0-preview-18086" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.9.0-preview-18086" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="1.9.0-preview-18096" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.9.0-preview-18096" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="1.9.0-preview-18096" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.9.0-preview-18096" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.9.0-preview-18096" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.9.0-preview-18096" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
