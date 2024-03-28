@@ -7,7 +7,7 @@ using static Lombiq.HelpfulLibraries.AspNetCore.Security.ContentSecurityPolicyDi
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-internal class ApplicationInsightsContentSecurityPolicyProvider : IContentSecurityPolicyProvider
+internal sealed class ApplicationInsightsContentSecurityPolicyProvider : IContentSecurityPolicyProvider
 {
     public ValueTask UpdateAsync(IDictionary<string, string> securityPolicies, HttpContext context)
     {
