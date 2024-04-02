@@ -46,6 +46,8 @@ public class Startup : StartupBase
         {
             services.AddScoped<IBackgroundTaskEventHandler, BackgroundTaskTelemetryEventHandler>();
         }
+
+        services.AddContentSecurityPolicyProvider<ApplicationInsightsContentSecurityPolicyProvider>();
     }
 
     public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
