@@ -28,6 +28,7 @@ public class ApplicationInsightsOptions
     /// documentation for more info: <see
     /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel"/>.
     /// </summary>
+    [Obsolete("Microsoft Entra authentication is the only supported method from September 30, 2025. API key authentication will be removed")]
     public string QuickPulseTelemetryModuleAuthenticationApiKey { get; set; }
 
     /// <summary>

@@ -86,6 +86,7 @@ The module has its own configuration for further options. These need to come fro
   },
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
+      // Deprecated, do not use in new projects 
       "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
     }
   }
@@ -93,11 +94,21 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details. We recommend configuring at least `QuickPulseTelemetryModuleAuthenticationApiKey`.
+> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting September 30, 2025. See [Entra Authentication](#entra-authentication) for more information.
+
+See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
 Note that while telemetry from background tasks is collected in form of dependency operations it'll be collected even if `EnableDependencyTrackingTelemetryModule` is `false`.
 
 If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core Libraries - Security](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.OrchardCore/Docs/Security.md), then the security headers necessary to use Application Insight's client-side tracking will automatically be added.
+
+### Entra Authentication
+
+Starting September 30, 2025, authentication using API keys is no longer supported. Instead, you'll have to set up Entra Authentication.
+
+To set up Entra Authentication follow the steps that most closely match your situation over at [Microsoft Entra authentication for Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=net)
+
+Once Entra Authentication is set up and the ConnectionString has been properly set, live metrics should be flowing in.
 
 ### Using collected data
 
