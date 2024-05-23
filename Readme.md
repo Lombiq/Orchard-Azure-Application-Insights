@@ -86,7 +86,7 @@ The module has its own configuration for further options. These need to come fro
   },
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
-      // Deprecated, do not use in new projects 
+      // Deprecated, do not use in new projects.
       "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
     }
   }
@@ -94,7 +94,7 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting September 30, 2025. See [Entra Authentication](#entra-authentication) for more information.
+> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication](#entra-authentication) for more information.
 
 See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
@@ -104,11 +104,11 @@ If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core L
 
 ### Entra Authentication
 
-Starting September 30, 2025, authentication using API keys is no longer supported. Instead, you'll have to set up Entra Authentication.
+Starting 30 September 2025, authentication using API keys is no longer supported. Instead, you'll have to set up Entra Authentication.
 
 To set up Entra Authentication follow the steps that most closely match your situation over at [Microsoft Entra authentication for Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=net)
 
-Once Entra Authentication is set up and the ConnectionString has been properly set, live metrics should be flowing in.
+Once Entra Authentication is set up and the `ConnectionString` has been properly set, live metrics should be flowing in.
 
 ### Using collected data
 
