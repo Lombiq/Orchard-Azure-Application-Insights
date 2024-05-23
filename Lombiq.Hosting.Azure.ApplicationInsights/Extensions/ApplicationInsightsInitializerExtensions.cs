@@ -25,14 +25,6 @@ public static class ApplicationInsightsInitializerExtensions
     {
         var services = builder.ApplicationServices;
 
-        services.Configure<TelemetryConfiguration>(config =>
-        {
-            var credential = new ManagedIdentityCredential();
-            config.SetAzureTokenCredential(credential);
-        });
-
-        services.AddApplicationInsightsTelemetry(configurationManager);
-
         // Create a temporary ServiceProvider to configure ApplicationInsightsServiceOptions.
         using var serviceProvider = services.BuildServiceProvider();
         var applicationInsightsServiceOptions = serviceProvider
@@ -42,6 +34,22 @@ public static class ApplicationInsightsInitializerExtensions
         var applicationInsightsConfigSection = configurationManager
             .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
+
+        services.Configure<TelemetryConfiguration>(config =>
+        {
+            if (applicationInsightsOptions.EnableLocalDevelopment)
+            {
+                var credential = new DefaultAzureCredential();
+                config.SetAzureTokenCredential(credential);
+            }
+            else
+            {
+                var credential = new ManagedIdentityCredential();
+                config.SetAzureTokenCredential(credential);
+            }
+        });
+
+        services.AddApplicationInsightsTelemetry(configurationManager);
 
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete
