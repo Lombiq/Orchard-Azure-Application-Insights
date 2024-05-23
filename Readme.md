@@ -94,7 +94,7 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting September 30, 2025. See [Entra Authentication](#entra-authentication) for more information.
+> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication](#entra-authentication) for more information.
 
 See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
