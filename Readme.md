@@ -110,6 +110,20 @@ To set up Entra Authentication follow the steps that most closely match your sit
 
 Once Entra Authentication is set up and the `ConnectionString` has been properly set, live metrics should be flowing in.
 
+If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration.
+
+```json5
+{
+  "OrchardCore": {
+    "Lombiq_Hosting_Azure_ApplicationInsights": {
+      "EnableLocalDevelopment": true
+    }
+  }
+}
+```
+
+> ⚠ Logging local metrics to Application Insights is only recommended for development purposes. And only works when local development is enabled on the Application Insights resource in Azure. Once you are ready to deploy to staging/production environments, you should disable local development.
+
 ### Using collected data
 
 All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
