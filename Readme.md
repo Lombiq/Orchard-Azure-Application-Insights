@@ -86,7 +86,7 @@ The module has its own configuration for further options. These need to come fro
   },
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
-      // Deprecated, do not use in new projects 
+      // Deprecated, do not use in new projects.
       "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
     }
   }
