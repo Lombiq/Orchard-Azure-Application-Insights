@@ -24,6 +24,7 @@ public static class ApplicationInsightsInitializerExtensions
         IConfiguration configurationManager)
     {
         var services = builder.ApplicationServices;
+        services.AddApplicationInsightsTelemetry(configurationManager);
 
         // Create a temporary ServiceProvider to configure ApplicationInsightsServiceOptions.
         using var serviceProvider = services.BuildServiceProvider();
@@ -48,8 +49,6 @@ public static class ApplicationInsightsInitializerExtensions
                 config.SetAzureTokenCredential(credential);
             }
         });
-
-        services.AddApplicationInsightsTelemetry(configurationManager);
 
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete
