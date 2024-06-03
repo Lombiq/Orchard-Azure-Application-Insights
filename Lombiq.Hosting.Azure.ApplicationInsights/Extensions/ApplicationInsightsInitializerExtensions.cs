@@ -38,14 +38,9 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.Configure<TelemetryConfiguration>(config =>
         {
-            if (applicationInsightsOptions.EnableLocalDevelopment)
+            if (!applicationInsightsOptions.EnableLocalDevelopment)
             {
                 var credential = new DefaultAzureCredential();
-                config.SetAzureTokenCredential(credential);
-            }
-            else
-            {
-                var credential = new ManagedIdentityCredential();
                 config.SetAzureTokenCredential(credential);
             }
         });

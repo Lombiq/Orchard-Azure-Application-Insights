@@ -106,11 +106,15 @@ If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core L
 
 Starting 30 September 2025, authentication using API keys is no longer supported. Instead, you'll have to set up Entra Authentication.
 
-To set up Entra Authentication follow the steps that most closely match your situation over at [Microsoft Entra authentication for Application Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=net)
+#### Setting up Entra Authentication for Application Insights
 
-Once Entra Authentication is set up and the `ConnectionString` has been properly set, live metrics should be flowing in.
+To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on Assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
 
-If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration.
+Once Entra Authentication is set up and the `ConnectionString` has been properly set, metrics should be flowing in.
+
+#### Local development
+
+If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration and make sure that `Local Authentication` is enabled in the Application Insights resource on Azure.
 
 ```json5
 {
@@ -122,7 +126,9 @@ If you want to stream local metrics to Application Insights, you should set the 
 }
 ```
 
-> ⚠ Logging local metrics to Application Insights is only recommended for development purposes. And only works when local development is enabled on the Application Insights resource in Azure. Once you are ready to deploy to staging/production environments, you should disable local development.
+For more information or scenarios not described here, see the [official documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication).
+
+> ⚠ Logging local metrics to Application Insights is only recommended for development purposes. And only works when local development is enabled on the Application Insights resource in Azure. Once you are ready to deploy to staging/production environments, you should disable `Local Authentication` on your AI resource.
 
 ### Using collected data
 
