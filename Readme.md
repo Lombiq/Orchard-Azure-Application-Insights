@@ -102,7 +102,7 @@ Note that while telemetry from background tasks is collected in form of dependen
 
 If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core Libraries - Security](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.OrchardCore/Docs/Security.md), then the security headers necessary to use Application Insight's client-side tracking will automatically be added.
 
-### Entra Authentication
+### Entra Authentication for the Live Metrics control channel
 
 Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that (you may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry).
 
