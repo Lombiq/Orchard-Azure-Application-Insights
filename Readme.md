@@ -114,7 +114,7 @@ Once Entra Authentication is set up and the `ConnectionString` has been properly
 
 #### Local development
 
-If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration and make sure that `Local Authentication` is enabled in the Application Insights resource on Azure.
+If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration and make sure that `Local Authentication` is enabled in the Application Insights resource on Azure (for that, do the **opposite** of what's documented [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=net#disable-local-authentication)).
 
 ```json5
 {
