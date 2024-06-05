@@ -104,7 +104,7 @@ If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core L
 
 ### Entra Authentication
 
-Starting 30 September 2025, authentication using API keys is no longer supported. Instead, you'll have to set up Entra Authentication.
+Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that (you may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry).
 
 #### Setting up Entra Authentication for Application Insights
 
