@@ -94,7 +94,7 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication](#entra-authentication) for more information.
+> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication for the Live Metrics control channel](#entra-authentication-for-the-live-metrics-control-channel) for more information.
 
 See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
@@ -114,13 +114,18 @@ Once Entra Authentication is set up and the `ConnectionString` has been properly
 
 #### Local development
 
-If you want to stream local metrics to Application Insights, you should set the `EnableLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration and make sure that `Local Authentication` is enabled in the Application Insights resource on Azure (for that, do the **opposite** of what's documented [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=net#disable-local-authentication)).
+If you want to stream local metrics to a **SECURE** Application Insights resource, you should set the `EnableSecureLocalDevelopment` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To stream local metrics on a secure channel with Entra ID you will also have to provide the credentials of the service principal, to set this up [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal).
+
+In the scenario where you have `LOCAL AUTHENTICATION` enabled on your AI resource, you do not have to provide the service principal credentials. In this case, the module will use the `ConnectionString` to authenticate the local telemetry.
 
 ```json5
 {
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
-      "EnableLocalDevelopment": true
+      "EnableSecureLocalDevelopment": true,
+      "TenantId": "your tenant id",
+      "ClientId": "your client id",
+      "ClientSecret": "your client secret",
     }
   }
 }

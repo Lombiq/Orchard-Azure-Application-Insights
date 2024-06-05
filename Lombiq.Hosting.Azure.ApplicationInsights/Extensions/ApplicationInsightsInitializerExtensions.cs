@@ -38,7 +38,15 @@ public static class ApplicationInsightsInitializerExtensions
 
         services.Configure<TelemetryConfiguration>(config =>
         {
-            if (!applicationInsightsOptions.EnableLocalDevelopment)
+            if (applicationInsightsOptions.EnableSecureLocalDevelopment)
+            {
+                var credential = new ClientSecretCredential(
+                    applicationInsightsOptions.TenantId,
+                    applicationInsightsOptions.ClientId,
+                    applicationInsightsOptions.ClientSecret);
+                config.SetAzureTokenCredential(credential);
+            }
+            else
             {
                 var credential = new DefaultAzureCredential();
                 config.SetAzureTokenCredential(credential);

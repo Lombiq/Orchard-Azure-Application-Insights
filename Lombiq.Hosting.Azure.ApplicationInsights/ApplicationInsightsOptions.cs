@@ -71,12 +71,26 @@ public class ApplicationInsightsOptions
     public bool EnableClientSideTracking { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether local development is enabled where telemetry is sent to
-    /// Azure Application Insights from the local instance.
-    /// Will only work if local authentication is enabled in the properties of the Applications Insights resource
-    /// which should only be the case during development and testing.
+    /// Gets or sets a value indicating whether local development is enabled where telemetry is sent to a secure Azure
+    /// Application Insights resource from the local instance. When using this option you will also need to provide
+    /// tenantId, clientId, and clientSecret of the service principal.
     /// </summary>
-    public bool EnableLocalDevelopment { get; set; }
+    public bool EnableSecureLocalDevelopment { get; set; }
+
+    /// <summary>
+    /// The tenant ID of the Azure AD application that's used for local development.
+    /// </summary>
+    public string TenantId { get; set; }
+
+    /// <summary>
+    /// The client ID of the Azure AD application that's used for local development.
+    /// </summary>
+    public string ClientId { get; set; }
+
+    /// <summary>
+    /// The client secret of the Azure AD application that's used for local development.
+    /// </summary>
+    public string ClientSecret { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will still
