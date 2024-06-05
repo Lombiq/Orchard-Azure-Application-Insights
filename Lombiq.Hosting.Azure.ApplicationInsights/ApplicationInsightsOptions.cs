@@ -78,17 +78,17 @@ public class ApplicationInsightsOptions
     public bool EnableSecureLocalDevelopment { get; set; }
 
     /// <summary>
-    /// The tenant ID of the Azure AD application that's used for local development.
+    /// Gets or sets the tenant ID of the Azure AD application that's used for local development.
     /// </summary>
     public string TenantId { get; set; }
 
     /// <summary>
-    /// The client ID of the Azure AD application that's used for local development.
+    /// Gets or sets the client ID of the Azure AD application that's used for local development.
     /// </summary>
     public string ClientId { get; set; }
 
     /// <summary>
-    /// The client secret of the Azure AD application that's used for local development.
+    /// Gets or sets the client secret of the Azure AD application that's used for local development.
     /// </summary>
     public string ClientSecret { get; set; }
 
