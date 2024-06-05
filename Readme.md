@@ -108,7 +108,7 @@ Starting 30 September 2025, authentication using API keys is no longer supported
 
 #### Setting up Entra Authentication for Application Insights
 
-To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on Assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
+To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on Assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
 Once Entra Authentication is set up and the `ConnectionString` has been properly set, metrics should be flowing in.
 
