@@ -83,7 +83,7 @@ public class ApplicationInsightsOptions
     public string TenantId { get; set; }
 
     /// <summary>
-    /// Gets or sets the client ID of the Azure AD application that's used for local development.
+    /// Gets or sets the client ID of the Microsoft Entra application used to secure the control channel.
     /// </summary>
     public string ClientId { get; set; }
 
