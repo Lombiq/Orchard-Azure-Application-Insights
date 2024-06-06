@@ -71,26 +71,16 @@ public class ApplicationInsightsOptions
     public bool EnableClientSideTracking { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether local development is enabled where telemetry is sent to a secure Azure
-    /// Application Insights resource from the local instance. When using this option you will also need to provide
-    /// tenantId, clientId, and clientSecret of the service principal.
+    /// Gets or sets a value indicating whether to authenticate to AI using a Service Principal. When using this option
+    /// you will also need to provide tenantId, clientId, and clientSecret of the service principal.
     /// </summary>
-    public bool EnableSecureLocalDevelopment { get; set; }
+    public bool UseServicePrincipalAuthentication { get; set; }
 
     /// <summary>
-    /// Gets or sets the tenant ID of the Microsoft Entra application used to secure the control channel.
+    /// Gets or sets the ServicePrincipalCredentials of the Microsoft Entra application used to secure the control
+    /// channel.
     /// </summary>
-    public string TenantId { get; set; }
-
-    /// <summary>
-    /// Gets or sets the client ID of the Microsoft Entra application used to secure the control channel.
-    /// </summary>
-    public string ClientId { get; set; }
-
-    /// <summary>
-    /// Gets or sets the client secret of the Microsoft Entra application used to secure the control channel.
-    /// </summary>
-    public string ClientSecret { get; set; }
+    public ServicePrincipalCredentials ServicePrincipalCredentials { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will still
