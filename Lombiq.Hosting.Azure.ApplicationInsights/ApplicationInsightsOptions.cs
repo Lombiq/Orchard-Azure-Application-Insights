@@ -78,7 +78,7 @@ public class ApplicationInsightsOptions
     public bool EnableSecureLocalDevelopment { get; set; }
 
     /// <summary>
-    /// Gets or sets the tenant ID of the Azure AD application that's used for local development.
+    /// Gets or sets the tenant ID of the Microsoft Entra application used to secure the control channel.
     /// </summary>
     public string TenantId { get; set; }
 
