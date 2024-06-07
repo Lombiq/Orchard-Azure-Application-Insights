@@ -108,20 +108,37 @@ Starting 30 September 2025, authentication using API keys is no longer supported
 
 #### Setting up Entra Authentication for Application Insights
 
+> ⚠ This section is required if you have disabled `Local Authentication` on your AI resource, See [the docs](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?WT.mc_id=Portal-AppInsightsExtension&tabs=net#disable-local-authentication).
+
+If you want to use Entra Authentication for Application Insights, or if you have disabled `Local Authentication` on your AI resource, you will have to set up the `UseEntraAuthentication` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
+
+```json5
+{
+    "OrchardCore": {
+        "Lombiq_Hosting_Azure_ApplicationInsights": {
+            "UseEntraAuthentication": true
+        }
+    }
+}
+```
+
 To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on Assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
-Although not recommended, you can also use a service principal to authenticate. To set this up, you will have to provide the service principal credentials in the configuration. See the [Service principal](#service-principal) section for more information. This is also the only way to authenticate if you are using a non-Azure (or local) environment.
+You can also use a service principal to authenticate. To set this up, you will have to provide the service principal credentials in the configuration. See the [Service principal](#service-principal) section for more information. This is also the only way to authenticate if you are using a non-Azure (or local) environment - or an Azure resource that does not support Managed Identities.
 
 Once Entra Authentication is set up and the `ConnectionString` has been properly set, metrics should be flowing in.
 
 #### Service principal
 
-If you want to use the Service Principal method for your Application Insights resource, you should set the `UseServicePrincipalAuthentication` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To securely stream metrics with Entra ID you will also have to provide the credentials of the service principal, to set this up [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal).
+Using a Service Principal is the only way to authenticate using Entra if you are using a non-Azure (or local) environment.
+
+If you want to use the Service Principal method for your Application Insights resource, you should set the `UseServicePrincipalAuthentication` option to `true` in addition to `UseEntraAuthentication` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To securely stream metrics with Entra ID you will also have to provide the credentials of the service principal, to set this up [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal).
 
 ```json5
 {
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
+        "UseEntraAuthentication": true,
         "UseServicePrincipalAuthentication": true,
         "ServicePrincipalCredentials": {
             "TenantId": "your service principal tenant id",
