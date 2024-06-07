@@ -1,4 +1,4 @@
-﻿using Azure.Identity;
+using Azure.Identity;
 using Lombiq.Hosting.Azure.ApplicationInsights;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
@@ -36,22 +36,23 @@ public static class ApplicationInsightsInitializerExtensions
             .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
 
-        services.Configure<TelemetryConfiguration>(config =>
-        {
-            if (applicationInsightsOptions.UseServicePrincipalAuthentication)
+        if (applicationInsightsOptions.UseEntraAuthentication)
+            services.Configure<TelemetryConfiguration>(config =>
             {
-                var credential = new ClientSecretCredential(
-                    applicationInsightsOptions.ServicePrincipalCredentials.TenantId,
-                    applicationInsightsOptions.ServicePrincipalCredentials.ClientId,
-                    applicationInsightsOptions.ServicePrincipalCredentials.ClientSecret);
-                config.SetAzureTokenCredential(credential);
-            }
-            else
-            {
-                var credential = new DefaultAzureCredential();
-                config.SetAzureTokenCredential(credential);
-            }
-        });
+                if (applicationInsightsOptions.UseServicePrincipalAuthentication)
+                {
+                    var credential = new ClientSecretCredential(
+                        applicationInsightsOptions.ServicePrincipalCredentials.TenantId,
+                        applicationInsightsOptions.ServicePrincipalCredentials.ClientId,
+                        applicationInsightsOptions.ServicePrincipalCredentials.ClientSecret);
+                    config.SetAzureTokenCredential(credential);
+                }
+                else
+                {
+                    var credential = new DefaultAzureCredential();
+                    config.SetAzureTokenCredential(credential);
+                }
+            });
 
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete

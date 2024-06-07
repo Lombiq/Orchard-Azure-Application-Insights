@@ -71,6 +71,11 @@ public class ApplicationInsightsOptions
     public bool EnableClientSideTracking { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets a value indicating whether to use entra authentication.
+    /// </summary>
+    public bool UseEntraAuthentication { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether to authenticate to AI using a Service Principal. When using this option
     /// you will also need to provide tenantId, clientId, and clientSecret of the service principal.
     /// </summary>
