@@ -9,6 +9,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 using System.Linq;
 using ApplicationInsightsFeatureIds = Lombiq.Hosting.Azure.ApplicationInsights.Constants.FeatureIds;
 
@@ -36,7 +37,17 @@ public static class ApplicationInsightsInitializerExtensions
             .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
 
+        // Check if UseServicePrincipalAuthentication is true, if so UseEntraAuthentication must also be true.
+        if (applicationInsightsOptions.UseServicePrincipalAuthentication &&
+            !applicationInsightsOptions.UseEntraAuthentication)
+        {
+            throw new InvalidOperationException(
+                "UseServicePrincipalAuthentication is set to true, but UseEntraAuthentication is set to false. " +
+                "UseEntraAuthentication must be set to true when UseServicePrincipalAuthentication is set to true.");
+        }
+
         if (applicationInsightsOptions.UseEntraAuthentication)
+        {
             services.Configure<TelemetryConfiguration>(config =>
             {
                 if (applicationInsightsOptions.UseServicePrincipalAuthentication)
@@ -53,6 +64,7 @@ public static class ApplicationInsightsInitializerExtensions
                     config.SetAzureTokenCredential(credential);
                 }
             });
+        }
 
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete
