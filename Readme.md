@@ -104,7 +104,7 @@ If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core L
 
 ### Entra Authentication for the Live Metrics control channel
 
-Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that (you may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry).
+Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that. You may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry. Entra Authentication is only needed if you want to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
 
 #### Setting up Entra Authentication for Application Insights
 
@@ -122,17 +122,17 @@ If you want to use Entra Authentication for Application Insights, or if you have
 }
 ```
 
-To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on Assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role to be able to publish metrics to AI. See how to set up a managed identity [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). See more on assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
 You can also use a service principal to authenticate. To set this up, you will have to provide the service principal credentials in the configuration. See the [Service principal](#service-principal) section for more information. This is also the only way to authenticate if you are using a non-Azure (or local) environment - or an Azure resource that does not support Managed Identities.
 
-Once Entra Authentication is set up and the `ConnectionString` has been properly set, metrics should be flowing in.
+Once Entra Authentication is set up and the `ConnectionString` has been properly set, you should be able to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
 
 #### Service principal
 
 Using a Service Principal is the only way to authenticate using Entra authentication if you are using a non-Azure (or local) environment.
 
-If you want to use the Service Principal method for your Application Insights resource, you should set the `EntraAuthenticationType` option to `ServicePrincipal` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To securely stream metrics with Entra ID you will also have to provide the credentials of the service principal, to set this up [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal).
+If you want to use the Service Principal method for your Application Insights resource, you should set the `EntraAuthenticationType` option to `ServicePrincipal` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To securely control the Live Metrics stream with Entra ID you will also have to provide the credentials of the service principal; to set this up, [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal) (you'll need to use the [client secret authentication option](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal#option-3-create-a-new-client-secret)).
 
 ```json5
 {

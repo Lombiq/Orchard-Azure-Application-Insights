@@ -1,14 +1,14 @@
-﻿namespace Lombiq.Hosting.Azure.ApplicationInsights;
+namespace Lombiq.Hosting.Azure.ApplicationInsights;
 
 public class ServicePrincipalCredentials
 {
     /// <summary>
-    /// Gets or sets the tenant ID of the Microsoft Entra application used to secure the control channel.
+    /// Gets or sets the (directory) tenant ID of the Microsoft Entra application used to secure the control channel.
     /// </summary>
     public string TenantId { get; set; }
 
     /// <summary>
-    /// Gets or sets the client ID of the Microsoft Entra application used to secure the control channel.
+    /// Gets or sets the application (client) ID of the Microsoft Entra application used to secure the control channel.
     /// </summary>
     public string ClientId { get; set; }
 
