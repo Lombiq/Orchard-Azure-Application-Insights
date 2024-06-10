@@ -1,5 +1,6 @@
 using Azure.Identity;
 using Lombiq.Hosting.Azure.ApplicationInsights;
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
@@ -9,7 +10,6 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using ApplicationInsightsFeatureIds = Lombiq.Hosting.Azure.ApplicationInsights.Constants.FeatureIds;
 
@@ -37,34 +37,23 @@ public static class ApplicationInsightsInitializerExtensions
             .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
 
-        // Check if UseServicePrincipalAuthentication is true, if so UseEntraAuthentication must also be true.
-        if (applicationInsightsOptions.UseServicePrincipalAuthentication &&
-            !applicationInsightsOptions.UseEntraAuthentication)
+        services.Configure<TelemetryConfiguration>(config =>
         {
-            throw new InvalidOperationException(
-                "UseServicePrincipalAuthentication is set to true, but UseEntraAuthentication is set to false. " +
-                "UseEntraAuthentication must be set to true when UseServicePrincipalAuthentication is set to true.");
-        }
-
-        if (applicationInsightsOptions.UseEntraAuthentication)
-        {
-            services.Configure<TelemetryConfiguration>(config =>
+            if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.ServicePrincipal)
             {
-                if (applicationInsightsOptions.UseServicePrincipalAuthentication)
-                {
-                    var credential = new ClientSecretCredential(
-                        applicationInsightsOptions.ServicePrincipalCredentials.TenantId,
-                        applicationInsightsOptions.ServicePrincipalCredentials.ClientId,
-                        applicationInsightsOptions.ServicePrincipalCredentials.ClientSecret);
-                    config.SetAzureTokenCredential(credential);
-                }
-                else
-                {
-                    var credential = new DefaultAzureCredential();
-                    config.SetAzureTokenCredential(credential);
-                }
-            });
-        }
+                var credential = new ClientSecretCredential(
+                    applicationInsightsOptions.ServicePrincipalCredentials.TenantId,
+                    applicationInsightsOptions.ServicePrincipalCredentials.ClientId,
+                    applicationInsightsOptions.ServicePrincipalCredentials.ClientSecret);
+                config.SetAzureTokenCredential(credential);
+            }
+
+            if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.ManagedIdentity)
+            {
+                var credential = new DefaultAzureCredential();
+                config.SetAzureTokenCredential(credential);
+            }
+        });
 
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete

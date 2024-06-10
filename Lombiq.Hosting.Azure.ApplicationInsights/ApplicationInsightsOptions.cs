@@ -1,3 +1,4 @@
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Microsoft.ApplicationInsights.DataContracts;
 using System;
 using System.Text.RegularExpressions;
@@ -71,15 +72,9 @@ public class ApplicationInsightsOptions
     public bool EnableClientSideTracking { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to use entra authentication.
+    /// Gets or sets a value indicating whether to use Entra authentication and which type.
     /// </summary>
-    public bool UseEntraAuthentication { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether to authenticate to AI using a Service Principal. When using this option
-    /// you will also need to provide tenantId, clientId, and clientSecret of the service principal.
-    /// </summary>
-    public bool UseServicePrincipalAuthentication { get; set; }
+    public EntraAuthenticationType EntraAuthenticationType { get; set; }
 
     /// <summary>
     /// Gets or sets the ServicePrincipalCredentials of the Microsoft Entra application used to secure the control
