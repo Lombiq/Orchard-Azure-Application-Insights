@@ -143,7 +143,7 @@ If you want to use the Service Principal method for your Application Insights re
             "TenantId": "your service principal tenant id",
             "ClientId": "your service principal client id",
             "ClientSecret": "your service principal client secret"
-        },
+        }
     }
   }
 }
