@@ -1,4 +1,4 @@
-﻿namespace Lombiq.Hosting.Azure.ApplicationInsights.Models;
+namespace Lombiq.Hosting.Azure.ApplicationInsights.Models;
 
 public enum EntraAuthenticationType
 {
@@ -13,7 +13,7 @@ public enum EntraAuthenticationType
     ManagedIdentity,
 
     /// <summary>
-    /// Use a service principal, This requires setting up ServicePrincipalCredentials.
+    /// Use a service principal. This requires setting up ServicePrincipalCredentials.
     /// </summary>
     ServicePrincipal,
 }

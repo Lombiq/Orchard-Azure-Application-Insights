@@ -108,9 +108,9 @@ Starting 30 September 2025, authentication using API keys is no longer supported
 
 #### Setting up Entra Authentication for Application Insights
 
-> ⚠ This section is required if you have disabled `Local Authentication` on your AI resource, See [the docs](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?WT.mc_id=Portal-AppInsightsExtension&tabs=net#disable-local-authentication).
+> ⚠ This section is required if you have disabled `Local Authentication` on your AI resource, see [the docs](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?WT.mc_id=Portal-AppInsightsExtension&tabs=net#disable-local-authentication).
 
-If you want to use Entra Authentication for Application Insights, or if you have disabled `Local Authentication` on your AI resource, you will have to set up the `EntraAuthenticationType` option to the authentication type you want to use (`ManagedIdentity` or `ServicePrincipal`) in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
+If you want to use Entra Authentication for Application Insights, or if you have disabled `Local Authentication` on your AI resource, you will have to set the `EntraAuthenticationType` option to the authentication type you want to use (`ManagedIdentity` or `ServicePrincipal`) in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
 
 ```json5
 {
