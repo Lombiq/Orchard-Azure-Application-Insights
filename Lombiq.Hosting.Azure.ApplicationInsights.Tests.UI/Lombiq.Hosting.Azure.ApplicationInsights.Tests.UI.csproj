@@ -13,11 +13,10 @@
     <PackageTags>OrchardCore;Lombiq;AspNetCore;ApplicationInsights;Analytics;Telemetry;Monitoring;LombiqHostingSuite;Shouldly;xUnit;UITesting;Testing</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights/blob/dev/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/Readme.md</PackageProjectUrl>
-    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="License.md" Pack="true" PackagePath="" />
     <None Include="Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
