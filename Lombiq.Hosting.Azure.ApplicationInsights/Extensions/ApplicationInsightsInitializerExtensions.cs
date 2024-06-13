@@ -81,9 +81,13 @@ public static class ApplicationInsightsInitializerExtensions
         services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
             (module, _) => module.EnableSqlCommandTextInstrumentation = applicationInsightsOptions.EnableSqlCommandTextInstrumentation);
 
-        services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
 #pragma warning disable CS0618 // Type or member is obsolete
-            (module, _) => module.AuthenticationApiKey = applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey);
+        if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.None &&
+            !string.IsNullOrEmpty(applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey))
+        {
+            services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
+                (module, _) => module.AuthenticationApiKey = applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey);
+        }
 #pragma warning restore CS0618 // Type or member is obsolete
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
