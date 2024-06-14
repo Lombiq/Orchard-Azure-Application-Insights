@@ -1,3 +1,4 @@
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Microsoft.ApplicationInsights.DataContracts;
 using System;
 using System.Text.RegularExpressions;
@@ -28,6 +29,7 @@ public class ApplicationInsightsOptions
     /// documentation for more info: <see
     /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel"/>.
     /// </summary>
+    [Obsolete("Microsoft Entra authentication is the only supported method from 30 September 2025. API key authentication will be removed.")]
     public string QuickPulseTelemetryModuleAuthenticationApiKey { get; set; }
 
     /// <summary>
@@ -68,6 +70,17 @@ public class ApplicationInsightsOptions
     /// Gets or sets a value indicating whether to inject the client-side AI tracking script.
     /// </summary>
     public bool EnableClientSideTracking { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to use Entra authentication and which type.
+    /// </summary>
+    public EntraAuthenticationType EntraAuthenticationType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the ServicePrincipalCredentials of the Microsoft Entra application used to secure the control
+    /// channel.
+    /// </summary>
+    public ServicePrincipalCredentials ServicePrincipalCredentials { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to work in kind of a debug mode completely offline. Telemetry will still

@@ -15,11 +15,10 @@
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</PackageProjectUrl>
-    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="License.md" Pack="true" PackagePath="" />
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
@@ -34,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="OrchardCore.Media.Azure" Version="2.0.0-preview-18232" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18232" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="2.0.0-preview-18232" />
