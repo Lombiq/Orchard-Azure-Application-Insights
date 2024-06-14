@@ -86,6 +86,7 @@ The module has its own configuration for further options. These need to come fro
   },
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
+      // Deprecated, do not use in new projects.
       "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
     }
   }
@@ -93,11 +94,62 @@ The module has its own configuration for further options. These need to come fro
 
 ```
 
-See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details. We recommend configuring at least `QuickPulseTelemetryModuleAuthenticationApiKey`.
+> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication for the Live Metrics control channel](#entra-authentication-for-the-live-metrics-control-channel) for more information.
+
+See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
 Note that while telemetry from background tasks is collected in form of dependency operations it'll be collected even if `EnableDependencyTrackingTelemetryModule` is `false`.
 
 If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core Libraries - Security](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.OrchardCore/Docs/Security.md), then the security headers necessary to use Application Insight's client-side tracking will automatically be added.
+
+### Entra Authentication for the Live Metrics control channel
+
+Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that. You may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry. Entra Authentication is only needed if you want to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
+
+#### Setting up Entra Authentication for Application Insights
+
+> ⚠ This section is required if you have disabled `Local Authentication` on your AI resource, see [the docs](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?WT.mc_id=Portal-AppInsightsExtension&tabs=net#disable-local-authentication).
+
+If you want to use Entra Authentication for Application Insights, or if you have disabled `Local Authentication` on your AI resource, you will have to set the `EntraAuthenticationType` option to the authentication type you want to use (`ManagedIdentity` or `ServicePrincipal`) in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
+
+```json5
+{
+    "OrchardCore": {
+        "Lombiq_Hosting_Azure_ApplicationInsights": {
+            "EntraAuthenticationType": "ManagedIdentity"
+        }
+    }
+}
+```
+
+To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role (see more on assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) to be able to publish metrics to AI. A managed identity will allow your app to authenticate with the Application Insights resource; see how to set it up for specific Azure services [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). We recommend using the simpler system-assigned identity option, since then you can easily allow your app's identity to get a role under the Application Insights resource. Note that it might take a few minutes for the managed identity to work; until then, Live Metrics won't be available.
+
+You can also use a service principal to authenticate. To set this up, you will have to provide the service principal credentials in the configuration. See the [Service principal](#service-principal) section for more information. This is also the only way to authenticate if you are using a non-Azure (or local) environment - or an Azure resource that does not support Managed Identities.
+
+Once Entra Authentication is set up and the `ConnectionString` has been properly set, you should be able to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
+
+#### Service principal
+
+Using a Service Principal is the only way to authenticate using Entra authentication if you are using a non-Azure (or local) environment.
+
+If you want to use the Service Principal method for your Application Insights resource, you should set the `EntraAuthenticationType` option to `ServicePrincipal` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration. To securely control the Live Metrics stream with Entra ID you will also have to provide the credentials of the service principal; to set this up, [see the docs](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal) (you'll need to use the [client secret authentication option](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal#option-3-create-a-new-client-secret)).
+
+```json5
+{
+  "OrchardCore": {
+    "Lombiq_Hosting_Azure_ApplicationInsights": {
+        "EntraAuthenticationType": "ServicePrincipal",
+        "ServicePrincipalCredentials": {
+            "TenantId": "your service principal tenant id",
+            "ClientId": "your service principal client id",
+            "ClientSecret": "your service principal client secret"
+        }
+    }
+  }
+}
+```
+
+For more information or scenarios not described here, see the [official documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication).
 
 ### Using collected data
 

@@ -1,4 +1,6 @@
-﻿using Lombiq.Hosting.Azure.ApplicationInsights;
+using Azure.Identity;
+using Lombiq.Hosting.Azure.ApplicationInsights;
+using Lombiq.Hosting.Azure.ApplicationInsights.Models;
 using Lombiq.Hosting.Azure.ApplicationInsights.Services;
 using Lombiq.Hosting.Azure.ApplicationInsights.TelemetryInitializers;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
@@ -35,6 +37,24 @@ public static class ApplicationInsightsInitializerExtensions
             .GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
         applicationInsightsConfigSection.Bind(applicationInsightsOptions);
 
+        services.Configure<TelemetryConfiguration>(config =>
+        {
+            if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.ServicePrincipal)
+            {
+                var credential = new ClientSecretCredential(
+                    applicationInsightsOptions.ServicePrincipalCredentials.TenantId,
+                    applicationInsightsOptions.ServicePrincipalCredentials.ClientId,
+                    applicationInsightsOptions.ServicePrincipalCredentials.ClientSecret);
+                config.SetAzureTokenCredential(credential);
+            }
+
+            if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.ManagedIdentity)
+            {
+                var credential = new DefaultAzureCredential();
+                config.SetAzureTokenCredential(credential);
+            }
+        });
+
         if (string.IsNullOrEmpty(applicationInsightsServiceOptions?.ConnectionString) &&
 #pragma warning disable CS0618 // Type or member is obsolete
             string.IsNullOrEmpty(applicationInsightsServiceOptions?.InstrumentationKey) &&
@@ -61,8 +81,14 @@ public static class ApplicationInsightsInitializerExtensions
         services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>(
             (module, _) => module.EnableSqlCommandTextInstrumentation = applicationInsightsOptions.EnableSqlCommandTextInstrumentation);
 
-        services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
-            (module, _) => module.AuthenticationApiKey = applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey);
+#pragma warning disable CS0618 // Type or member is obsolete
+        if (applicationInsightsOptions.EntraAuthenticationType == EntraAuthenticationType.None &&
+            !string.IsNullOrEmpty(applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey))
+        {
+            services.ConfigureTelemetryModule<QuickPulseTelemetryModule>(
+                (module, _) => module.AuthenticationApiKey = applicationInsightsOptions.QuickPulseTelemetryModuleAuthenticationApiKey);
+        }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         services.AddSingleton<ITelemetryInitializer, UserContextPopulatingTelemetryInitializer>();
         services.AddSingleton<ITelemetryInitializer, ShellNamePopulatingTelemetryInitializer>();
