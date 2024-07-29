@@ -67,6 +67,8 @@ builder.Services
 
 Note that due to how the Application Insights .NET SDK works, telemetry can only be collected for the whole app at once; collecting telemetry separately for each tenant is not supported.
 
+You can also use `ConfigureAzureHostingDefaultsWithApplicationInsightsTelemetry` instead; this sets up all the recommended hosting configuration with `ConfigureAzureHostingDefaults` from [Lombiq Helpful Libraries - Orchard Core Libraries](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.OrchardCore/Readme.md).
+
 When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can create it with `ITrackingScriptFactory`.
 
 ### Advanced configuration
