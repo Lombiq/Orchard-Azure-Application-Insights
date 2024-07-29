@@ -25,12 +25,20 @@ public static class ApplicationInsightsInitializerExtensions
     /// appsettings.json configuration will take precedence.
     /// </summary>
     /// <param name="webApplicationBuilder">The <see cref="WebApplicationBuilder"/> instance of the app.</param>
+    /// <param name="enableAzureMediaStorage">
+    /// Indicates whether to enable <c>OrchardCore.Media.Azure.Storage</c> and its dependencies when hosted in Azure.
+    /// </param>
+    /// <param name="enableHealthChecksInProduction">
+    /// Indicates whether to enable <c>OrchardCore.HealthChecks</c> in the Production environment.
+    /// </param>
     public static OrchardCoreBuilder ConfigureAzureHostingDefaultsWithApplicationInsightsTelemetry(
         this OrchardCoreBuilder builder,
-        WebApplicationBuilder webApplicationBuilder)
+        WebApplicationBuilder webApplicationBuilder,
+        bool enableAzureMediaStorage = true,
+        bool enableHealthChecksInProduction = true)
     {
         builder
-            .ConfigureAzureHostingDefaults(webApplicationBuilder)
+            .ConfigureAzureHostingDefaults(webApplicationBuilder, enableAzureMediaStorage, enableHealthChecksInProduction)
             .AddOrchardCoreApplicationInsightsTelemetry(webApplicationBuilder.Configuration);
 
         var logLevelSection = webApplicationBuilder.Configuration.GetSection("Logging:ApplicationInsights:LogLevel");
