@@ -54,6 +54,8 @@ public static class ApplicationInsightsInitializerExtensions
 
         if (webApplicationBuilder.Environment.IsDevelopment())
         {
+            ocAppInsightsSection.AddValueIfKeyNotExists("EnableLoggingTestMiddleware", "true");
+
             var appInsightsSection = webApplicationBuilder.Configuration.GetSection("ApplicationInsights");
 
             appInsightsSection.AddValueIfKeyNotExists("EnableDependencyTrackingTelemetryModule", "false");
