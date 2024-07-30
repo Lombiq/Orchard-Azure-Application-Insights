@@ -10,6 +10,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Linq;
@@ -25,20 +26,14 @@ public static class ApplicationInsightsInitializerExtensions
     /// appsettings.json configuration will take precedence.
     /// </summary>
     /// <param name="webApplicationBuilder">The <see cref="WebApplicationBuilder"/> instance of the app.</param>
-    /// <param name="enableAzureMediaStorage">
-    /// Indicates whether to enable <c>OrchardCore.Media.Azure.Storage</c> and its dependencies when hosted in Azure.
-    /// </param>
-    /// <param name="enableHealthChecksInProduction">
-    /// Indicates whether to enable <c>OrchardCore.HealthChecks</c> in the Production environment.
-    /// </param>
+    /// <param name="hostingConfiguration">Configuration for the hosting defaults.</param>
     public static OrchardCoreBuilder ConfigureAzureHostingDefaultsWithApplicationInsightsTelemetry(
         this OrchardCoreBuilder builder,
         WebApplicationBuilder webApplicationBuilder,
-        bool enableAzureMediaStorage = true,
-        bool enableHealthChecksInProduction = true)
+        AzureHostingConfiguration hostingConfiguration = null)
     {
         builder
-            .ConfigureAzureHostingDefaults(webApplicationBuilder, enableAzureMediaStorage, enableHealthChecksInProduction)
+            .ConfigureAzureHostingDefaults(webApplicationBuilder, hostingConfiguration)
             .AddOrchardCoreApplicationInsightsTelemetry(webApplicationBuilder.Configuration);
 
         var logLevelSection = webApplicationBuilder.Configuration.GetSection("Logging:ApplicationInsights:LogLevel");
