@@ -32,9 +32,7 @@ public static class ApplicationInsightsInitializerExtensions
         WebApplicationBuilder webApplicationBuilder,
         AzureHostingConfiguration hostingConfiguration = null)
     {
-        builder
-            .ConfigureAzureHostingDefaults(webApplicationBuilder, hostingConfiguration)
-            .AddOrchardCoreApplicationInsightsTelemetry(webApplicationBuilder.Configuration);
+        builder.ConfigureAzureHostingDefaults(webApplicationBuilder, hostingConfiguration);
 
         var logLevelSection = webApplicationBuilder.Configuration.GetSection("Logging:ApplicationInsights:LogLevel");
 
@@ -59,6 +57,8 @@ public static class ApplicationInsightsInitializerExtensions
         {
             ocAppInsightsSection.AddValueIfKeyNotExists("EntraAuthenticationType", "ManagedIdentity");
         }
+
+        builder.AddOrchardCoreApplicationInsightsTelemetry(webApplicationBuilder.Configuration);
 
         return builder;
     }
