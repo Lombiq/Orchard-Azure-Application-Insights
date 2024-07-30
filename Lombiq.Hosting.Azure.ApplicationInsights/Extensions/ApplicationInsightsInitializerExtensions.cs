@@ -55,6 +55,10 @@ public static class ApplicationInsightsInitializerExtensions
 
             appInsightsSection.AddValueIfKeyNotExists("EnableDependencyTrackingTelemetryModule", "false");
         }
+        else
+        {
+            ocAppInsightsSection.AddValueIfKeyNotExists("EntraAuthenticationType", "ManagedIdentity");
+        }
 
         return builder;
     }
