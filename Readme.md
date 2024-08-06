@@ -124,7 +124,7 @@ If you want to use Entra Authentication for Application Insights, or if you have
 }
 ```
 
-> ⚠ Client-side tracking wil currently fail with 401 Unauthorized if Local Authentication is disabled, see [this bug report](https://github.com/microsoft/ApplicationInsights-dotnet/issues/2893) for the Application Insights .NET SDK. If you need client-side tracking, you will have to keep Local Authentication enabled on your AI resource for now.
+> ⚠ Client-side tracking will currently fail with 401 Unauthorized if Local Authentication is disabled, see [this bug report](https://github.com/microsoft/ApplicationInsights-dotnet/issues/2893) for the Application Insights .NET SDK. If you need client-side tracking, you will have to keep Local Authentication enabled on your AI resource for now.
 
 To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role (see more on assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) to be able to publish metrics to AI. A managed identity will allow your app to authenticate with the Application Insights resource; see how to set it up for specific Azure services [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). We recommend using the simpler system-assigned identity option, since then you can easily allow your app's identity to get a role under the Application Insights resource. Note that it might take a few minutes for the managed identity to work; until then, Live Metrics won't be available.
 
