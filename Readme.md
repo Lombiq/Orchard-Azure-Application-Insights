@@ -67,6 +67,8 @@ builder.Services
 
 Note that due to how the Application Insights .NET SDK works, telemetry can only be collected for the whole app at once; collecting telemetry separately for each tenant is not supported.
 
+You can also use `ConfigureAzureHostingDefaultsWithApplicationInsightsTelemetry` instead; this sets up all the recommended hosting configuration with `ConfigureAzureHostingDefaults` from [Lombiq Helpful Libraries - Orchard Core Libraries](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.OrchardCore/Readme.md).
+
 When using the full CMS approach of Orchard Core (i.e. not decoupled or headless) then the client-side tracking script will be automatically injected as a head script. Otherwise, you can create it with `ITrackingScriptFactory`.
 
 ### Advanced configuration
@@ -121,6 +123,8 @@ If you want to use Entra Authentication for Application Insights, or if you have
     }
 }
 ```
+
+> ⚠ Client-side tracking will currently fail with 401 Unauthorized if Local Authentication is disabled, see [this bug report](https://github.com/microsoft/ApplicationInsights-dotnet/issues/2893) for the Application Insights .NET SDK. If you need client-side tracking, you will have to keep Local Authentication enabled on your AI resource for now.
 
 To set up Entra Authentication for an application hosted on Azure you will have to set up a Managed Identity for the application and give it the `Monitoring Metrics Publisher` role (see more on assigning Azure roles [here](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) to be able to publish metrics to AI. A managed identity will allow your app to authenticate with the Application Insights resource; see how to set it up for specific Azure services [here](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status). We recommend using the simpler system-assigned identity option, since then you can easily allow your app's identity to get a role under the Application Insights resource. Note that it might take a few minutes for the managed identity to work; until then, Live Metrics won't be available.
 

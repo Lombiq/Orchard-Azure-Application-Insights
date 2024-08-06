@@ -8,7 +8,10 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using ApplicationInsightsFeatureIds = Lombiq.Hosting.Azure.ApplicationInsights.Constants.FeatureIds;
@@ -17,6 +20,49 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ApplicationInsightsInitializerExtensions
 {
+    /// <summary>
+    /// Lombiq-recommended opinionated default configuration for features of an Orchard Core application hosted in
+    /// Azure, with Application Insights telemetry. If any of the configuration values exist, they won't be overridden,
+    /// so e.g. appsettings.json configuration will take precedence.
+    /// </summary>
+    /// <param name="webApplicationBuilder">The <see cref="WebApplicationBuilder"/> instance of the app.</param>
+    /// <param name="hostingConfiguration">Configuration for the hosting defaults.</param>
+    public static OrchardCoreBuilder ConfigureAzureHostingDefaultsWithApplicationInsightsTelemetry(
+        this OrchardCoreBuilder builder,
+        WebApplicationBuilder webApplicationBuilder,
+        AzureHostingConfiguration hostingConfiguration = null)
+    {
+        builder.ConfigureAzureHostingDefaults(webApplicationBuilder, hostingConfiguration);
+
+        var logLevelSection = webApplicationBuilder.Configuration.GetSection("Logging:ApplicationInsights:LogLevel");
+
+        logLevelSection.AddValueIfKeyNotExists("Default", "Warning");
+
+        var ocAppInsightsSection = webApplicationBuilder.Configuration.GetSection("OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights");
+
+        ocAppInsightsSection
+            .AddValueIfKeyNotExists("EnableUserNameCollection", "true")
+            .AddValueIfKeyNotExists("EnableUserAgentCollection", "true")
+            .AddValueIfKeyNotExists("EnableIpAddressCollection", "true");
+
+        if (webApplicationBuilder.Environment.IsDevelopment())
+        {
+            ocAppInsightsSection.AddValueIfKeyNotExists("EnableLoggingTestMiddleware", "true");
+
+            var appInsightsSection = webApplicationBuilder.Configuration.GetSection("ApplicationInsights");
+
+            appInsightsSection.AddValueIfKeyNotExists("EnableDependencyTrackingTelemetryModule", "false");
+        }
+        else
+        {
+            ocAppInsightsSection.AddValueIfKeyNotExists("EntraAuthenticationType", "ManagedIdentity");
+        }
+
+        builder.AddOrchardCoreApplicationInsightsTelemetry(webApplicationBuilder.Configuration);
+
+        return builder;
+    }
+
     /// <summary>
     /// Initializes Application Insights for Orchard Core. Should be used in the application Program.cs file.
     /// </summary>
