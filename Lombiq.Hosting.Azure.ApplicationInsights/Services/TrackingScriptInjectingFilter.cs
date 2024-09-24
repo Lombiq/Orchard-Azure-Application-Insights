@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
-public class TrackingScriptInjectingFilter : IAsyncResultFilter
+public sealed class TrackingScriptInjectingFilter : IAsyncResultFilter
 {
     private readonly IResourceManager _resourceManager;
     private readonly IOptions<ApplicationInsightsOptions> _applicationInsightsOptions;

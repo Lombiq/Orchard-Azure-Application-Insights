@@ -11,7 +11,7 @@ using System;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights;
 
-public class Startup : StartupBase
+public sealed class Startup : StartupBase
 {
     private readonly ApplicationInsightsOptions _applicationInsightsOptions;
     private readonly ApplicationInsightsServiceOptions _applicationInsightsServiceOptions;
