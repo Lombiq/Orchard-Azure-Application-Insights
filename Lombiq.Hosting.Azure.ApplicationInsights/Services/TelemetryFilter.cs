@@ -65,13 +65,13 @@ public partial class TelemetryFilter : ITelemetryProcessor
         var dataProtectionContainerName = shellSettings["OrchardCore_DataProtection_Azure:ContainerName"];
         if (string.IsNullOrEmpty(dataProtectionContainerName))
         {
-            dataProtectionContainerName = "dataprotection"; // #spell-check-ignore-line
+            dataProtectionContainerName = "dataprotection";
         }
 
         if (dataProtectionConnectionString.Contains("UseDevelopmentStorage=true"))
         {
             dataProtectionContainerName =
-                "/devstoreaccount1/" + dataProtectionContainerName; // #spell-check-ignore-line
+                "/devstoreaccount1/" + dataProtectionContainerName;
         }
 
         // Name property value could be different depending on the environment, so using the Data property instead.
@@ -86,7 +86,7 @@ public partial class TelemetryFilter : ITelemetryProcessor
         if (mediaBlobStorageConnectionString.Contains("UseDevelopmentStorage=true"))
         {
             mediaBlobStorageContainerName =
-                "/devstoreaccount1/" + mediaBlobStorageContainerName; // #spell-check-ignore-line
+                "/devstoreaccount1/" + mediaBlobStorageContainerName;
         }
 
         // Name property value could be different depending on the environment, so using the Data property instead.
