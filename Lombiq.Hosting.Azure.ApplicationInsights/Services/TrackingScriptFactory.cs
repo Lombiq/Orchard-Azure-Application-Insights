@@ -1,14 +1,20 @@
 using Microsoft.ApplicationInsights.AspNetCore;
 using Microsoft.AspNetCore.Html;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lombiq.Hosting.Azure.ApplicationInsights.Services;
 
 public class TrackingScriptFactory : ITrackingScriptFactory
 {
     private readonly JavaScriptSnippet _javaScriptSnippet;
+    private readonly IEnumerable<ITrackingScriptFactoryAddition> _trackingScriptFactoryAdditions;
 
-    public TrackingScriptFactory(JavaScriptSnippet javaScriptSnippet) =>
+    public TrackingScriptFactory(JavaScriptSnippet javaScriptSnippet, IEnumerable<ITrackingScriptFactoryAddition> trackingScriptFactoryAdditions)
+    {
         _javaScriptSnippet = javaScriptSnippet;
+        _trackingScriptFactoryAdditions = trackingScriptFactoryAdditions;
+    }
 
     // The operation ID is NOT available in the injectable TelemetryClient, which will be basically empty. This is
     // somehow by design. See e.g.:
@@ -19,5 +25,6 @@ public class TrackingScriptFactory : ITrackingScriptFactory
                 appInsights.queue.push(function () {{
                     appInsights.context.telemetryTrace.traceID = '{System.Diagnostics.Activity.Current.RootId}';
                 }});
+                {string.Join('\n', _trackingScriptFactoryAdditions.Select(addition => addition.AddToJavaScriptTracking()))}
             </script>");
 }
