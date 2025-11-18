@@ -12,7 +12,7 @@ internal sealed class ApplicationInsightsContentSecurityPolicyProvider : IConten
     public ValueTask UpdateAsync(IDictionary<string, string> securityPolicies, HttpContext context)
     {
         CspHelper.MergeValues(securityPolicies, ScriptSrc, "js.monitor.azure.com");
-        CspHelper.MergeValues(securityPolicies, ConnectSrc, "*.applicationinsights.azure.com");
+        CspHelper.MergeValues(securityPolicies, ConnectSrc, "*.applicationinsights.azure.com", "js.monitor.azure.com");
 
         return ValueTask.CompletedTask;
     }
