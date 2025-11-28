@@ -1,40 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
-  </PropertyGroup>
+  <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Module.Targets/Lombiq.MSBuild.Module.Targets.props"
+          Condition="'$(NuGetBuild)' != 'true' "/>
 
   <PropertyGroup>
     <Title>Lombiq Hosting - Azure Application Insights for Orchard Core</Title>
-    <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2015, Lombiq Technologies Ltd.</Copyright>
     <Description>Lombiq Hosting - Azure Application Insights for Orchard Core: This Orchard Core module enables easy integration of Azure Application Insights telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source, and collected data will start appearing in the Azure Portal. See the project website for detailed documentation.</Description>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Azure;ApplicationInsights;Analytics;Telemetry;Monitoring;LombiqHostingSuite</PackageTags>
-    <PackageIcon>NuGetIcon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</PackageProjectUrl>
-    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Readme.md" />
-    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="OrchardCore.Media.Azure" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.1.0" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -44,5 +26,8 @@
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
     <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.5.0" />
   </ItemGroup>
+
+  <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Module.Targets/Lombiq.MSBuild.Module.Targets.targets"
+          Condition="'$(NuGetBuild)' != 'true' "/>
 
 </Project>
