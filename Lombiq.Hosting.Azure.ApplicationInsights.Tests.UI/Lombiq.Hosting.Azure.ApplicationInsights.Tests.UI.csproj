@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <ImportLombiqPrivacyTestsUI>true</ImportLombiqPrivacyTestsUI>
+  </PropertyGroup>
+
   <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Tests.UI.Targets/Lombiq.MSBuild.Tests.UI.Targets.props" />
 
   <PropertyGroup>
@@ -10,13 +14,5 @@
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights/blob/dev/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/Readme.md</PackageProjectUrl>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
-    <ProjectReference Include="..\..\Lombiq.Privacy\Lombiq.Privacy.Tests.UI\Lombiq.Privacy.Tests.UI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.Privacy.Tests.UI" Version="10.0.1-alpha.0.osoe-935" />
-  </ItemGroup>
 
 </Project>
