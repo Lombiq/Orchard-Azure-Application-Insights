@@ -18,9 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="OrchardCore.Media.Azure" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="2.1.0" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="2.1.0" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="2.1.0" />
   </ItemGroup>
 
   <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Module.Targets/Lombiq.MSBuild.Module.Targets.targets"
