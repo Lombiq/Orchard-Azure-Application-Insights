@@ -46,4 +46,14 @@
     <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.5.0" />
   </ItemGroup>
 
+  <!-- This is needed to include the Uploader component of Microsoft.ApplicationInsights.Profiler.AspNetCore in the
+  publish output folder, and thus deploy it to the server too. -->
+  <ItemGroup>
+    <Content Include="bin\$(Configuration)\$(TargetFramework)\TraceUpload.zip" Condition="Exists('bin\$(Configuration)\$(TargetFramework)\TraceUpload.zip')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>TraceUpload.zip</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>
