@@ -29,7 +29,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.1">
+      <!-- This is needed to include the Uploader component (TraceUpload.zip) in the publish output folder, and thus
+      deploy it to the server too. See:
+      https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
+      <PrivateAssets>analyzers;build</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="OrchardCore.Media.Azure" Version="2.1.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="2.1.0" />
@@ -44,16 +49,6 @@
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
     <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.5.0" />
-  </ItemGroup>
-
-  <!-- This is needed to include the Uploader component of Microsoft.ApplicationInsights.Profiler.AspNetCore in the
-  publish output folder, and thus deploy it to the server too. -->
-  <ItemGroup>
-    <Content Include="bin\$(Configuration)\$(TargetFramework)\TraceUpload.zip" Condition="Exists('bin\$(Configuration)\$(TargetFramework)\TraceUpload.zip')">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>TraceUpload.zip</Link>
-    </Content>
   </ItemGroup>
 
 </Project>
