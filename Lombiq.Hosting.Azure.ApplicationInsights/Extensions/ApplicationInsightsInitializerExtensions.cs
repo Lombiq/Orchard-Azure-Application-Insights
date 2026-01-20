@@ -72,7 +72,6 @@ public static class ApplicationInsightsInitializerExtensions
     {
         var services = builder.ApplicationServices;
         services.AddApplicationInsightsTelemetry(configurationManager);
-        services.AddServiceProfiler();
 
         // Create a temporary ServiceProvider to configure ApplicationInsightsServiceOptions.
         using var serviceProvider = services.BuildServiceProvider();
@@ -158,6 +157,8 @@ public static class ApplicationInsightsInitializerExtensions
                     options.EnableQuickPulseMetricStream = false;
                 });
         }
+
+        if (applicationInsightsOptions.EnableProfiler) services.AddServiceProfiler();
 
         builder.AddTenantFeatures(ApplicationInsightsFeatureIds.Default);
 

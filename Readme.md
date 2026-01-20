@@ -163,7 +163,17 @@ All the collected data will be available in the Azure Portal as usual. Some cust
 
 ### Profiling
 
-Support for [Application Insights Profiler for ASP.NET Core](https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore) is built in. This means that you can just launch the [Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview) from the Azure Portal if you'd like to profile the app.
+Support for [Application Insights Profiler for ASP.NET Core](https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore) is built in. This means that you can just launch the [Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview) from the Azure Portal if you'd like to profile the app. To enable this, you first need to set the `EnableProfiler` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
+
+```json5
+{
+  "OrchardCore": {
+    "Lombiq_Hosting_Azure_ApplicationInsights": {
+        "EnableProfiler": true
+    }
+  }
+}
+```
 
 ## UI testing
 
