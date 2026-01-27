@@ -158,6 +158,8 @@ public static class ApplicationInsightsInitializerExtensions
                 });
         }
 
+        if (applicationInsightsOptions.EnableProfiler) services.AddServiceProfiler();
+
         builder.AddTenantFeatures(ApplicationInsightsFeatureIds.Default);
 
         return builder;
