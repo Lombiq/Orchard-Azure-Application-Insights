@@ -29,6 +29,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.1">
+      <!-- This is needed to include the Uploader component (TraceUpload.zip) in the publish output folder, and thus
+      deploy it to the server too. See:
+      https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
+      <PrivateAssets>analyzers;build</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18892" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18892" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18892" />

@@ -128,4 +128,19 @@ public class ApplicationInsightsOptions
     /// want to see as failures in Application Insights. This will be used for <see cref="DependencyTelemetry"/> types.
     /// </summary>
     public Regex DependencyIgnoreFailureRegex { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether profiling with Application Insights Profiler for ASP.NET Core is
+    /// enabled. Setting this allows you to collect profiling data from the Azure Portal by starting a profiler sessions
+    /// there (setting this option doesn't in itself start profiling). For details, see <see
+    /// href="https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore">the project on GitHub</see>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// While the profiler won't do much unless a profiler session is started, it still runs some logic in the
+    /// background continuously when enabled, so only enable this if you actually plan to use it. See <see
+    /// href="https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/discussions/242"/> for some context.
+    /// </para>
+    /// </remarks>
+    public bool EnableProfiler { get; set; }
 }
