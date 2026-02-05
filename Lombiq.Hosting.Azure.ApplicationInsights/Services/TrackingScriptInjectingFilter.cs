@@ -42,7 +42,7 @@ public sealed class TrackingScriptInjectingFilter : IAsyncResultFilter
             if (_applicationInsightsOptions.Value.EnableOfflineOperation)
             {
                 var offlineScript = new HtmlString(
-                    $@"<script>
+                    @"<script>
                         appInsights = 'enabled';
                     </script>");
                 _resourceManager.RegisterHeadScript(offlineScript);
