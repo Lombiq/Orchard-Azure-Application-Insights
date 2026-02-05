@@ -35,12 +35,12 @@
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18906" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18906" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18906" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18906" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.0-preview-18906" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="3.0.0-preview-18906" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18907" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18907" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18907" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18907" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.0-preview-18907" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="3.0.0-preview-18907" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
