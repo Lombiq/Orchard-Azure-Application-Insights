@@ -36,21 +36,19 @@ public sealed class TrackingScriptInjectingFilter : IAsyncResultFilter
         }
 
         var trackingConsentFeature = _hca.HttpContext.Features.Get<ITrackingConsentFeature>();
+        var areCookiesAllowed = trackingConsentFeature is null || trackingConsentFeature.CanTrack;
 
-        if (trackingConsentFeature is null || trackingConsentFeature.CanTrack)
+        if (_applicationInsightsOptions.Value.EnableOfflineOperation)
         {
-            if (_applicationInsightsOptions.Value.EnableOfflineOperation)
-            {
-                var offlineScript = new HtmlString(
-                    @"<script>
-                        appInsights = 'enabled';
-                    </script>");
-                _resourceManager.RegisterHeadScript(offlineScript);
-            }
-            else
-            {
-                _resourceManager.RegisterHeadScript(_trackingScriptFactory.CreateJavaScriptTrackingScript());
-            }
+            var offlineScript = new HtmlString(
+                @"<script>
+                    appInsights = 'enabled';
+                </script>");
+            _resourceManager.RegisterHeadScript(offlineScript);
+        }
+        else
+        {
+            _resourceManager.RegisterHeadScript(_trackingScriptFactory.CreateJavaScriptTrackingScript(enableCookies: areCookiesAllowed));
         }
 
         // In the else branch we could delete the cookie that allows client-side tracking. These provide a solution to

@@ -11,5 +11,9 @@ public interface ITrackingScriptFactory
     /// Creates a JavaScript tracking scripts for Application Insights, including correlation to the server-side
     /// request.
     /// </summary>
-    HtmlString CreateJavaScriptTrackingScript();
+    /// <param name="enableCookies">
+    /// When set to <see langword="true"/>, cookies will be allowed for client-side tracking; no cookies will be used
+    /// otherwise.
+    /// </param>
+    HtmlString CreateJavaScriptTrackingScript(bool enableCookies = true);
 }
