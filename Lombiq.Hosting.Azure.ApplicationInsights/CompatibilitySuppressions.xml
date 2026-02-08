@@ -1,9 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.Services.ITrackingScriptFactory.CreateJavaScriptTrackingScript</Target>
+    <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
+    <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.Services.TrackingScriptFactory.#ctor(Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet)</Target>
+    <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
+    <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.Services.TrackingScriptFactory.CreateJavaScriptTrackingScript</Target>
+    <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
+    <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0006</DiagnosticId>
+    <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.Services.ITrackingScriptFactory.CreateJavaScriptTrackingScript(System.Boolean)</Target>
     <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
     <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
