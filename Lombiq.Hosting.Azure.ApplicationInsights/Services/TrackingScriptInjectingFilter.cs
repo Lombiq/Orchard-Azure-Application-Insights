@@ -35,9 +35,6 @@ public sealed class TrackingScriptInjectingFilter : IAsyncResultFilter
             return;
         }
 
-        var trackingConsentFeature = _hca.HttpContext.Features.Get<ITrackingConsentFeature>();
-        var areCookiesAllowed = trackingConsentFeature is null || trackingConsentFeature.CanTrack;
-
         if (_applicationInsightsOptions.Value.EnableOfflineOperation)
         {
             var offlineScript = new HtmlString(
@@ -48,6 +45,8 @@ public sealed class TrackingScriptInjectingFilter : IAsyncResultFilter
         }
         else
         {
+            var trackingConsentFeature = _hca.HttpContext.Features.Get<ITrackingConsentFeature>();
+            var areCookiesAllowed = trackingConsentFeature is null || trackingConsentFeature.CanTrack;
             _resourceManager.RegisterHeadScript(_trackingScriptFactory.CreateJavaScriptTrackingScript(enableCookies: areCookiesAllowed));
         }
 
