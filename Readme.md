@@ -161,6 +161,14 @@ For more information or scenarios not described here, see the [official document
 
 All the collected data will be available in the Azure Portal as usual. Some custom properties will be added to all suitable telemetry with the `"OrchardCore."` prefix.
 
+### Privacy considerations and GDPR
+
+Depending on what data you configure Application Insights to collect, and your jurisdiction, you might have to inform your users about the collected data and/or ask for their consent. For example, if you collect user IDs or IP addresses, then you will likely have to inform your users, even if not necessarily ask for consent assuming the purpose is strictly application performance monitoring. Please consult with a legal expert on this matter.
+
+The client-side tracking script will not use cookies if `ITrackingConsentFeature` is used and no consent was given.
+
+To help with asking users for consent, check out our [Lombiq Privacy for Orchard Core](https://github.com/Lombiq/Orchard-Privacy) module.
+
 ### Profiling
 
 Support for [Application Insights Profiler for ASP.NET Core](https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore) is built in. This means that you can just launch the [Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview) from the Azure Portal if you'd like to profile the app. To enable this, you first need to set the `EnableProfiler` option to `true` in the `Lombiq_Hosting_Azure_ApplicationInsights` section of your configuration like below.
