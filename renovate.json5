@@ -3,4 +3,12 @@
     extends: [
         'github>Lombiq/Open-Source-Orchard-Core-Extensions:renovate-osoce-orchard-core-submodule.json5',
     ],
+    packageRules: [
+        // Microsoft.ApplicationInsights.AspNetCore v3 needs a manual migration, see:
+        // https://github.com/Lombiq/Orchard-Azure-Application-Insights/issues/108.
+        {
+            matchPackageNames: ['Microsoft.ApplicationInsights.*'],
+            enabled: false,
+        },
+    ],
 }
