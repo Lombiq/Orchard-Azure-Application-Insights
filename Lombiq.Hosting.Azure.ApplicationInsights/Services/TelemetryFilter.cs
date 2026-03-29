@@ -14,8 +14,8 @@ public partial class TelemetryFilter : ITelemetryProcessor
 {
     private static readonly List<Regex> _expectedErrors =
     [
-        AzureRequestFailedRegex(),
-        ObjectAlreadyExistsRegex(),
+        AzureRequestFailedRegex,
+        ObjectAlreadyExistsRegex,
     ];
 
     private readonly ITelemetryProcessor _next;
@@ -100,10 +100,10 @@ public partial class TelemetryFilter : ITelemetryProcessor
     [GeneratedRegex(@"Azure\.RequestFailedException: The specified container already exists\.",
         RegexOptions.None,
         matchTimeoutMilliseconds: 1000)]
-    private static partial Regex AzureRequestFailedRegex();
+    private static partial Regex AzureRequestFailedRegex { get; }
 
     [GeneratedRegex(@"Microsoft\.Data\.SqlClient\.SqlException \(0x80131904\): There is already an object named '.*_Identifiers' in the database\.",
         RegexOptions.None,
         matchTimeoutMilliseconds: 1000)]
-    private static partial Regex ObjectAlreadyExistsRegex();
+    private static partial Regex ObjectAlreadyExistsRegex { get; }
 }
