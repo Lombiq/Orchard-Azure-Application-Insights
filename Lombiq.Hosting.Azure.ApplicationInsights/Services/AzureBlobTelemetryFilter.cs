@@ -40,7 +40,9 @@ public class AzureBlobTelemetryFilter : ITelemetryProcessor
             return;
         }
 
-        if (_parentId == dependency.Id && dependency.Name is "Blob.GetProperties" or "BlobBaseClient.GetProperties")
+        if (_parentId == dependency.Id &&
+            (dependency.Name.EqualsOrdinalIgnoreCase("Blob.GetProperties") ||
+            dependency.Name.EqualsOrdinalIgnoreCase("BlobBaseClient.GetProperties")))
         {
             _parentId = dependency.Context.Operation.ParentId;
             dependency.SetAsIgnoredFailure();
