@@ -3,6 +3,20 @@
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.ApplicationInsightsOptions.get_QuickPulseTelemetryModuleAuthenticationApiKey</Target>
+    <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
+    <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.ApplicationInsightsOptions.set_QuickPulseTelemetryModuleAuthenticationApiKey(System.String)</Target>
+    <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
+    <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Lombiq.Hosting.Azure.ApplicationInsights.Services.ITrackingScriptFactory.CreateJavaScriptTrackingScript</Target>
     <Left>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Left>
     <Right>lib/net8.0/Lombiq.Hosting.Azure.ApplicationInsights.dll</Right>
