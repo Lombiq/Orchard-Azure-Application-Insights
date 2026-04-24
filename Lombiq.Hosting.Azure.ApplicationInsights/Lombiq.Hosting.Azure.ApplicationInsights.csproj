@@ -15,10 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <!-- Using a beta version is necessary until 3.0.2 is out, because 3.0.1 imports System.Linq.Async and so wrecks any
-         IAsyncEnumerable-using code that references this project. -->
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.2-beta1">
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.2">
       <!-- This is needed to include the Uploader component (TraceUpload.zip) in the publish output folder, and thus
       deploy it to the server too. See:
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
