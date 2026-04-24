@@ -25,14 +25,6 @@ public class ApplicationInsightsOptions
     public bool EnableLoggingTestMiddleware { get; set; }
 
     /// <summary>
-    /// Gets or sets the API key to authenticate the control channel for Quick Pulse (Live Metrics Stream). See the
-    /// documentation for more info: <see
-    /// href="https://docs.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel"/>.
-    /// </summary>
-    [Obsolete("Microsoft Entra authentication is the only supported method from 30 September 2025. API key authentication will be removed.")]
-    public string QuickPulseTelemetryModuleAuthenticationApiKey { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether to collect authenticated user's user name, if available, on every
     /// request. Note that the user name might be sensitive personally identifiable information (PII); see the official
     /// documentation on handling PII: <see
