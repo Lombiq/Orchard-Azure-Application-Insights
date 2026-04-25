@@ -88,15 +88,13 @@ The module has its own configuration for further options. These need to come fro
   },
   "OrchardCore": {
     "Lombiq_Hosting_Azure_ApplicationInsights": {
-      // Deprecated, do not use in new projects.
-      "QuickPulseTelemetryModuleAuthenticationApiKey": "your API key here"
+      "EnableUserNameCollection": true,
+      "EnableLoggingTestMiddleware": true
     }
   }
 }
 
 ```
-
-> ⚠ Use of QuickPulseTelemetryModuleAuthenticationApiKey is deprecated and will be officially unsupported starting 30 September 2025. See [Entra Authentication for the Live Metrics control channel](#entra-authentication-for-the-live-metrics-control-channel) for more information.
 
 See the [`ApplicationInsightsOptions` class](Lombiq.Hosting.Azure.ApplicationInsights/ApplicationInsightsOptions.cs) for all options and details.
 
@@ -106,7 +104,7 @@ If you use the security defaults from [Lombiq Helpful Libraries - Orchard Core L
 
 ### Entra Authentication for the Live Metrics control channel
 
-Starting 30 September 2025, authentication using API keys is no longer supported for [securing the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel). Instead, you'll have to set up Entra Authentication for that. You may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry. Entra Authentication is only needed if you want to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
+To [secure the Live Metrics control channel](https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream#secure-the-control-channel), you'll have to set up Entra Authentication for it. You may omit this if not needed; configuring the connection string is necessary in any case, and enough for simply collecting telemetry. Entra Authentication is only needed if you want to control the Live Metrics stream from the Azure Portal, like filtering telemetry.
 
 #### Setting up Entra Authentication for Application Insights
 

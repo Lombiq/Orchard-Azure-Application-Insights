@@ -4,31 +4,29 @@
   </PropertyGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.props" />
-  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="1.0.1-alpha.7.osoe-1208" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="1.0.1-alpha.10.osoe-1208" />
 
   <PropertyGroup>
     <Title>Lombiq Hosting - Azure Application Insights for Orchard Core</Title>
     <CopyrightYear>2015</CopyrightYear>
-    <DescriptionBody>This Orchard Core module enables easy integration of Azure Application Insights telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source, and collected data will start appearing in the Azure Portal. See the project website for detailed documentation.</DescriptionBody>
+    <DescriptionBody>This Orchard Core module enables easy integration of Azure Application Insights telemetry into Orchard. Just install the module, configure the instrumentation key from a configuration source, and collected data will start appearing in the Azure Portal.</DescriptionBody>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;Azure;ApplicationInsights;Analytics;Telemetry;Monitoring;LombiqHostingSuite</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Azure-Application-Insights</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <!-- Using a beta version is necessary until 3.0.2 is out, because 3.0.1 imports System.Linq.Async and so wrecks any
-         IAsyncEnumerable-using code that references this project. -->
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.2-beta1">
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.2">
       <!-- This is needed to include the Uploader component (TraceUpload.zip) in the publish output folder, and thus
       deploy it to the server too. See:
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18960" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18960" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18960" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18975" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18975" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18975" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.targets" />
-  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="1.0.1-alpha.7.osoe-1208" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="1.0.1-alpha.10.osoe-1208" />
 </Project>
