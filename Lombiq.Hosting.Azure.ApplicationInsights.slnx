@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI/Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI.csproj" />
+  <Project Path="Lombiq.Hosting.Azure.ApplicationInsights/Lombiq.Hosting.Azure.ApplicationInsights.csproj" />
+</Solution>
