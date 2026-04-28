@@ -22,9 +22,9 @@
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18975" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18975" />
-    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18975" />
+    <PackageReference Include="OrchardCore.Media.Azure" Version="3.0.0-preview-18991" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="3.0.0-preview-18991" />
+    <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.0-preview-18991" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.targets" />
