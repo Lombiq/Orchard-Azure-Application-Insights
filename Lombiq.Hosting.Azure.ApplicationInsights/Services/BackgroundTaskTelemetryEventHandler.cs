@@ -39,7 +39,7 @@ internal sealed class BackgroundTaskTelemetryEventHandler : IBackgroundTaskEvent
         if (_activity != null)
         {
             // Due to async context switches the original Activity is lost and Activity.Current would be null here.
-            // Thus, we need to set it explicitly. Such operations aren't necessarily properly supported by AI, see:
+            // Thus, we need to set it explicitly. Such operations aren't necessarily properly supported by AAI, see:
             // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking#parallel-operations-processing-and-tracking
             Activity.Current = _activity;
             _operation?.Dispose();
