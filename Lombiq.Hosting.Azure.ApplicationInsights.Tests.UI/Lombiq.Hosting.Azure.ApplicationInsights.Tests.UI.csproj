@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.Privacy.Tests.UI" Version="10.0.1-alpha.8.osoe-925" />
+    <PackageReference Include="Lombiq.Privacy.Tests.UI" Version="10.0.1-alpha.9.osoe-925" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Tests.UI.Sdk/Sdk/Import.targets" />
