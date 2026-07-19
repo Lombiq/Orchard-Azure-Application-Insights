@@ -35,7 +35,7 @@ public sealed class Startup : StartupBase
             return;
         }
 
-        services.Configure<MvcOptions>((options) => options.Filters.Add(typeof(TrackingScriptInjectingFilter)));
+        services.Configure<MvcOptions>((options) => options.Filters.Add<TrackingScriptInjectingFilter>());
 
         if (_applicationInsightsOptions.EnableLoggingTestBackgroundTask)
         {
