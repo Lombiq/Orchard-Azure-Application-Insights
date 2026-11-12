@@ -23,6 +23,8 @@
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
+    <!-- Overriding the vulnerable transitive version coming from Microsoft.ApplicationInsights.AspNetCore. -->
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.3.14" NoWarn="NU1510" />
     <PackageReference Include="OrchardCore.Media.Azure" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
