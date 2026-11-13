@@ -10,6 +10,7 @@ namespace Lombiq.Hosting.Azure.ApplicationInsights.Tests.UI.TestCases;
 
 public static class ApplicationInsightsTestCases
 {
+    [Obsolete($"Use the overload with {nameof(UITestBase)}.")]
     public static Task ApplicationInsightsTrackingInOfflineOperationShouldWorkAsync(
         ExecuteTestAfterSetupAsync executeTestAfterSetupAsync,
         Browser browser = default,
@@ -41,4 +42,28 @@ public static class ApplicationInsightsTestCases
                         return Task.CompletedTask;
                     };
             });
+
+    public static Task ApplicationInsightsTrackingInOfflineOperationShouldWorkAsync(UITestBase fixture) => fixture
+        .AddTest(async context =>
+        {
+            await context.EnablePrivacyConsentBannerFeatureAndAcceptPrivacyConsentAsync();
+
+            var appInsightsExist = context.ExecuteScript("return window.appInsights === 'enabled'") as bool?;
+
+            // Our custom message helps debugging, otherwise from the test output you could only tell that a value
+            // should be true but is false which is less than helpful.
+            appInsightsExist.ShouldBe(expected: true, "The Application Insights module is not working or is not in offline mode.");
+        })
+        .AddSyncConfiguration(configuration =>
+            configuration.OrchardCoreConfiguration.BeforeAppStart +=
+                (_, argumentsBuilder) =>
+                {
+                    argumentsBuilder
+                        .AddWithValue(
+                            "OrchardCore:Lombiq_Hosting_Azure_ApplicationInsights:EnableOfflineOperation",
+                            value: true);
+
+                    return Task.CompletedTask;
+                })
+        .RunAsync();
 }
