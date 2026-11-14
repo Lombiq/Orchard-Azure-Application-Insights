@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.props" />
-  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="2.1.1-alpha.9.osoe-344" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="2.1.1" />
 
   <PropertyGroup>
     <Title>Lombiq Hosting - Azure Application Insights for Orchard Core</Title>
@@ -23,11 +23,14 @@
       https://github.com/microsoft/ApplicationInsights-Profiler-AspNetCore/issues/241#issuecomment-3706178984. -->
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
+    <!-- Overriding the vulnerable transitive version coming from Microsoft.ApplicationInsights.AspNetCore. -->
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.3.14" NoWarn="NU1510" />
+    <PackageReference Include="MySqlConnector" Version="2.6.2" NoWarn="NU1510" />
     <PackageReference Include="OrchardCore.Media.Azure" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="$(OrchardCoreVersion)" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Module.Sdk/Sdk/Import.targets" />
-  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="2.1.1-alpha.9.osoe-344" />
+  <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.targets" Sdk="Lombiq.MSBuild.OrchardCore.Module.Sdk" Version="2.1.1" />
 </Project>
