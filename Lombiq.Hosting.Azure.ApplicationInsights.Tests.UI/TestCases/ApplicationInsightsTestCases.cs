@@ -54,7 +54,7 @@ public static class ApplicationInsightsTestCases
             // should be true but is false which is less than helpful.
             appInsightsExist.ShouldBe(expected: true, "The Application Insights module is not working or is not in offline mode.");
         })
-        .AddSyncConfiguration(configuration =>
+        .AddConfiguration(configuration =>
             configuration.OrchardCoreConfiguration.BeforeAppStart +=
                 (_, argumentsBuilder) =>
                 {
